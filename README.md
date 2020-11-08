@@ -69,3 +69,8 @@ heroku run php artisan migrate:fresh --seed
 **5. Test**
 https://ecommerceproj20.herokuapp.com/
 
+## MySQL-workbench access credentials
+
+Username: b9e29ff150480f
+
+Password: 5b3858c4
