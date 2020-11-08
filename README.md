@@ -1,9 +1,11 @@
 
 ## Project Info 
 **1. Name**
+
 name
 
 **2. Description**
+
 desc
 
 ## Languages and Tools
@@ -15,6 +17,7 @@ https://laravel.com/docs/8.x
 Make sure you have installed [Composer and Laravel](https://laravel.com/docs/8.x#via-laravel-installer)
 
 **1. Open terminal and go to where you want to install this project**
+
 e.g C:\Users\<<USER_NAME>>\Desktop\
 
 **2. Clone the project**
