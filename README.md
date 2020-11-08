@@ -61,6 +61,10 @@ git commit
 ```
 git push 
 ```
-**4. Test**
+**4. Migration**
+```
+heroku run php artisan migrate:fresh --seed
+```
+**5. Test**
 https://ecommerceproj20.herokuapp.com/
 
