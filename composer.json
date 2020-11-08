@@ -57,8 +57,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+        "post-install-cmd": [            
             "@php artisan migrate:fresh --seed"
         ]
     }
