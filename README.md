@@ -47,6 +47,7 @@ e.g:
 
 ## Steps to deploy
 [Laravel + Heroku + ClearDB deployment](https://salitha94.blogspot.com/2019/11/deploy-laravel-application-on-heroku.html)
+
 [DB format config](https://stackoverflow.com/a/50585865/10868150)
 
 **1. Add modified files**
