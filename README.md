@@ -45,4 +45,22 @@ e.g:
 [Sun Nov 8 10:24:54 2020] PHP 7.4.6 Development Server (http://127.0.0.1:8000) started
 ```
 
+## Steps to deploy
+[Laravel + Heroku + ClearDB deployment](https://salitha94.blogspot.com/2019/11/deploy-laravel-application-on-heroku.html)
+[DB format config](https://stackoverflow.com/a/50585865/10868150)
+
+**1. Add modified files**
+```
+git add .
+```
+**2. Commit**
+```
+git commit 
+```
+**3. Push to Github**
+```
+git push 
+```
+**4. Test**
+https://ecommerceproj20.herokuapp.com/
 
