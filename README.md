@@ -69,6 +69,19 @@ heroku run php artisan migrate:fresh --seed
 **5. Test**
 https://ecommerceproj20.herokuapp.com/
 
+## How to pull?
+
+1. Check status
+```
+git status
+```
+
+2. Pull latest changes from Github 
+```
+git pull
+```
+
+
 ## MySQL-workbench access credentials
 
 Username: b9e29ff150480f
