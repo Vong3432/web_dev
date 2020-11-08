@@ -26,6 +26,7 @@ e.g C:\Users\<<USER_NAME>>\Desktop\
 ```
 
 **3. Env file (For first installation only)**
+
 Create an .env file in your project root folder, can refer to .env.example, and in your .env you can set your db name.
 
 **4. Run command**
