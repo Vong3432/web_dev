@@ -2,11 +2,11 @@
 
 use Illuminate\Support\Str;
 
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-$host = $url["host"] ?? null;
-$username = $url["user"] ?? null;
-$password = $url["pass"] ?? null;
-$database = substr($url["path"], 1);
+$url = getenv("CLEARDB_DATABASE_URL") ? parse_url(getenv("CLEARDB_DATABASE_URL")) : env('DATABASE_URL');
+$host = $url["host"] ?? env('DB_HOST', '127.0.0.1');
+$username = $url["user"] ?? env('DB_USERNAME', 'forge');
+$password = $url["pass"] ?? env('DB_PASSWORD', '');
+$database = $url["path"] ? substr($url["path"], 1) : env('DB_DATABASE', 'forge');
 
 return [
 
@@ -79,9 +79,13 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
+            'prefix_indexes' => true,
             'prefix' => '',
             'strict' => true,
             'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                        PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                    ]) : [],
         ],
 
         'pgsql' => [

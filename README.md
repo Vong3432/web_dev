@@ -34,6 +34,14 @@ Create an .env file in your project root folder, can refer to .env.example, and 
 composer install
 ```
 
+and
+
+**Make sure you have create a database in Laragon/XAMPP before running next command**
+
+```
+php artisan migrate:fresh --seed
+```
+
 **5. Run the project & Test**
 ```
 php artisan serve
@@ -79,6 +87,11 @@ git status
 2. Pull latest changes from Github 
 ```
 git pull
+```
+
+3. Migration (This will clear all tables and recreated with initial data)
+```
+php artisan migrate:fresh --seed
 ```
 
 
