@@ -6,7 +6,7 @@ $url = getenv("CLEARDB_DATABASE_URL") ? parse_url(getenv("CLEARDB_DATABASE_URL")
 $host = $url["host"] ?? env('DB_HOST', '127.0.0.1');
 $username = $url["user"] ?? env('DB_USERNAME', 'forge');
 $password = $url["pass"] ?? env('DB_PASSWORD', '');
-$database = $url["path"] ? substr($url["path"], 1) : env('DB_DATABASE', 'forge');
+$database = getenv("CLEARDB_DATABASE_URL") ? substr($url["path"], 1) : env('DB_DATABASE', 'forge');
 
 return [
 
