@@ -135,7 +135,7 @@ class OrderController extends Controller
             'old_product_id' => 'required',
             'product_id' => 'required',
             'status' => 'required'
-        ]);        
+        ]);                      
 
         $affectedOrderProducts = DB::table('orders_products')
             ->where([
@@ -147,7 +147,7 @@ class OrderController extends Controller
             ]);       
         
         $affectedOrder = DB::table('orders')
-                ->where("order_id", $id)
+                ->where("id", $id)
                 ->update([
                     "status" => $request->get('status')
                 ]);
