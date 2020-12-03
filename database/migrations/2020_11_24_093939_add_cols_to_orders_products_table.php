@@ -15,7 +15,7 @@ class AddColsToOrdersProductsTable extends Migration
     {
         Schema::table('orders_products', function (Blueprint $table) {
             $table->foreignId("product_id")->references('id')->on('products');            
-            $table->foreignId("order_id")->references('id')->on('orders');            
+            $table->foreignId("order_id")->references('id')->on('orders')->onDelete('cascade');            
         });
     }
 

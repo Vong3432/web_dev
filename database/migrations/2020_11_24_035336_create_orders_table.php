@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->enum("status", ["PENDING", "REJECTED", "ACCEPT", "DELIVERING"]);
             // $table->unsignedInteger('user_id')->nullable();
             // $table->foreignId('user_id')->references('id')->on('users');
         });

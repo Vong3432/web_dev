@@ -13,7 +13,7 @@ class CreateMailTable extends Migration
      */
     public function up()
     {
-        Schema::create('mail', function (Blueprint $table) {
+        Schema::create('mails', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string("name");

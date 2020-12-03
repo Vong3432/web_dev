@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Import Controller
+use App\Http\Controllers\OrderController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Orders
+Route::resource('orders', OrderController::class);

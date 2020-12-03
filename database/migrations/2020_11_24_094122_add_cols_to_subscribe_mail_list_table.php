@@ -14,7 +14,7 @@ class AddColsToSubscribeMailListTable extends Migration
     public function up()
     {
         Schema::table('subscribe_mail_list', function (Blueprint $table) {
-            $table->foreignId("mail_id")->references('id')->on('mail');            
+            $table->foreignId("mail_id")->references('id')->on('mails');            
             $table->foreignId("user_id")->references('id')->on('users');            
         });
     }

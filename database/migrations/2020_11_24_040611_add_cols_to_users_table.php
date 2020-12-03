@@ -14,11 +14,11 @@ class AddColsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string("phone_no");
-            $table->integer("age");
-            $table->date("dob");
-            $table->string("gender");
-            $table->string("avatar");
+            $table->string("phone_no")->nullable();
+            $table->integer("age")->nullable();
+            $table->date("dob")->nullable();
+            $table->string("gender")->nullable();
+            $table->string("avatar")->nullable();
         });
     }
 
