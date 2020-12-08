@@ -17,13 +17,20 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string("name");
-            $table->text("description");
-            // $table->unsignedInteger("category_id")->nullable();
-            // $table->foreignId("category_id")->references('id')->on('products_category');            
-            $table->integer("stocks")->default(0);
-            $table->decimal("price", 8, 2)->default(0);
+            $table->text("desc");
+            $table->decimal("price", 10, 2)->default(0);
+            $table->decimal("sprice", 10, 2)->default(0);
+            $table->integer("quantity")->default(0);
+            $table->double("weight", 2, 1)->default(0);
+            $table->integer("status")->default(0);
+            $table->foreignId("category_id")->references('id')->on('products_categories');
             $table->text("tags");
             $table->double("discount_rate", 2, 1)->default(0);
+            // $table->unsignedInteger("category_id")->nullable();
+            // $table->foreignId("category_id")->references('id')->on('products_category');            
+            
+            
+            
         });
     }
 
