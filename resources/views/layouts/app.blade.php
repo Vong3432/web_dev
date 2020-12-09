@@ -63,7 +63,7 @@
     <!-- End Preloader -->
 
     <!-- Header -->
-    <header class="header shop">
+    <header style="z-index: 999" class="header shop">
         <!-- Topbar -->
         <div class="topbar">
             <div class="container">
