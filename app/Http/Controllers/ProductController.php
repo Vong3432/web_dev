@@ -54,7 +54,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        /*
          // Valdiate requests
          $request->validate([
             'product_name'=> 'required',
@@ -108,7 +107,7 @@ class ProductController extends Controller
         }
         $productImg->productImgs()->createMany($image); 
 
-       */
+       
 
         // Here return a String because it is stage 1,
         // we will make it to return a page at stage 2.
