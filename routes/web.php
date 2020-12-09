@@ -17,22 +17,45 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/shop-grid', function() {
+Route::get('/shop-grid', function () {
     return view('shop-grid');
 });
 
-Route::get('/cart', function() {
+Route::get('/cart', function () {
     return view('cart');
 });
 
-Route::get('/contact', function() {
+Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/checkout', function() {
+Route::get('/checkout', function () {
     return view('checkout');
 });
 
-Route::get('/blog-single-sidebar', function() {
+Route::get('/blog-single-sidebar', function () {
     return view('/blog-single-sidebar');
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    if (Auth::user()->level === "admin")
+        return view('dashboard');
+    else
+        return redirect()->route('login');
+})->name('dashboard');
+
+// For user
+// Route::middleware(['auth:sanctum', 'verified'])->group( function () {
+    
+// });
+
+// // For admin
+// Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function () {
+//     Route::get('/dashboard', function() {
+//         if(Auth::user()->level === "admin")
+//             return view('dashboard');
+//         else 
+//             return view('auth.login');
+//     })->name('dashboard');    
+//     // return view('index');
+// });

@@ -7,6 +7,14 @@
 
     <title>Snack666 - @yield('title')</title>
 
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+
+    @livewireStyles
+
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}" defer></script>
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
 
@@ -89,10 +97,14 @@
                                 </li>
                                 <li>
                                     <i class="ti-user"></i>
-                                    <a href="#">My account</a>
+                                    <a href="{{ url('/register') }}">New User</a>
                                 </li>
                                 <li>
-                                    <i class="ti-power-off"></i><a href="login.html#">Login</a>
+                                    @if(Auth::user())
+                                        @livewire('navigation-dropdown')
+                                    @else
+                                    <i class="ti-power-off"></i><a href="{{ url('/login') }}">Login</a>
+                                    @endif
                                 </li>
                             </ul>
                         </div>
@@ -480,6 +492,10 @@
     <script src="{{ asset('/js/easing.js') }}"></script>
     <!-- Active JS -->
     <script src="{{ asset('/js/active.js') }}"></script>
+
+    @stack('modals')
+
+    @livewireScripts
 </body>
 
 </html>
