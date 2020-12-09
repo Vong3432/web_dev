@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductImageController extends Controller
 {
@@ -13,7 +14,13 @@ class ProductImageController extends Controller
      */
     public function index()
     {
-        //
+        $products_imgs = DB::table('products_images')
+            ->select(
+                'products_images.id',
+                'products_images.name as images_link'   
+            )
+            ->get();
+        return $products_imgs;
     }
 
     /**
@@ -34,7 +41,35 @@ class ProductImageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+              // Valdiate requests
+        /*$request->validate([
+            'product_id' => 'required',
+            'images' => 'required',
+        ]);  
+        
+        $productImg = new ProductsImages();
+        $image = array();
+        if($request->hasFile('images'))
+        {
+            foreach($request->file('images') as $image)
+            {
+                $destinationPath = 'products_images/';
+                $filename = $image->getClientOriginalName();
+                $image->move($destinationPath, $filename);
+                
+                $image = new ProductsImages([
+                    'product_id' => $request->get('product_id'),
+                    'name' => $filename,
+                ]);
+                
+            }
+            
+        }
+        $productImg->productImgs()->createMany($image); 
+
+        */
+
+        return "Success";
     }
 
     /**
@@ -45,7 +80,16 @@ class ProductImageController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $imageProducts = DB::table('products_images')
+        ->select(
+            'products_images.id',
+            'products_images.name'
+        )
+        ->where('product_id', $id)
+        ->get();
+
+        return $imageProducts;
     }
 
     /**
@@ -68,7 +112,7 @@ class ProductImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
@@ -79,6 +123,10 @@ class ProductImageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('products_images')
+        ->where("id", $id)
+        ->delete();        
+          
+        return "Delete";
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Order;
-use App\Models\OrdersProduct;
-
+use App\Models\Products;
+use App\Models\ProductsCategory;
+use App\Models\ProductsImages;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-      
 
         $products = DB::table('products')
             ->select(
@@ -29,10 +29,9 @@ class ProductController extends Controller
                 'products.status',
                 'products_categories.name as categories',
                 'products.tags',
-                'products.discount_rate',
-                'products.created_at'
+                'products.discount_rate'
             )            
-            ->join('products_categories', 'products_categories.id', '=', 'products.categories.id')
+            ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
             ->get();
         return $products;
     }
@@ -55,24 +54,61 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        /*
          // Valdiate requests
          $request->validate([
-            'product_id' => 'required',
             'product_name'=> 'required',
+            'product_desc'=> 'required',
             'product_price'=> 'required',
             'product_selling_price'=> 'required',
             'product_quantity' => 'required',
             'product_weight'=> 'required',
-            'product_status'=> 'required',
-            'product_categories.name as categories'=> 'required',
+            'category_id'=> 'required',
             'product_tags'=> 'required',
-            'product_discount_rate'=> 'required'
+            'product_discount_rate'=> 'required',
+            'images'=> 'required'
         ]);        
 
        
-        $products->save();
+         $product = new Products([
+            'name' => $request->get('product_name'),
+            'desc' => $request->get('product_desc'),
+            'price' => $request->get('product_price'),
+            'sprice' => $request->get('product_selling_price'),
+            'quantity' => $request->get('product_quantity'),
+            'weight' => $request->get('product_weight'),
+            'status' => '0',
+            'category_id'=> $request->get('category_id'),
+            'tags'=> $request->get('product_tags'),
+            'discount_rate'=> $request->get('product_discount_rate'),
+            
+        ]);
 
        
+        // Save to order table
+        $product->save();
+
+        $productImg = new ProductsImages();
+        $image = array();
+        if($request->hasFile('images'))
+        {
+            foreach($request->file('images') as $image)
+            {
+                $destinationPath = 'products_images/';
+                $filename = $image->getClientOriginalName();
+                $image->move($destinationPath, $filename);
+                
+                $image = new ProductsImages([
+                    'product_id' => $product->id,
+                    'name' => $filename,
+                ]);
+                
+            }
+            
+        }
+        $productImg->productImgs()->createMany($image); 
+
+       */
 
         // Here return a String because it is stage 1,
         // we will make it to return a page at stage 2.
@@ -103,8 +139,11 @@ class ProductController extends Controller
                 'products.created_at'
         )
         ->where('id', $id)
+        ->where('status', '0')
         ->join('products_categories', 'products_categories.id', '=', 'products.categories.id')
         ->get();
+
+
         return $product;
     }
 
@@ -128,38 +167,38 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $request->validate([                      
-            'product_id' => 'required',
+        $request->validate([
             'product_name'=> 'required',
+            'product_desc'=> 'required',
             'product_price'=> 'required',
             'product_selling_price'=> 'required',
             'product_quantity' => 'required',
             'product_weight'=> 'required',
-            'product_status'=> 'required',
-            'product_categories_id' => 'required',
+            'category_id'=> 'required',
             'product_tags'=> 'required',
-            'product_discount_rate'=> 'required'
-        ]);                      
+            'product_discount_rate'=> 'required',
+            'images'=> 'required'
+        ]);                          
 
         $affectedProducts = DB::table('products')
             ->where([
-                ['product_id', '=', $id]
+                ['id', '=', $id]
             ])
             ->update([
                 'name' => $request->get('product_name'),
-                'desc' => $request->get('product_description'),
+                'desc' => $request->get('product_desc'),
                 'price' => $request->get('product_price'),
                 'sprice' => $request->get('product_selling_price'),
                 'quantity'=> $request->get('product_quantity'),
                 'weight'=> $request->get('product_weight'),
-                'status'=> $request->get('product_status'),
-                'category_id'=> $request->get('product_categories_id'),
+                'status'=> '0',
+                'category_id'=> $request->get('category_id'),
                 'tags'=> $request->get('product_tags'),
                 'discount_rate'=> $request->get('product_discount_rate')
             ]);       
         
       
-            
+           
         return $affectedProducts;
     }
 
@@ -173,7 +212,7 @@ class ProductController extends Controller
     {
         $affectedProducts = DB::table('products')
             ->where([
-                ['product_id', '=', $id]
+                ['id', '=', $id]
             ])
             ->update([
                 'status'=> '1'

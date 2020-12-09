@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 // Import Controller
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductImageController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,3 +25,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // Orders
 Route::resource('orders', OrderController::class);
+
+// Product Cate
+Route::resource('productscategory', ProductCategoryController::class);
+
+// Product 
+Route::resource('products', ProductController::class);
+
+// Product Image
+Route::resource('productimgs', ProductImageController::class);

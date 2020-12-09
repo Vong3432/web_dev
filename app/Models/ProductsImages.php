@@ -11,4 +11,9 @@ class ProductsImages extends Model
     protected $fillable = [
         'product_id'
     ];
+
+    public function productImgs()
+    {
+        return $this->belongsToMany('App\Models\ProductsImages');
+    }
 }
