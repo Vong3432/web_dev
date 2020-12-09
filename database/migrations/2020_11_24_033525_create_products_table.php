@@ -22,8 +22,7 @@ class CreateProductsTable extends Migration
             $table->decimal("sprice", 10, 2)->default(0);
             $table->integer("quantity")->default(0);
             $table->double("weight", 2, 1)->default(0);
-            $table->integer("status")->default(0);
-            $table->foreignId("category_id")->references('id')->on('products_categories');
+            $table->integer("status")->default(0);            
             $table->text("tags");
             $table->double("discount_rate", 2, 1)->default(0);
             // $table->unsignedInteger("category_id")->nullable();

@@ -14,7 +14,7 @@ class AddColsToProductsImagesTable extends Migration
     public function up()
     {
         Schema::table('products_images', function (Blueprint $table) {
-            $table->foreignId("product_id")->references('id')->on('products');            
+            // $table->foreignId("product_id")->references('id')->on('products');            
         });
     }
 

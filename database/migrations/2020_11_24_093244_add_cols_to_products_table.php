@@ -15,7 +15,7 @@ class AddColsToProductsTable extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             // $table->unsignedInteger("category_id")->nullable();
-            $table->foreignId("category_id")->references('id')->on('products_categories');            
+            $table->foreignId("category_id")->references('id')->on('products_categories');
         });
     }
 

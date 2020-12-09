@@ -16,8 +16,8 @@ class ProductSeeder extends Seeder
     {
         Products::create([
             'name' => 'Product 1',
-            'description' => "Desc",
-            'stocks' => 1,
+            'desc' => "Desc",
+            'quantity' => 1,
             'price' => 20.00,
             'tags' => "Tag 1, Tag 2",
             'discount_rate' => 0.2,
