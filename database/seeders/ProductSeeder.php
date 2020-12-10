@@ -23,5 +23,15 @@ class ProductSeeder extends Seeder
             'discount_rate' => 0.2,
             'category_id' => 1,
         ]);
+
+        Products::create([
+            'name' => 'Product 2',
+            'desc' => "Desc",
+            'quantity' => 1,
+            'price' => 20.00,
+            'tags' => "Tag 1, Tag 2",
+            'discount_rate' => 0.2,
+            'category_id' => 1,
+        ]);
     }
 }

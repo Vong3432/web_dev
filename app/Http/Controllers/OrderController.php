@@ -39,10 +39,9 @@ class OrderController extends Controller
         Eloquent Style
         ======================================
         */
-        $orders = OrdersProduct::with('order')                 
-                 ->with('order.user')                 
-                 ->with('product')                 
-                 ->get();
+        $orders = Order::with('user')
+            ->with('products')
+            ->get();
 
         return $orders;
     }
@@ -69,15 +68,15 @@ class OrderController extends Controller
         $request->validate([
             'user_id' => 'required',
             'product_ids' => 'required',
-        ]);                
-        
+        ]);
+
         // Initialize a new order
         $order = new Order([
             'user_id' => $request->get('user_id'),
         ]);
 
         // Save to order table
-        $order->save();        
+        $order->save();
 
         foreach ($request->get('product_ids') as $product) {
             // Initialize new order_product
@@ -131,12 +130,16 @@ class OrderController extends Controller
         Eloquent style 
         ==========================================
         */
-        $orders = OrdersProduct::where('order_id', $id)
-                 ->with('order')  
-                 ->with('order.user')                 
-                 ->with('product')                 
-                 ->get();
+        // $orders = OrdersProduct::where('order_id', $id)
+        //          ->with('order')  
+        //          ->with('order.user')                 
+        //          ->with('product')                 
+        //          ->get();
 
+        $orders = Order::with('user')
+            ->with('products')
+            ->where('id', $id)
+            ->get();
         return $orders;
     }
 
@@ -162,12 +165,12 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         // Allow users to change product of a order
-        
-        $request->validate([                      
+
+        $request->validate([
             'old_product_id' => 'required',
             'product_id' => 'required',
             'status' => 'required'
-        ]);                      
+        ]);
 
         /*
         Query Builder Style
@@ -181,7 +184,7 @@ class OrderController extends Controller
         //     ->update([
         //         'product_id' => $request->get('product_id')
         //     ]);       
-        
+
         // $affectedOrder = DB::table('orders')
         //         ->where("id", $id)
         //         ->update([
@@ -195,17 +198,17 @@ class OrderController extends Controller
         */
         // Update order product
         OrdersProduct::where('order_id', $id)
-                         ->where('product_id', $request->get('old_product_id'))
-                         ->update(['product_id' => $request->get('product_id')]);                                 
+            ->where('product_id', $request->get('old_product_id'))
+            ->update(['product_id' => $request->get('product_id')]);
 
         // Update order 
         Order::where('id', $id)
-                 ->update(['status' => $request->get('status')]);        
-            
+            ->update(['status' => $request->get('status')]);
+
         return OrdersProduct::where('order_id', $id)
-                ->with('order')                 
-                ->with('product')
-                ->get();
+            ->with('order')
+            ->with('product')
+            ->get();
     }
 
     /**
@@ -215,10 +218,10 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {        
+    {
         Order::where('id', $id)->delete();
         OrdersProduct::where("order_id", $id)->delete();
-              
+
         return "Deleted";
     }
 }
