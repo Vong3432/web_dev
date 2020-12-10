@@ -16,19 +16,34 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = DB::table('orders_products')
-            ->select(
-                'orders_products.order_id',
-                'orders_products.product_id',
-                'orders_products.id as orderProduct_id',
-                'products.*',
-                'products.name as product_name',
-                'users.*'
-            )            
-            ->join('products', 'orders_products.product_id', '=', 'products.id')
-            ->join('orders', 'orders_products.order_id', '=', 'orders.id')
-            ->join('users', 'orders.user_id', '=', 'users.id')
-            ->get();
+        /*
+        Query Builder Style
+        ======================================
+        */
+        // $orders = DB::table('orders_products')
+        //     ->select(
+        //         'orders_products.order_id',
+        //         'orders_products.product_id',
+        //         'orders_products.id as orderProduct_id',
+        //         'products.*',
+        //         'products.name as product_name',
+        //         'users.*'
+        //     )            
+        //     ->join('products', 'orders_products.product_id', '=', 'products.id')
+        //     ->join('orders', 'orders_products.order_id', '=', 'orders.id')
+        //     ->join('users', 'orders.user_id', '=', 'users.id')
+        //     ->get();
+        // return $orders;
+
+        /*
+        Eloquent Style
+        ======================================
+        */
+        $orders = OrdersProduct::with('order')                 
+                 ->with('order.user')                 
+                 ->with('product')                 
+                 ->get();
+
         return $orders;
     }
 
