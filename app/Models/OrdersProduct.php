@@ -9,6 +9,8 @@ class OrdersProduct extends Model
 {
     use HasFactory;
 
+    protected $table = 'orders_products';
+
     /* 
     @@ What is fillable?
     - Values in fillable can be set when we create Model        
@@ -23,5 +25,14 @@ class OrdersProduct extends Model
         'product_id'
     ];
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Products::class, 'product_id');
+    }
     
 }

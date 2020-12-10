@@ -54,15 +54,15 @@ class OrderController extends Controller
         $request->validate([
             'user_id' => 'required',
             'product_ids' => 'required',
-        ]);        
-
+        ]);                
+        
         // Initialize a new order
         $order = new Order([
             'user_id' => $request->get('user_id'),
         ]);
 
         // Save to order table
-        $order->save();
+        $order->save();        
 
         foreach ($request->get('product_ids') as $product) {
             // Initialize new order_product
@@ -90,21 +90,37 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $orders = DB::table('orders_products')
-            ->select(
-                'orders_products.order_id',
-                'orders_products.product_id',
-                'orders_products.id as order_product_id',
-                'orders.status as order_status',
-                'products.*',
-                'products.name as product_name',
-                'users.*'
-            )
-            ->where('order_id', $id)
-            ->join('products', 'orders_products.product_id', '=', 'products.id')
-            ->join('orders', 'orders_products.order_id', '=', 'orders.id')
-            ->join('users', 'orders.user_id', '=', 'users.id')
-            ->get();
+        /* 
+        Query Builder style 
+        ==========================================
+        */
+
+        // $orders = DB::table('orders_products')
+        //     ->select(
+        //         'orders_products.order_id',
+        //         'orders_products.product_id',
+        //         'orders_products.id as order_product_id',
+        //         'orders.status as order_status',
+        //         'products.*',
+        //         'products.name as product_name',
+        //         'users.*'
+        //     )
+        //     ->where('order_id', $id)
+        //     ->join('products', 'orders_products.product_id', '=', 'products.id')
+        //     ->join('orders', 'orders_products.order_id', '=', 'orders.id')
+        //     ->join('users', 'orders.user_id', '=', 'users.id')
+        //     ->get();
+        // return $orders;
+
+        /* 
+        Eloquent style 
+        ==========================================
+        */
+        $orders = OrdersProduct::where('order_id', $id)
+                 ->with('order')                 
+                 ->with('product')
+                 ->get();
+
         return $orders;
     }
 
@@ -137,22 +153,43 @@ class OrderController extends Controller
             'status' => 'required'
         ]);                      
 
-        $affectedOrderProducts = DB::table('orders_products')
-            ->where([
-                ['order_id', '=', $id],
-                ['product_id', '=', $request->get('old_product_id')],
-            ])
-            ->update([
-                'product_id' => $request->get('product_id')
-            ]);       
+        /*
+        Query Builder Style
+        ==============================
+        */
+        // $affectedOrderProducts = DB::table('orders_products')
+        //     ->where([
+        //         ['order_id', '=', $id],
+        //         ['product_id', '=', $request->get('old_product_id')],
+        //     ])
+        //     ->update([
+        //         'product_id' => $request->get('product_id')
+        //     ]);       
         
-        $affectedOrder = DB::table('orders')
-                ->where("id", $id)
-                ->update([
-                    "status" => $request->get('status')
-                ]);
+        // $affectedOrder = DB::table('orders')
+        //         ->where("id", $id)
+        //         ->update([
+        //             "status" => $request->get('status')
+        //         ]);
+
+
+        /*
+        Eloquent Style
+        ==============================
+        */
+        // Update order product
+        OrdersProduct::where('order_id', $id)
+                         ->where('product_id', $request->get('old_product_id'))
+                         ->update(['product_id' => $request->get('product_id')]);                                 
+
+        // Update order 
+        Order::where('id', $id)
+                 ->update(['status' => $request->get('status')]);        
             
-        return $affectedOrder;
+        return OrdersProduct::where('order_id', $id)
+                ->with('order')                 
+                ->with('product')
+                ->get();
     }
 
     /**
@@ -163,12 +200,9 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {        
-        DB::table('orders')
-            ->where("id", $id)
-            ->delete();        
-        DB::table('orders_products')
-            ->where("order_id", $id)
-            ->delete();           
-        return "Delete";
+        Order::where('id', $id)->delete();
+        OrdersProduct::where("order_id", $id)->delete();
+              
+        return "Deleted";
     }
 }
