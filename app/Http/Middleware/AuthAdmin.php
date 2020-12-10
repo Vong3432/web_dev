@@ -4,9 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthAdmin
 {
+    
     /**
      * Handle an incoming request.
      *
@@ -16,12 +18,16 @@ class AuthAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        // if(session('utype') === "admin") {
-        //     return $next($request);
-        // } else {
-        //     session()->flush();
-        //     return redirect()->route('login');
-        // }
+        if(Auth::user()->level === "admin") {
+            return $next($request);
+        } 
+        else if(Auth::user()->level === "user") {
+            return redirect()->route('/');
+        }
+        else {
+            session()->flush();
+            return redirect()->route('login');
+        }
 
         return $next($request);
     }

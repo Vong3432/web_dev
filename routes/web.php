@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('/');
 
 Route::get('/shop-grid', function () {
     return view('shop-grid');
@@ -37,12 +37,12 @@ Route::get('/blog-single-sidebar', function () {
     return view('/blog-single-sidebar');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    if (Auth::user()->level === "admin")
-        return view('dashboard');
-    else
-        return redirect()->route('login');
-})->name('dashboard');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     if (Auth::user()->level === "admin")
+//         return view('dashboard');
+//     else
+//         return redirect()->route('login');
+// })->name('dashboard');
 
 // For user
 // Route::middleware(['auth:sanctum', 'verified'])->group( function () {
@@ -50,12 +50,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 // });
 
 // // For admin
-// Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function () {
-//     Route::get('/dashboard', function() {
-//         if(Auth::user()->level === "admin")
-//             return view('dashboard');
-//         else 
-//             return view('auth.login');
-//     })->name('dashboard');    
-//     // return view('index');
-// });
+Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function () {
+    Route::get('/dashboard', function() {
+        // if(Auth::user()->level === "admin")
+        //     return view('dashboard');
+        // else 
+        //     return view('auth.login');
+        return view('dashboard');
+    })->name('dashboard');        
+});
