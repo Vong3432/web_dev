@@ -117,8 +117,9 @@ class OrderController extends Controller
         ==========================================
         */
         $orders = OrdersProduct::where('order_id', $id)
-                 ->with('order')                 
-                 ->with('product')
+                 ->with('order')  
+                 ->with('order.user')                 
+                 ->with('product')                 
                  ->get();
 
         return $orders;
