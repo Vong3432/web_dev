@@ -267,7 +267,7 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->is('orders') ? 'active' : '' }}" href="#" data-toggle="collapse" aria-expanded="false" data-target="#orders-menu" aria-controls="orders-menu"><i class="fas fa-box-open"></i>Orders</a>
                                 <div id="orders-menu" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">                                        
+                                    <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('admin.orders')}}">All Orders</a>
                                         </li>
@@ -275,6 +275,14 @@
                                 </div>
                             </li>
 
+                            <!-- Logout -->
+                            <li class="nav-item">
+                                <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                this.closest('form').submit();"><i class="fas fa-newspaper"></i>Logout</a>
+                                </form>
+                            </li>
 
                         </ul>
                     </div>

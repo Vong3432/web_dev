@@ -32,6 +32,7 @@
                     <h5 class="card-header">Validation Types</h5>
                     <div class="card-body">
                         <form id="validationform" data-parsley-validate="" novalidate="">
+                        @csrf
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Required</label>
                                 <div class="col-12 col-sm-8 col-lg-6">

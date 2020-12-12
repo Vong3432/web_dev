@@ -54,7 +54,7 @@ Route::get('/blog-single-sidebar', function () {
 // // For admin
 Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function () {
     Route::get('/dashboard', function() {        
-        return view('admin/dashboard');
+        return view('admin.dashboard');
     })->name('dashboard');  
     
     // Order
