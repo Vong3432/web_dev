@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\CouponsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,3 +35,6 @@ Route::resource('products', ProductController::class);
 
 // Product Image
 Route::resource('productimgs', ProductImageController::class);
+
+// Coupon
+Route::resource('coupons', CouponsController::class);

@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MailSeeder::class);
         $this->call(BlogSeeder::class);
         $this->call(TestsTableSeeder::class);
+        $this->call(CouponsTableSeeder::class);
     }
 }

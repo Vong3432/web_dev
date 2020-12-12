@@ -44,7 +44,7 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
            
-          $request->validate([
+        $request->validate([
             'category_name'=> 'required'           
         ]);        
         $products_cate = new ProductsCategory([

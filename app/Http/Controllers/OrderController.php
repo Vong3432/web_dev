@@ -109,22 +109,22 @@ class OrderController extends Controller
         ==========================================
         */
 
-        // $orders = DB::table('orders_products')
-        //     ->select(
-        //         'orders_products.order_id',
-        //         'orders_products.product_id',
-        //         'orders_products.id as order_product_id',
-        //         'orders.status as order_status',
-        //         'products.*',
-        //         'products.name as product_name',
-        //         'users.*'
-        //     )
-        //     ->where('order_id', $id)
-        //     ->join('products', 'orders_products.product_id', '=', 'products.id')
-        //     ->join('orders', 'orders_products.order_id', '=', 'orders.id')
-        //     ->join('users', 'orders.user_id', '=', 'users.id')
-        //     ->get();
-        // return $orders;
+        /* $orders = DB::table('orders_products')
+            ->select(
+                'orders_products.order_id',
+                'orders_products.product_id',
+                'orders_products.id as order_product_id',
+                'orders.status as order_status',
+                'products.*',
+                'products.name as product_name',
+                'users.*'
+            )
+            ->where('order_id', $id)
+            ->join('products', 'orders_products.product_id', '=', 'products.id')
+            ->join('orders', 'orders_products.order_id', '=', 'orders.id')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->get();
+        return $orders; */
 
         /* 
         Eloquent style 

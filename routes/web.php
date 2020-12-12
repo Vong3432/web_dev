@@ -37,6 +37,9 @@ Route::get('/blog-single-sidebar', function () {
     return view('/blog-single-sidebar');
 });
 
+/* Route::post('/coupon', 'CouponsController@store')->name('coupon.store');
+Route::delete('/coupon', 'CouponsController@destroy')->name('coupon.destroy'); */
+
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     if (Auth::user()->level === "admin")
 //         return view('dashboard');
