@@ -3,6 +3,7 @@
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,3 +73,7 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function ()
     
     
 });
+
+if(config('app.env') === 'production') {
+    URL::forceScheme('https');            
+}    
