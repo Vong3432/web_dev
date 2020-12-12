@@ -33,7 +33,7 @@ class ProductController extends Controller
             )            
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
             ->get();
-        return $products;
+        return view('admin.products.listing',  $products);
     }
 
     /**
@@ -43,7 +43,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.products.create');
     }
 
     /**

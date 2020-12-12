@@ -43,7 +43,7 @@ class OrderController extends Controller
             ->with('products')
             ->get();
 
-        return $orders;
+        return view('admin.orders.listing', $orders);
     }
 
     /**

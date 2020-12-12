@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,11 +57,22 @@ Route::delete('/coupon', 'CouponsController@destroy')->name('coupon.destroy'); *
 
 // // For admin
 Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function () {
-    Route::get('/dashboard', function() {
-        // if(Auth::user()->level === "admin")
-        //     return view('dashboard');
-        // else 
-        //     return view('auth.login');
-        return view('dashboard');
-    })->name('dashboard');        
+    Route::get('/dashboard', function() {        
+        return view('admin.dashboard');
+    })->name('dashboard');  
+    
+    // Order
+    Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders');
+
+    // Products
+    Route::get('/products', [ProductController::class, 'index'])->name('admin.products');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit'); 
+
+    // Vouchers (Is commented because controller is not created)
+    // Route::get('/vouchers', [VoucherController::class, 'index']);
+    // Route::get('/vouchers/create', [VoucherController::class, 'create']);
+    // Route::get('/vouchers/edit/{id}', [VoucherController::class, 'edit']); 
+    
+    
 });
