@@ -73,7 +73,3 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function ()
     
     
 });
-
-if(config('app.env') === 'production') {
-    URL::forceScheme('https');            
-}    
