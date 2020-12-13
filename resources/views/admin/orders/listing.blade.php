@@ -51,9 +51,11 @@
                                     </select>
                                 </td>
                                 <td>{{$order->user->name}}</td>
+                                <td>
                                 @foreach($order->products as $oProduct)
-                                <td>{{$oProduct->name}}</td>
+                                    {{$oProduct->name}} <br />                        
                                 @endforeach
+                                </td>
 
                                 <td>
                                     <button onclick="updateStatus('{{$order->id}}')" class="mt-2 btn btn-primary">Update Status</button>
