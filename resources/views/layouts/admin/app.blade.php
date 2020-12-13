@@ -215,10 +215,10 @@
                                             <a class="nav-link" href="{{route('admin.product_category.create')}}">Add Product Category</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{route('admin.products')}}">All Products</a>
+                                            <a class="nav-link" href="{{route('admin.products')}}">View All Products</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{route('admin.product_categories')}}">All Product Categories</a>
+                                            <a class="nav-link" href="{{route('admin.product_categories')}}">View All Product Categories</a>
                                         </li>
                                     </ul>
                                 </div>

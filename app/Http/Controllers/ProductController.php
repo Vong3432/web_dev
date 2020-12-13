@@ -43,7 +43,16 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        $products_cate = DB::table('products_categories')
+            ->select(
+                'products_categories.id',
+                'products_categories.name'
+                
+            )
+            ->get();
+       
+        return view('admin.products.create',['products_cates' => $products_cate]);
+       
     }
 
     /**
@@ -59,7 +68,6 @@ class ProductController extends Controller
             'product_name'=> 'required',
             'product_desc'=> 'required',
             'product_price'=> 'required',
-            'product_selling_price'=> 'required',
             'product_quantity' => 'required',
             'product_weight'=> 'required',
             'category_id'=> 'required',
@@ -68,12 +76,13 @@ class ProductController extends Controller
             'images'=> 'required'
         ]);        
 
-       
+         $sale_price = $request->get('product_price') * ($request->get('product_discount_rate'))/100;
+          
          $product = new Products([
             'name' => $request->get('product_name'),
             'desc' => $request->get('product_desc'),
             'price' => $request->get('product_price'),
-            'sprice' => $request->get('product_selling_price'),
+            'sprice' => $sale_price,
             'quantity' => $request->get('product_quantity'),
             'weight' => $request->get('product_weight'),
             'status' => '0',
@@ -87,26 +96,23 @@ class ProductController extends Controller
         // Save to order table
         $product->save();
 
-        $productImg = new ProductsImages();
-        $image = array();
-        if($request->hasFile('images'))
-        {
-            foreach($request->file('images') as $image)
-            {
-                $destinationPath = 'products_images/';
-                $filename = $image->getClientOriginalName();
-                $image->move($destinationPath, $filename);
-                
-                $image = new ProductsImages([
-                    'product_id' => $product->id,
-                    'name' => $filename,
-                ]);
-                
+        
+        
+        $images=array();
+        if($files=$request->file('images')){
+            foreach($files as $file){
+                $name=$file->getClientOriginalName();
+                $file->move('products_images/',$name);
+                $images[]=$name;
             }
-            
         }
-        $productImg->productImgs()->createMany($image); 
+     
 
+        $productImg =  ProductsImages::insert( [
+            'name'=>  implode("|",$images),
+            'product_id'=> $product->id
+          
+        ]);
        
 
         // Here return a String because it is stage 1,

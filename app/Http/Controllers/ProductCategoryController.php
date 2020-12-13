@@ -22,8 +22,8 @@ class ProductCategoryController extends Controller
                 
             )
             ->get();
-
-        return view('admin.product_category.listing',  $products_cate);        
+        $count = 1;
+        return view('admin.product_category.listing',['products_cates' => $products_cate, 'count' => $count]);        
     }
 
     /**
@@ -53,7 +53,7 @@ class ProductCategoryController extends Controller
         ]);
        
         $products_cate->save();
-        return "done save";
+        return view('admin.product_category.listing'); 
 
     }
 
