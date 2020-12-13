@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
@@ -68,6 +69,11 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function ()
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit'); 
+
+    // Products category
+    Route::get('/product_categories', [ProductCategoryController::class, 'index'])->name('admin.product_categories');
+    Route::get('/product_category/create', [ProductCategoryController::class, 'create'])->name('admin.product_category.create');
+    Route::get('/product_category/edit/{id}', [ProductCategoryController::class, 'edit'])->name('admin.product_category.edit'); 
 
     // Vouchers (Is commented because controller is not created)
     // Route::get('/vouchers', [VoucherController::class, 'index']);

@@ -45,6 +45,8 @@
     <!-- <link rel="stylesheet" href="{{ asset('/css/style.css') }}"> -->
     <link rel="stylesheet" href="{{ asset('/css/responsive.css') }}">
 
+    @yield('css')
+
 
 </head>
 
@@ -496,6 +498,8 @@
     @stack('modals')
 
     @livewireScripts
+
+    @yield('js')
 </body>
 
 </html>
