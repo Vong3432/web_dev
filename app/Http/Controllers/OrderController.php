@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrdersProduct;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class OrderController extends Controller
 {
@@ -43,7 +45,7 @@ class OrderController extends Controller
             ->with('products')
             ->get();
 
-        return view('admin.orders.listing', $orders);
+        return view('admin.orders.listing', ['orders' => $orders]);
     }
 
     /**
@@ -166,11 +168,11 @@ class OrderController extends Controller
     {
         // Allow users to change product of a order
 
-        $request->validate([
-            'old_product_id' => 'required',
-            'product_id' => 'required',
-            'status' => 'required'
-        ]);
+        // $request->validate([
+        //     'old_product_id' => 'required',
+        //     'product_id' => 'required',
+        //     'status' => 'required'
+        // ]);
 
         /*
         Query Builder Style
@@ -197,18 +199,30 @@ class OrderController extends Controller
         ==============================
         */
         // Update order product
-        OrdersProduct::where('order_id', $id)
+        if($request->get('old_product_id') && $request->get('product_id')) {
+            OrdersProduct::where('order_id', $id)
             ->where('product_id', $request->get('old_product_id'))
             ->update(['product_id' => $request->get('product_id')]);
+        }        
 
-        // Update order 
-        Order::where('id', $id)
-            ->update(['status' => $request->get('status')]);
+        // Update order status
+        if($request->get('status')) {
 
-        return OrdersProduct::where('order_id', $id)
-            ->with('order')
-            ->with('product')
-            ->get();
+            try {
+                Order::where('id', $id)
+                ->update(['status' => $request->get('status')]);
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Update status successfully'
+                ], 200);
+            } catch(Throwable $err) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Update status failed.'
+                ], 422);
+            }            
+        }                
     }
 
     /**
