@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Kuala_Lumpur',
 
     /*
     |--------------------------------------------------------------------------
@@ -171,7 +171,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
@@ -230,5 +230,13 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+
+    /*
+        PUSHER
+    */
+    'PUSHER_APP_ID' => '1122662',
+    'PUSHER_APP_KEY' => '2b0947f70f4a7f71eb0e',
+    'PUSHER_APP_SECRET' => '5a3fe29c82f01a91132f',
+    'PUSHER_APP_CLUSTER' => 'ap1',
 
 ];

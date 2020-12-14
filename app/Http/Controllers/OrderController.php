@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Events\OrderReceived;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrdersProduct;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -91,12 +92,15 @@ class OrderController extends Controller
             $orderProduct->save();
         }
 
+        // Post message
+        event(new OrderReceived($order));            
+
         // Here return a String because it is stage 1,
         // we will make it to return a page at stage 2.
         return "Success";
 
         // return to view .... (stage 2)
-    }
+    }    
 
     /**
      * Display the specified resource.

@@ -40,8 +40,8 @@
                             @foreach ($orders as $order)
                             <tr>
                                 <td>{{$order->id}}</td>
-                                <td>{{$order->created_at}}</td>
-                                <td>{{$order->updated_at}}</td>
+                                <td>{{date('Y/m/d H:i:s', strtotime($order->created_at))}}</td>
+                                <td>{{date('Y/m/d H:i:s', strtotime($order->updated_at))}}</td>
                                 <td>
                                     <select class="form-control" name="status" id="{{$order->id}}-orderStatusSelect">
                                         <option value="PENDING" {{$order->status == "PENDING" ? 'selected' : ''}}>Pending</option>
