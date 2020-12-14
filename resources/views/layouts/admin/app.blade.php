@@ -338,10 +338,7 @@
         var notifications = $('.notification-list');
 
         // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
-
-        console.log("{{config('app.PUSHER_APP_KEY')}}")
-        console.log("{{config('app.PUSHER_APP_CLUSTER')}}")
+        // Pusher.logToConsole = true;       
 
         var pusher = new Pusher("{{config('app.PUSHER_APP_KEY')}}", {
             cluster: "{{config('app.PUSHER_APP_CLUSTER')}}",
