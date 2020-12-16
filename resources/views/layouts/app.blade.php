@@ -74,13 +74,13 @@
                         <!-- Top Left -->
                         <div class="top-left">
                             <ul class="list-main">
-                                <li>
+                                <!-- <li>
                                     <i class="ti-headphone-alt"></i> +060 (800)
                                     801-582
-                                </li>
-                                <li>
+                                </li> -->
+                                <!-- <li>
                                     <i class="ti-email"></i> support@shophub.com
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                         <!--/ End Top Left -->
@@ -89,14 +89,14 @@
                         <!-- Top Right -->
                         <div class="right-content">
                             <ul class="list-main">
-                                <li>
+                                <!-- <li>
                                     <i class="ti-location-pin"></i> Store
                                     location
                                 </li>
                                 <li>
                                     <i class="ti-alarm-clock"></i>
                                     <a href="#">Daily deal</a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <i class="ti-user"></i>
                                     <a href="{{ url('/register') }}">New User</a>
@@ -224,7 +224,7 @@
             <div class="container">
                 <div class="cat-nav-head">
                     <div class="row">
-                        @if(Request::is('/'))
+                        <!-- @if(Request::is('/'))
                         <div class="col-lg-3">
                             <div class="all-category">
                                 <h3 class="cat-heading">
@@ -307,7 +307,7 @@
                                 </ul>
                             </div>
                         </div>
-                        @endif
+                        @endif -->
                         <div class="col-lg-9 col-12">
                             <div class="menu-area">
                                 <!-- Main Menu -->
@@ -318,8 +318,8 @@
                                                 <li class="active">
                                                     <a href="{{ url('/') }}">Home</a>
                                                 </li>
-                                                <li><a href="#">Product</a></li>
-                                                <li><a href="#">Service</a></li>
+                                                <!-- <li><a href="#">Product</a></li>
+                                                <li><a href="#">Service</a></li> -->
                                                 <li>
                                                     <a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
                                                     <ul class="dropdown">
@@ -334,7 +334,7 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <li><a href="#">Pages</a></li>
+                                                <!-- <li><a href="#">Pages</a></li> -->
                                                 <li>
                                                     <a href="#">Blog<i class="ti-angle-down"></i></a>
                                                     <ul class="dropdown">

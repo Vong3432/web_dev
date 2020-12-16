@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\URL;
 */
 
 Route::get('/', function () {
-    return view('index');
+    // return view('index');
+    return view('shop-grid');
 })->name('/');
 
 Route::get('/shop-grid', function () {
