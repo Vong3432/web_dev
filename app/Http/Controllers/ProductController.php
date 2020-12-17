@@ -51,7 +51,8 @@ class ProductController extends Controller
             )
             ->get();
        
-        return view('admin.products.create',['products_cates' => $products_cate]);
+         return view('admin.products.create',['products_cates' => $products_cate]);
+       
        
     }
 
@@ -63,6 +64,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $rd = $request->all();
+        dd($request);
+    
          // Valdiate requests
          $request->validate([
             'product_name'=> 'required',
@@ -77,7 +81,7 @@ class ProductController extends Controller
         ]);        
 
          $sale_price = $request->get('product_price') * ($request->get('product_discount_rate'))/100;
-          
+         
          $product = new Products([
             'name' => $request->get('product_name'),
             'desc' => $request->get('product_desc'),

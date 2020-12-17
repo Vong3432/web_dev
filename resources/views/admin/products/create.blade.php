@@ -31,8 +31,9 @@
                 <div class="card">
                     <h5 class="card-header">Fill in the blanks</h5>
                     <div class="card-body">
-                        <form id="validationform" method="post" action="{{ url('/api/products') }}" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
+                        <form id="validationform" method="post" action="{{ url('/api/products/add') }}" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
                         @csrf
+                     
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Name</label>
                                 <div class="col-12 col-sm-8 col-lg-6">

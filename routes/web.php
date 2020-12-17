@@ -68,8 +68,10 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function ()
 
     // Products
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products');
+    Route::get('/products/add', 'ProductController@store')->name('admin.products.store');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-    Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit'); 
+    
+    //Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit'); 
 
     // Products category
     Route::get('/product_categories', [ProductCategoryController::class, 'index'])->name('admin.product_categories');
