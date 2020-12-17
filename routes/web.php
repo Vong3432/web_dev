@@ -17,10 +17,8 @@ use Illuminate\Support\Facades\URL;
 |
 */
 
-Route::get('/', function () {
-    // return view('index');
-    return view('shop-grid');
-})->name('/');
+Route::get('/', [ProductController::class, 'getAllProducts'])->name('products');
+Route::get('/product/{id}', [ProductController::class, 'getSingleProduct'])->name('product.detail');
 
 Route::get('/shop-grid', function () {
     return view('shop-grid');
