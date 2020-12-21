@@ -64,6 +64,11 @@
                                                 @endforeach
                                             </ul>
                                         </div>
+                                        @if(Auth::user())
+										<a title="Add to cart" style="width:100%; text-align:center" class="mt-4 btn btn-dark text-white" href="{{ route('cart.add', $product->id) }}">Add to cart</a>
+										@else 
+											<a style="width:100%; text-align:center" class="mt-4 btn btn-secondary text-white">Login to add to cart</a>
+										@endif
                                     </div>
                                 </div>
                             </div>

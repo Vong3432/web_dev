@@ -7,6 +7,9 @@ use App\Models\ProductsCategory;
 use App\Models\ProductsImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Darryldecode\Cart\Cart;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -226,7 +229,7 @@ class ProductController extends Controller
     }
 
     public function getAllProducts(Request $request)
-    {        
+    {
 
         $priceFilters = array();
 
@@ -247,50 +250,48 @@ class ProductController extends Controller
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id');
 
         // Filter category
-        if($request->category) {
+        if ($request->category) {
             $products = $products->where('products.category_id', $request->category);
         }
 
         // Filter price 
-        if($request->price) {
+        if ($request->price) {
 
             $lowestPrice = 0;
-            $highestPrice = 0;                        
+            $highestPrice = 0;
 
-            foreach($request->price as $price)
-            {
+            foreach ($request->price as $price) {
                 // Save checked price range to array
                 array_push($priceFilters, $price);
 
-                $priceToArray = explode('-', $price);                
+                $priceToArray = explode('-', $price);
 
                 $currentLowest = $priceToArray[0];
                 $currentHighest = $priceToArray[1];
 
-                if($lowestPrice === 0) $lowestPrice = $currentLowest;  
+                if ($lowestPrice === 0) $lowestPrice = $currentLowest;
                 else $currentLowest < $lowestPrice ? $lowestPrice = $currentLowest : null;
 
-                if($highestPrice === 0) $highestPrice = $currentHighest;
+                if ($highestPrice === 0) $highestPrice = $currentHighest;
                 else $currentHighest > $highestPrice ? $highestPrice = $currentHighest : null;
+            }
 
-            }            
-                        
-            $products = $products->whereBetween('products.price', [$lowestPrice, $highestPrice])->orWhereBetween('products.sprice', [$lowestPrice, $highestPrice]);                                    
-        }            
+            $products = $products->whereBetween('products.price', [$lowestPrice, $highestPrice])->orWhereBetween('products.sprice', [$lowestPrice, $highestPrice]);
+        }
 
         // Filter tags 
-        if($request->tags) {
+        if ($request->tags) {
             $products = $products->whereIn('products.tags', [$request->tags]);
         }
 
-        $products = $products->where('status', '0')->get();                
+        $products = $products->where('status', '0')->get();
 
         $latestProducts = DB::table('products')
             ->select(
                 'products.id',
-                'products.name',                
+                'products.name',
                 'products.price',
-                'products.sprice as sale_price',                
+                'products.sprice as sale_price',
                 'products_categories.name as categories',
                 'products.tags',
                 'products.discount_rate',
@@ -302,7 +303,7 @@ class ProductController extends Controller
             ->limit(5)
             ->get();
 
-        $productCategories = DB::table('products_categories')->select()->get();        
+        $productCategories = DB::table('products_categories')->select()->get();
 
         return view('shop-grid',  [
             'products' => $products,
@@ -361,8 +362,90 @@ class ProductController extends Controller
             'shop-detail',
             [
                 'product' => $product,
-                'similarproducts' => $similarProducts,                
+                'similarproducts' => $similarProducts,
             ]
         );
+    }
+
+    public function addToCart(Request $request, $id)
+    {
+        $product = Products::find($id);        
+        $user = Auth::user();
+
+        if ($product) {
+
+            $price = 0;
+
+            if ($product->sprice)
+                $price = $product->sprice;
+            else
+                $price = $product->price;
+            
+            // add the product to cart
+            \Cart::add(array(
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $price,
+                'quantity' => 1,
+                'attributes' => array(),
+                'associatedModel' => $product
+            ));            
+            
+            return back();
+
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Added to cart successfully',
+            //     'cart' => session('cart')
+            // ], 200);
+        }
+    }
+
+    public function cart(Request $request)
+    {    
+        // $userId = Auth::user()->id; // or any string represents user identifier
+        
+        $cart = \Cart::getContent();         
+        $total = \Cart::getTotal();  
+        
+        // dd($cart);
+                
+        return view('cart', [
+            'cart' => $cart,
+            'total' => $total
+        ]);
+    }
+
+    public function removeItemFromCart(Request $request, $id)
+    {
+        // $userId = Auth::user()->id; 
+
+        $item = \Cart::get($id);
+
+        if($item->quantity > 1) {            
+            \Cart::update($id, array(
+                'quantity' => -1
+            ));
+        } else {
+          \Cart::remove($id);
+        }
+
+        return back();
+    }
+
+    public function removeThisItemFromCart(Request $request, $id)
+    {
+        \Cart::remove($id);
+        return back();
+    }
+
+    public function clearCart()
+    {
+        // $userId = Auth::user()->id; 
+
+        \Cart::clear();
+        // \Cart::session($userId)->clear();
+
+        return back()->with('success', 'Cart is cleared.');
     }
 }

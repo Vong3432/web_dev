@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrdersProduct;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -68,23 +69,56 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         // Valdiate requests
-        $request->validate([
-            'user_id' => 'required',
-            'product_ids' => 'required',
-        ]);
+        $request->validate([            
+            'line1' => 'required',
+            'city' => 'required',            
+            'postal_code' => 'required',
+            'state' => 'required'
+        ]);        
+
+        $user = Auth::user();
+        
+        $user_id = $user->id;
+        
+        $items = \Cart::getContent();  
+        $content = $items->toJson();          
+
+        $cartTotal = \Cart::getTotal();
+
+        $stripeOrder = \Stripe::charges()->create([
+            'amount' => $cartTotal,
+            'currency' => 'MYR',
+            'source' => $request->stripeToken,
+            'description' => 'Order',
+            'receipt_email' => $user->email,
+            'shipping' => [
+                'name' => $user->name,
+                'address' => [
+                    'line1' => $request->line1,
+                    'city' => $request->city,
+                    'postal_code' => $request->postal_code,
+                    'country' => 'MY',
+                    'state' => $request->state
+                ]                
+            ],
+            'metadata' => [                
+                'quantity' => $items->count()
+            ]
+        ]);        
 
         // Initialize a new order
-        $order = new Order([
-            'user_id' => $request->get('user_id'),
+        $order = new Order([    
+            'stripe_order_id' => $stripeOrder["id"],
+            'user_id' => $user_id
         ]);
 
         // Save to order table
-        $order->save();
+        $order->save();        
 
-        foreach ($request->get('product_ids') as $product) {
+        foreach ($items as $id => $product) {
             // Initialize new order_product
             $orderProduct = new OrdersProduct([
-                'product_id' => $product,
+                'product_id' => $product->id,
                 'order_id' => $order->id,
             ]);
 
@@ -93,13 +127,15 @@ class OrderController extends Controller
         }
 
         // Post message
-        event(new OrderReceived($order));            
+        event(new OrderReceived($order));   
+        
+        // Clear cart
+        \Cart::clear();
 
-        // Here return a String because it is stage 1,
-        // we will make it to return a page at stage 2.
-        return "Success";
-
-        // return to view .... (stage 2)
+        // Return
+        return view('success-checkout', [
+            'order_id' => $order->id
+        ]);
     }    
 
     /**
@@ -241,5 +277,13 @@ class OrderController extends Controller
         OrdersProduct::where("order_id", $id)->delete();
 
         return "Deleted";
+    }
+
+    public function getOrdersByUser(Request $request)
+    {
+        $user_id = 3;        
+        $matchedUserRecord = User::where('id', $user_id)->with('orders', 'orders.products')->first();           
+
+        return view('orders', ['orders' => $matchedUserRecord->orders]);
     }
 }
