@@ -281,7 +281,7 @@ class OrderController extends Controller
 
     public function getOrdersByUser(Request $request)
     {
-        $user_id = 3;        
+        $user_id = Auth::user()->id;        
         $matchedUserRecord = User::where('id', $user_id)->with('orders', 'orders.products')->first();           
 
         return view('orders', ['orders' => $matchedUserRecord->orders]);
