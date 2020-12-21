@@ -2,7 +2,7 @@
     $(function() {
             "use strict";
         if ($('#sparkline1').length) {
-            $("#sparkline1").sparkline([5, 6, 7, 8, 9, 6, 8, 10], {
+            $("#sparkline1").sparkline([2, 6, 7, 8, 9, 6, 8, 10], {
                 type: 'bar',
                 height: '50',
                 barWidth: 10,

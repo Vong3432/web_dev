@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrdersProduct;
 use App\Models\User;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -83,9 +84,9 @@ class OrderController extends Controller
         $items = \Cart::getContent();  
         $content = $items->toJson();          
 
-        $cartTotal = \Cart::getTotal();
+        $cartTotal = \Cart::getTotal();        
 
-        $stripeOrder = \Stripe::charges()->create([
+        $stripeOrder = Stripe::charges()->create([
             'amount' => $cartTotal,
             'currency' => 'MYR',
             'source' => $request->stripeToken,
