@@ -40,7 +40,7 @@
                 Thank you for ordering! If you have any questions, please email
                 <a href="mailto:snack666@gmail.com">snack666@gmail.com</a>.
             </p>
-            <a href="" class="mt-auto">View order</a>
+            <a href="{{ route('orders.self') }}" class="mt-auto">View order</a>
         </div>
     </div>
 </section>
