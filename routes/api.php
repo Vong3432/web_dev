@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\OrderReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,6 +10,8 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\NotificationController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,6 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Orders
 Route::resource('orders', OrderController::class);
+Route::get('test-my-order', [OrderController::class, 'getOrdersByUser']);
 
 // Product Cate
 Route::resource('productscategory', ProductCategoryController::class);
@@ -38,3 +42,6 @@ Route::resource('productimgs', ProductImageController::class);
 
 // Coupon
 Route::resource('coupons', CouponsController::class);
+
+// Test Notifications (Pusher)
+Route::get('/notifications', [NotificationController::class, 'index']);

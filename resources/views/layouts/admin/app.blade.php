@@ -42,50 +42,16 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown notification">
-                            <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
+                            <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="" id="indicatorID"></span></a>
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
                                     <div class="notification-title"> Notification</div>
                                     <div class="notification-list">
-                                        <div class="list-group">
-                                            <a href="#" class="list-group-item list-group-item-action active">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="{{asset('/admin/assets/images/avatar-2.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jeremy Rakestraw</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="{{asset('/admin/assets/images/avatar-3.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">John Abraham</span>is now following you
-                                                        <div class="notification-date">2 days ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="{{asset('/admin/assets/images/avatar-4.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Monaan Pechi</span> is watching your main repository
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="{{asset('/admin/assets/images/avatar-5.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jessica Caruso</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
                                     </div>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <div class="list-footer"> <a href="#">View all notifications</a></div>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
                         <li class="nav-item dropdown connection">
@@ -212,7 +178,13 @@
                                             <a class="nav-link" href="{{route('admin.products.create')}}">Add Product</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{route('admin.products')}}">All Products</a>
+                                            <a class="nav-link" href="{{route('admin.product_category.create')}}">Add Product Category</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{route('admin.products')}}">View All Products</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{route('admin.product_categories')}}">View All Product Categories</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -278,7 +250,7 @@
                             <!-- Logout -->
                             <li class="nav-item">
                                 <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+                                    @csrf
                                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                 this.closest('form').submit();"><i class="fas fa-newspaper"></i>Logout</a>
                                 </form>
@@ -304,6 +276,100 @@
     </div>
 
     <script src="{{asset('/admin/assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script>
+        // Load all notifications from db
+        function fetchNotifications() {
+            $.ajax({
+                url: "api/notifications",
+                type: 'GET',
+                data: {},
+                success: function(data) {
+                    var notifications = $('.notification-list');
+                    var existingNotifications = notifications.html();
+                    var allNotificationHtml = "";
+
+                    data.map((message) => {
+
+                        var dateString = new Date(message.created_at).toLocaleString();
+
+                        allNotificationHtml += `
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action active">
+                                <div class="notification-info">                        
+                                        <div ${message.targetId} class="notification-list-user-block pl-0">                                
+                                            ${message.message}
+                                            <div class="notification-date">${dateString}</div>
+                                        </div>
+                                    </div>
+                            </a>
+                        </div>
+                        `
+                    })
+
+                    notifications.html(allNotificationHtml + existingNotifications);
+                    $("#indicatorID").addClass('indicator');
+                },
+                error: function(err) {
+                    var error = err.responseJSON;
+                    console.log(error)
+                }
+            })
+        }
+
+        $('.notification').click(function(event) {         
+            event.stopImmediatePropagation();
+            console.log('clicked')                
+            
+            $(this).toggleClass('show');
+            $('.notification-dropdown').toggleClass('show');
+
+            if ($('#indicatorID').hasClass('indicator')) {
+                $("#indicatorID").removeClass('indicator');
+            }
+            
+        });
+
+
+        window.onload = fetchNotifications;
+    </script>
+    <script>
+        // Get real time notifications
+        var notifications = $('.notification-list');
+
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;       
+
+        var pusher = new Pusher("{{config('app.PUSHER_APP_KEY')}}", {
+            cluster: "{{config('app.PUSHER_APP_CLUSTER')}}",
+        });
+
+        var channel = pusher.subscribe('notifications');
+
+        channel.bind("notification-event", function(data) {
+            console.log(JSON.stringify(data));
+
+            var dateString = new Date(data.createdAt).toLocaleString();
+            var existingNotifications = notifications.html();
+
+            var newNotificationHtml = `
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action active">
+                    <div class="notification-info">                        
+                            <div ${data.targetId} class="notification-list-user-block pl-0">                                
+                                ${data.message}
+                                <div class="notification-date">${dateString}</div>
+                            </div>
+                        </div>
+                </a>
+            </div>
+            `
+
+            notifications.html(newNotificationHtml + existingNotifications);
+            $("#indicatorID").addClass('indicator');
+        });
+    </script>
+
     <!-- bootstrap bundle js-->
     <script src="{{asset('/admin/assets/vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
     <!-- slimscroll js-->

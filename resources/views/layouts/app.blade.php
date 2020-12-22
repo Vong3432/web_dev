@@ -45,6 +45,8 @@
     <!-- <link rel="stylesheet" href="{{ asset('/css/style.css') }}"> -->
     <link rel="stylesheet" href="{{ asset('/css/responsive.css') }}">
 
+    @yield('headJS')
+    @yield('css')    
 
 </head>
 
@@ -72,13 +74,13 @@
                         <!-- Top Left -->
                         <div class="top-left">
                             <ul class="list-main">
-                                <li>
+                                <!-- <li>
                                     <i class="ti-headphone-alt"></i> +060 (800)
                                     801-582
-                                </li>
-                                <li>
+                                </li> -->
+                                <!-- <li>
                                     <i class="ti-email"></i> support@shophub.com
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                         <!--/ End Top Left -->
@@ -87,25 +89,29 @@
                         <!-- Top Right -->
                         <div class="right-content">
                             <ul class="list-main">
-                                <li>
+                                <!-- <li>
                                     <i class="ti-location-pin"></i> Store
                                     location
                                 </li>
                                 <li>
                                     <i class="ti-alarm-clock"></i>
                                     <a href="#">Daily deal</a>
+                                </li> -->
+
+
+                                @if(Auth::user())
+                                <li>
+                                    @livewire('navigation-dropdown')
                                 </li>
+                                @else
                                 <li>
                                     <i class="ti-user"></i>
                                     <a href="{{ url('/register') }}">New User</a>
                                 </li>
                                 <li>
-                                    @if(Auth::user())
-                                        @livewire('navigation-dropdown')
-                                    @else
                                     <i class="ti-power-off"></i><a href="{{ url('/login') }}">Login</a>
-                                    @endif
                                 </li>
+                                @endif
                             </ul>
                         </div>
                         <!-- End Top Right -->
@@ -166,46 +172,33 @@
                         <div class="right-bar">
                             <!-- Search Form -->
                             <div class="sinlge-bar">
-                                <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-                            </div>
-                            <div class="sinlge-bar">
-                                <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
-                            </div>
+                                <a href="{{ route('orders.self') }}" class="single-icon"><i class="fa fa-cube" aria-hidden="true"></i></a>
+                            </div>                            
                             <div class="sinlge-bar shopping">
                                 <a href="#" class="single-icon"><i class="ti-bag"></i>
-                                    <span class="total-count">2</span></a>
+                                    <span class="total-count">{{ \Cart::getContent()->count() }}</span></a>
                                 <!-- Shopping Item -->
                                 <div class="shopping-item">
                                     <div class="dropdown-cart-header">
-                                        <span>2 Items</span>
-                                        <a href="#">View Cart</a>
+                                        <span>{{ \Cart::getContent()->count() }} Items</span>
+                                        <a href="{{ url('/cart')}} ">View Cart</a>
                                     </div>
                                     <ul class="shopping-list">
+                                        @foreach(\Cart::getContent() as $id => $product)
                                         <li>
-                                            <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
+                                            <a href="{{ route('cart.remove.completely', $id) }}" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
                                             <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#" /></a>
-                                            <h4><a href="#">Woman Ring</a></h4>
-                                            <p class="quantity">
-                                                1x -
-                                                <span class="amount">$99.00</span>
+                                            <h4><a href="{{ route('product.detail', $product->id) }}">{{$product->name}}</a></h4>
+                                            <p class="quantity">                                                
+                                                <span class="amount">${{$product->price}}</span>
                                             </p>
                                         </li>
-                                        <li>
-                                            <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                            <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#" /></a>
-                                            <h4>
-                                                <a href="#">Woman Necklace</a>
-                                            </h4>
-                                            <p class="quantity">
-                                                1x -
-                                                <span class="amount">$35.00</span>
-                                            </p>
-                                        </li>
+                                        @endforeach                                                                            
                                     </ul>
                                     <div class="bottom">
                                         <div class="total">
                                             <span>Total</span>
-                                            <span class="total-amount">$134.00</span>
+                                            <span class="total-amount">${{ \Cart::getTotal() }}</span>
                                         </div>
                                         <a href="{{ url('/checkout') }}" class="btn animate">Checkout</a>
                                     </div>
@@ -222,7 +215,7 @@
             <div class="container">
                 <div class="cat-nav-head">
                     <div class="row">
-                        @if(Request::is('/'))
+                        <!-- @if(Request::is('/'))
                         <div class="col-lg-3">
                             <div class="all-category">
                                 <h3 class="cat-heading">
@@ -305,10 +298,10 @@
                                 </ul>
                             </div>
                         </div>
-                        @endif
-                        <div class="col-lg-9 col-12">
+                        @endif -->
+                        <!-- <div class="col-lg-9 col-12">
                             <div class="menu-area">
-                                <!-- Main Menu -->
+                                
                                 <nav class="navbar navbar-expand-lg">
                                     <div class="navbar-collapse">
                                         <div class="nav-inner">
@@ -316,8 +309,8 @@
                                                 <li class="active">
                                                     <a href="{{ url('/') }}">Home</a>
                                                 </li>
-                                                <li><a href="#">Product</a></li>
-                                                <li><a href="#">Service</a></li>
+                                                <!-- <li><a href="#">Product</a></li>
+                                                <li><a href="#">Service</a></li> 
                                                 <li>
                                                     <a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
                                                     <ul class="dropdown">
@@ -332,7 +325,7 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <li><a href="#">Pages</a></li>
+                                                <!-- <li><a href="#">Pages</a></li> 
                                                 <li>
                                                     <a href="#">Blog<i class="ti-angle-down"></i></a>
                                                     <ul class="dropdown">
@@ -349,9 +342,9 @@
                                         </div>
                                     </div>
                                 </nav>
-                                <!--/ End Main Menu -->
+                                <!--/ End Main Menu 
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -361,7 +354,8 @@
     <!--/ End Header -->
     @show
 
-    <div class="">
+    <div class="app">
+        <div class="messages"></div>
         @yield('content')
     </div>
 
@@ -496,6 +490,8 @@
     @stack('modals')
 
     @livewireScripts
+
+    @yield('js')
 </body>
 
 </html>

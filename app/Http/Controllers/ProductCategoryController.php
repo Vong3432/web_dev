@@ -22,7 +22,8 @@ class ProductCategoryController extends Controller
                 
             )
             ->get();
-        return $products_cate;
+        $count = 1;
+        return view('admin.product_category.listing',['products_cates' => $products_cate, 'count' => $count]);        
     }
 
     /**
@@ -32,7 +33,7 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.product_category.create');
     }
 
     /**
@@ -52,7 +53,7 @@ class ProductCategoryController extends Controller
         ]);
        
         $products_cate->save();
-        return "done save";
+        return view('admin.product_category.listing'); 
 
     }
 
@@ -77,12 +78,12 @@ class ProductCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  ProductsCategory  $productCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ProductsCategory $productCategory)
     {
-        
+        return view('admin.product_category.edit', compact($productCategory));
     }
 
     /**
