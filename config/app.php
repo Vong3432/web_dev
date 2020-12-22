@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        Darryldecode\Cart\CartServiceProvider::class,
+        Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
 
     ],
 
@@ -228,7 +230,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
+        'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
     ],
 
     /*
@@ -238,5 +241,7 @@ return [
     'PUSHER_APP_KEY' => '2b0947f70f4a7f71eb0e',
     'PUSHER_APP_SECRET' => '5a3fe29c82f01a91132f',
     'PUSHER_APP_CLUSTER' => 'ap1',
+    'STRIPE_PUBLIC' => env('STRIPE_PUBLIC_KEY'),
+    'STRIPE_SECRET' => env('STRIPE_SECRET_KEY'),
 
 ];

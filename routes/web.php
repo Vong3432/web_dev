@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
@@ -24,17 +25,12 @@ Route::get('/shop-grid', function () {
     return view('shop-grid');
 });
 
-Route::get('/cart', function () {
-    return view('cart');
-});
+Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
 
 Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/checkout', function () {
-    return view('checkout');
-});
 
 Route::get('/blog-single-sidebar', function () {
     return view('/blog-single-sidebar');
@@ -50,17 +46,16 @@ Route::delete('/coupon', 'CouponsController@destroy')->name('coupon.destroy'); *
 //         return redirect()->route('login');
 // })->name('dashboard');
 
-// For user
-// Route::middleware(['auth:sanctum', 'verified'])->group( function () {
-    
-// });
+Route::get('add-to-cart/{id}', [ProductController::class, 'addToCart'])->name('cart.add');
+Route::get('remove-item-from-cart/{id}', [ProductController::class, 'removeItemFromCart'])->name('cart.remove');
+Route::get('remove-item-from-cart-completely/{id}', [ProductController::class, 'removeThisItemFromCart'])->name('cart.remove.completely');
+Route::get('remove-items-from-cart', [ProductController::class, 'clearCart'])->name('cart.clear');
+Route::get('cart', [ProductController::class, 'cart']);
 
 // // For admin
-Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function () {
-    Route::get('/dashboard', function() {        
-        return view('admin.dashboard');
-    })->name('dashboard');  
-    
+Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
     // Order
     Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders');
 
@@ -82,7 +77,21 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function ()
     // Route::get('/vouchers', [VoucherController::class, 'index']);
     // Route::get('/vouchers/create', [VoucherController::class, 'create']);
     // Route::get('/vouchers/edit/{id}', [VoucherController::class, 'edit']); 
-    
-    
+
+
+});
+
+// For user
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/checkout', function () {
+        return view('checkout');
+    });
+
+    Route::post('orders', [OrderController::class, 'store'])->name('order.add');
+    Route::get('success-checkout', function() {
+        return view('success-checkout');
+    });
+
+    Route::get('/my-orders', [OrderController::class, 'getOrdersByUser'])->name('orders.self');
 });
 

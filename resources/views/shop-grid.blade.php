@@ -59,8 +59,8 @@
 								</div>
 							</div> -->
 							<ul class="check-box-list">
-								
-								<li>									
+
+								<li>
 									<label class="checkbox-inline" for="between0And49"><input name="price[]" {{ in_array("0-49", $pricefilters) ? 'checked' : '' }} id="between0And49" value="0-49" type="checkbox">$0-$49<span class="count"></span></label>
 								</li>
 								<li>
@@ -74,7 +74,7 @@
 								</li>
 								<li>
 									<label class="checkbox-inline" for="between301And500"><input name="price[]" {{ in_array('301-500', $pricefilters) ? 'checked' : '' }} id="between301And500" value="301-500" type="checkbox">$301-$500<span class="count"></span></label>
-								</li>								
+								</li>
 							</ul>
 							<button class="mt-2 btn btn-dark" type="submit">Submit</button>
 						</form>
@@ -118,7 +118,8 @@
 			</div>
 			<div class="col-lg-9 col-md-8 col-12">
 				<div class="row">
-					<div class="col-12">
+					<div class="col-12">					
+
 						<!-- Shop Top -->
 						<div class="shop-top">
 							<div class="shop-shorter">
@@ -159,17 +160,22 @@
 									<img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
 									<img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
 									@if($product->discount_rate)
-										<span class="price-dec">30% Off</span>
+									<span class="price-dec">{{$product->discount_rate * 100}}% Off</span>
 									@endif
-								</a>								
+								</a>
 								<div class="button-head">
 									<div class="product-action">
-										<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-										<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-										<a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
+										<!-- <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a> -->
+										<!-- <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+										<a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a> -->
 									</div>
 									<div class="product-action-2">
-										<a title="Add to cart" href="#">Add to cart</a>
+										@if(Auth::user())
+										<a title="Add to cart" href="{{ route('cart.add', $product->id) }}">Add to cart</a>
+										@else 
+										<a title="Add to cart" href="{{ route('cart.add', $product->id) }}">Add to cart</a>
+										@endif
+										<!-- <a title="Add to cart" onclick="addToCart('{{$product->id}}')">Add to cart</a> -->
 									</div>
 								</div>
 							</div>
@@ -177,11 +183,11 @@
 								<h3><a href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a></h3>
 								<div class="product-price">
 									@if($product->discount_rate)
-										<span class="old">${{ $product->price }}</span>											
-										<span>${{ $product->sale_price }}</span>											
-									@else 
-										<span>${{ $product->price }}</span>
-									@endif																		
+									<span class="old">${{ $product->price }}</span>
+									<span>${{ $product->sale_price }}</span>
+									@else
+									<span>${{ $product->price }}</span>
+									@endif
 								</div>
 							</div>
 						</div>
@@ -345,5 +351,45 @@
 </div>
 <!-- Modal end -->
 
+@section('js')
+<script>
+	function addToCart(id) {
+		$.ajax({
+            url: "api/add-to-cart/" + id,
+            type: 'GET',
+            data: {},
+            success: function(res) {
+
+				console.log(res)
+
+                var successAlert = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${res.message}
+                    <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>`;
+
+                $('.messages').html(successAlert);
+            },
+            error: function(err) {                
+
+                var error = err.responseJSON;
+                console.log(error)
+
+                var errAlert = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${error.message}
+                    <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>`;
+
+                $('.messages').html(errAlert);
+            }
+        })
+	}
+</script>
+@endsection
 
 @endsection
