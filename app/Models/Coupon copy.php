@@ -18,10 +18,10 @@ class Coupon extends Model
     ];
 
     /* Eloquent */
-    public function product()
+    /* public function product()
     {
         return $this->belongsTo(Products::class, 'product_id');
-    }
+    } */
 
     /* public static function findByCode($code) {
         return self::where('code', $code)->first();
