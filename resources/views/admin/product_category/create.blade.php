@@ -28,11 +28,15 @@
             <!-- valifation types -->
             <!-- ============================================================== -->
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            @include('admin.inc.messages')
                 <div class="card">
                     <h5 class="card-header">Product Category</h5>
+                    
                     <div class="card-body">
-                        <form id="validationform" method="post" action="{{ url('/api/productscategory') }}" data-parsley-validate="" novalidate="">
+                        <form id="validationform" method="post" action="{{ url('/product_category/store') }}" data-parsley-validate="" novalidate="">
                         @csrf
+                            <input type="hidden" value="{{ csrf_token() }}" name="_token">
+                            <input type="hidden" value="POST" name="_method"> 
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Category Name</label>
                                 <div class="col-12 col-sm-8 col-lg-6">

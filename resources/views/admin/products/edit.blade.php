@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-header">
-            <h2 class="pageheader-title">Edit</h2>
+            <h2 class="pageheader-title">Edit Product</h2>
             <!-- <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p> -->
             <!-- <div class="page-breadcrumb">
                 <nav aria-label="breadcrumb">
@@ -23,142 +23,102 @@
                 </nav>
             </div> -->
         </div>
-        <div class="row">
-            <!-- ============================================================== -->
-            <!-- valifation types -->
-            <!-- ============================================================== -->
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            @include('admin.inc.messages')
                 <div class="card">
-                    <h5 class="card-header">Validation Types</h5>
+                    <h5 class="card-header">Fill in the blanks</h5>
                     <div class="card-body">
-                        <form id="validationform" data-parsley-validate="" novalidate="">
+                        <form id="validationform" method="POST" action="{{ url('/products/update/').'/'.$product->id }}" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
+                        @csrf
+                            <input type="hidden" value="{{ csrf_token() }}" name="_token">
+                            <input type="hidden" value="POST" name="_method"> 
+                     
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Required</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Name</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" placeholder="Type something" class="form-control">
+                                    <input type="text" required="" name="product_name" value="{{$product->name}}" class="form-control">
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Min Length</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Price</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" data-parsley-minlength="6" placeholder="Min 6 chars." class="form-control">
+                                    <input type="number" required="" min="0"  name="product_price" value="{{$product->price}}" class="form-control">
                                 </div>
                             </div>
+
+                           
+
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Max Length</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Quantity</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" data-parsley-maxlength="6" placeholder="Max 6 chars." class="form-control">
+                                    <input type="number" required="" min="0" name="product_quantity" value="{{$product->quantity}}" class="form-control">
                                 </div>
-                            </div>
+                            </div>   
+                                                     
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Range Length</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Weight in (KG)</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" data-parsley-length="[5,10]" placeholder="Text between 5 - 10 chars length" class="form-control">
+                                    <input type="number" required="" min="0" name="product_weight" value="{{$product->weight}}" class="form-control">
                                 </div>
-                            </div>
+                            </div>                          
+
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Min Value</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Category</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" data-parsley-min="6" placeholder="Min value is 6" class="form-control">
+                                    <select class="form-control" id="product_category" name="product_category">
+                                        @foreach ($products_cates as $products_cate)
+  x
+                                         <option value="{{$products_cate->id}}" {{ $product->categories == $products_cate->name? 'selected' : ''}}>{{$products_cate->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            </div>
+                            </div> 
+                           
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Max Value</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Discount Rate</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" data-parsley-max="6" placeholder="Max value is 6" class="form-control">
+                                    <input type="number" required="" min="0" max="100" name="product_discount_rate" value="{{$product->discount_rate}}" class="form-control">
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Range Value</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Tags</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input required="" type="number" min="6" max="100" placeholder="Number between 6 - 100" class="form-control">
+                                    <input type="text" required="" name="product_tags" value="{{$product->tags}}" class="form-control">
                                 </div>
-                            </div>
+                            </div> 
+
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Regular Exp</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Image</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="Hex. Color" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Equal To</label>
-                                <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
-                                    <input id="pass2" type="password" required="" placeholder="Password" class="form-control">
-                                </div>
-                                <div class="col-sm-4 col-lg-3">
-                                    <input type="password" required="" data-parsley-equalto="#pass2" placeholder="Re-Type Password" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label text-sm-right">Min check</label>
-                                <div class="col-sm-6">
-                                    <div class="custom-controls-stacked">
-                                        <label class="custom-control custom-checkbox">
-                                            <input id="ck1" name="ck1" type="checkbox" data-parsley-multiple="groups" value="bar" data-parsley-mincheck="2" data-parsley-errors-container="#error-container1" class="custom-control-input"><span class="custom-control-label">Option 1</span>
-                                        </label>
-                                        <label class="custom-control custom-checkbox">
-                                            <input id="ck2" name="ck2" type="checkbox" data-parsley-multiple="groups" value="bar2" data-parsley-mincheck="2" data-parsley-errors-container="#error-container1" class="custom-control-input"><span class="custom-control-label">Option 2</span>
-                                        </label>
-                                        <label class="custom-control custom-checkbox">
-                                            <input id="ck3" name="ck3" type="checkbox" data-parsley-multiple="groups" value="bar3" data-parsley-mincheck="2" required="" data-parsley-errors-container="#error-container1" class="custom-control-input"><span class="custom-control-label">Option 3</span>
-                                        </label>
-                                        <div id="error-container1"></div>
+                                    
+                                    
+                                    <div class="form-group row">
+                                    @foreach(explode('|',$product->images) as $image)
+                                        <div class="input-group col-sm-6 col-lg-6 pb-2">
+                                            <img width="100px" height="100px" src="{{asset('products_images/').'/'.$image }}"> 
+                                            <div class="input-group-append">
+                                            <button type="button" class="btn btn-danger" onchange="delImage('{{$product->id}}')"><i class="fas fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                        @endforeach  
                                     </div>
+                                    
+                                
+                                    <input type="file"  name="images[]" placeholder=" " class="form-control" onclick="">
                                 </div>
-                            </div>
+                            </div> 
+
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label text-sm-right">Max check</label>
-                                <div class="col-sm-6">
-                                    <div class="custom-controls-stacked">
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" value="bar" id="e1" data-parsley-multiple="group1" data-parsley-errors-container="#error-container2" class="custom-control-input"><span class="custom-control-label">Option 1</span>
-                                        </label>
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" value="bar" id="e2" data-parsley-multiple="group1" data-parsley-errors-container="#error-container2" class="custom-control-input"><span class="custom-control-label">Option 2</span>
-                                        </label>
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" value="bar" id="e3" data-parsley-multiple="group1" data-parsley-maxcheck="1" data-parsley-errors-container="#error-container2" class="custom-control-input"><span class="custom-control-label">Option 3</span>
-                                        </label>
-                                        <div id="error-container2"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">E-Mail</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Description</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="email" required="" data-parsley-type="email" placeholder="Enter a valid e-mail" class="form-control">
+                                    <textarea required="" class="form-control" name=product_desc >{{$product->desc}}</textarea>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">URL</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input data-parsley-type="url" type="url" required="" placeholder="URL" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Digits</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input data-parsley-type="digits" type="text" required="" placeholder="Enter only digits" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Number</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input data-parsley-type="number" type="text" required="" placeholder="Enter only numbers" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Alphanumeric</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input data-parsley-type="alphanum" type="text" required="" placeholder="Enter alphanumeric value" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Textarea</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <textarea required="" class="form-control"></textarea>
-                                </div>
-                            </div>
+                            </div> 
+
+                                                         
+
                             <div class="form-group row text-right">
                                 <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
                                     <button type="submit" class="btn btn-space btn-primary">Submit</button>
@@ -169,7 +129,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>
 @endsection

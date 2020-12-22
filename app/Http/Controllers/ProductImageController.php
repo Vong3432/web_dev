@@ -80,16 +80,26 @@ class ProductImageController extends Controller
      */
     public function show($id)
     {
+        
 
-        $imageProducts = DB::table('products_images')
-        ->select(
-            'products_images.id',
-            'products_images.name'
-        )
-        ->where('product_id', $id)
-        ->get();
+        if($request->get('status')) {
 
-        return $imageProducts;
+            try {
+                ProductsImages::where('id', $id)
+                ->update(['name' => $request->get('status')]);
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Update status successfully'
+                ], 200);
+            } catch(Throwable $err) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Update status failed.'
+                ], 422);
+            }            
+        }   
+        
     }
 
     /**
@@ -112,6 +122,28 @@ class ProductImageController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+   
+        // Update order status
+        if($request->get('name')) {
+
+            try {
+                Products::where('id', $id)
+                ->update(['status' => $request->get('status')]);
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Update status successfully'
+                ], 200);
+            } catch(Throwable $err) {
+                return "1232";
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Update status failed.'
+                ], 422);
+            }            
+        }  
+    
         
     }
 

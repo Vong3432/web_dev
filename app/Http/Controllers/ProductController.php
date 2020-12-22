@@ -27,17 +27,21 @@ class ProductController extends Controller
                 'products.name',
                 'products.desc',
                 'products.price',
-                'products.sprice as sale_price',
+                'products.sprice',
                 'products.quantity',
                 'products.weight',
                 'products.status',
                 'products_categories.name as categories',
+                'products_images.name as images',
                 'products.tags',
                 'products.discount_rate'
             )
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id')
             ->get();
-        return view('admin.products.listing',  $products);
+      
+
+        return view('admin.products.listing',['products' => $products]);        
     }
 
     /**
@@ -66,20 +70,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Valdiate requests
-        $request->validate([
-            'product_name' => 'required',
-            'product_desc' => 'required',
-            'product_price' => 'required',
-            'product_quantity' => 'required',
-            'product_weight' => 'required',
-            'category_id' => 'required',
-            'product_tags' => 'required',
-            'product_discount_rate' => 'required',
-            'images' => 'required'
-        ]);
+        //echo dd($request);
+        
+        $messages = [
+            'product_name.require' => 'Product name is require.',
+            'product_desc.require' => 'Product description is require.',
+            'product_price.require' => 'Product price is require.',
+            'product_quantity.require' => 'Product quantity is require.',
+            'product_weight.require' => 'Product weight is require.',
+            'product_category.require' => 'Category id is require.',
+            'product_tags.require' => 'Product tags is require.',
+            'product_discount_rate.require' => 'Product discount rate is require.',
 
-        $sale_price = $request->get('product_price') * ($request->get('product_discount_rate')) / 100;
+          ];
+        
+        $products = new Products; 
+      
+        $sale_price = $request->get('product_price') - ($request->get('product_price') * ($request->get('product_discount_rate')) / 100);
 
         $product = new Products([
             'name' => $request->get('product_name'),
@@ -89,9 +96,10 @@ class ProductController extends Controller
             'quantity' => $request->get('product_quantity'),
             'weight' => $request->get('product_weight'),
             'status' => '0',
-            'category_id' => $request->get('category_id'),
-            'tags' => $request->get('product_tags'),
             'discount_rate' => $request->get('product_discount_rate'),
+            'category_id' => $request->get('product_category'),
+            'tags' => $request->get('product_tags'),
+            
 
         ]);
 
@@ -105,8 +113,8 @@ class ProductController extends Controller
         if ($files = $request->file('images')) {
             foreach ($files as $file) {
                 $name = $file->getClientOriginalName();
-                $file->move('products_images/', $name);
-                $images[] = $name;
+                $file->move('products_images/', $product->id.$name);
+                $images[] = $product->id.$name;
             }
         }
 
@@ -120,7 +128,7 @@ class ProductController extends Controller
 
         // Here return a String because it is stage 1,
         // we will make it to return a page at stage 2.
-        return "Success";
+        return redirect('products')->with('success','Done add product'); 
     }
 
     /**
@@ -132,27 +140,37 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = DB::table('products')
-            ->select(
-                'products.id',
-                'products.name',
-                'products.desc',
-                'products.price',
-                'products.sprice as sale_price',
-                'products.quantity',
-                'products.weight',
-                'products.status',
-                'products_categories.name as categories',
-                'products.tags',
-                'products.discount_rate',
-                'products.created_at'
-            )
-            ->where('id', $id)
-            ->where('status', '0')
-            ->join('products_categories', 'products_categories.id', '=', 'products.categories.id')
-            ->get();
+        ->select(
+            'products.id',
+            'products.name',
+            'products.desc',
+            'products.price',
+            'products.sprice',
+            'products.quantity',
+            'products.weight',
+            'products.status',
+            'products_categories.name as categories',
+            'products_images.name as images',
+            'products.tags',
+            'products.discount_rate'
+        )
+        ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+        ->join('products_images', 'products_images.product_id', '=', 'products.id')
+        ->where('products.id', $id)
+        ->first();
+
+        $products_cate = DB::table('products_categories')
+        ->select(
+            'products_categories.id',
+            'products_categories.name'
+
+        )
+        ->get();
 
 
-        return $product;
+        return view('admin.products.edit',['product' => $product, 'products_cates' => $products_cate]);        
+    
+        //return $product;
     }
 
     /**
@@ -175,18 +193,23 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'product_name' => 'required',
-            'product_desc' => 'required',
-            'product_price' => 'required',
-            'product_selling_price' => 'required',
-            'product_quantity' => 'required',
-            'product_weight' => 'required',
-            'category_id' => 'required',
-            'product_tags' => 'required',
-            'product_discount_rate' => 'required',
-            'images' => 'required'
-        ]);
+       
+        $messages = [
+            'product_name.require' => 'Product name is require.',
+            'product_desc.require' => 'Product description is require.',
+            'product_price.require' => 'Product price is require.',
+            'product_quantity.require' => 'Product quantity is require.',
+            'product_weight.require' => 'Product weight is require.',
+            'product_category.require' => 'Category id is require.',
+            'product_tags.require' => 'Product tags is require.',
+            'product_discount_rate.require' => 'Product discount rate is require.',
+
+          ];
+        
+        $products = new Products; 
+      
+        $sale_price = $request->get('product_price') - ($request->get('product_price') * ($request->get('product_discount_rate')) / 100);
+        
 
         $affectedProducts = DB::table('products')
             ->where([
@@ -196,18 +219,19 @@ class ProductController extends Controller
                 'name' => $request->get('product_name'),
                 'desc' => $request->get('product_desc'),
                 'price' => $request->get('product_price'),
-                'sprice' => $request->get('product_selling_price'),
+                'sprice' => $sale_price,
                 'quantity' => $request->get('product_quantity'),
                 'weight' => $request->get('product_weight'),
-                'status' => '0',
-                'category_id' => $request->get('category_id'),
+                'category_id' => $request->get('product_category'),
                 'tags' => $request->get('product_tags'),
                 'discount_rate' => $request->get('product_discount_rate')
             ]);
 
+        
 
 
-        return $affectedProducts;
+
+            return redirect('products/edit/'.$id)->with('success','Done edit product'); 
     }
 
     /**
@@ -223,10 +247,35 @@ class ProductController extends Controller
                 ['id', '=', $id]
             ])
             ->update([
-                'status' => '1'
+                'status' => '-1'
             ]);
         return "Delete";
     }
+
+    public function status(Request $request, $id)
+    {
+        // Update order status
+        if($request->get('status')) {
+
+            try {
+                Products::where('id', $id)
+                ->update(['status' => $request->get('status')]);
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Update status successfully'
+                ], 200);
+            } catch(Throwable $err) {
+                return "1232";
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Update status failed.'
+                ], 422);
+            }            
+        }  
+    }
+
+    
 
     public function getAllProducts(Request $request)
     {
@@ -284,7 +333,7 @@ class ProductController extends Controller
             $products = $products->whereIn('products.tags', [$request->tags]);
         }
 
-        $products = $products->where('status', '0')->get();
+        $products = $products->where('status', '1')->get();                
 
         $latestProducts = DB::table('products')
             ->select(

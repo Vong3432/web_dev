@@ -63,10 +63,14 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () 
 
     // Products
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products');
+    Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
     Route::get('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
+    Route::post('/products/status/{id}', [ProductController::class, 'status'])->name('admin.products.status');
 
+    Route::get('/products/edit/{id}', [ProductController::class, 'show'])->name('admin.products.edit'); 
+    Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update'); 
     // Products category
     Route::get('/product_category', [ProductCategoryController::class, 'index'])->name('admin.product_categories');
     Route::get('/product_category/create', [ProductCategoryController::class, 'create'])->name('admin.product_category.create');
@@ -77,6 +81,8 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () 
     Route::get('/coupons/create', [CouponsController::class, 'create'])->name('admin.coupons.create');
     // Route::get('/coupons/update', [CouponsController::class, 'update'])->name('admin.coupons.update');
     Route::get('/coupons/edit/{coupon}', [CouponsController::class, 'edit'])->name('admin.coupons.edit');
+    Route::post('/product_category/store', [ProductCategoryController::class, 'store'])->name('admin.product_category.store');
+    Route::get('/product_category/edit/{id}', [ProductCategoryController::class, 'edit'])->name('admin.product_category.edit'); 
 
     // Vouchers (Is commented because controller is not created)
     // Route::get('/vouchers', [VoucherController::class, 'index']);
@@ -99,3 +105,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/my-orders', [OrderController::class, 'getOrdersByUser'])->name('orders.self');
 });
+

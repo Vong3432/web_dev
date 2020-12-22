@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProductsCategory;
 use Illuminate\Support\Facades\DB;
+use Validator;
 
 class ProductCategoryController extends Controller
 {
@@ -45,15 +46,26 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
            
-        $request->validate([
-            'category_name'=> 'required'           
-        ]);        
-        $products_cate = new ProductsCategory([
+        $messages = [
+            'category_name.unique' => 'Category name had exist, Use other category name.'
+          ];
+        
+        $products_cate = new ProductsCategory; 
+       
+        $this->validate($request,[
+            'category_name' => 'required|unique:products_categories,name'.$products_cate->name
+    
+        ],$messages);
+
+       
+      
+       $products_cate = new ProductsCategory([
             'name' => $request->get('category_name'),
         ]);
        
         $products_cate->save();
-        return view('admin.product_category.listing'); 
+        
+        return redirect('product_category')->with('success','Done add product category'); 
 
     }
 

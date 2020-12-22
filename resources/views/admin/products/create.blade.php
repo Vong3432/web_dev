@@ -31,8 +31,11 @@
                 <div class="card">
                     <h5 class="card-header">Fill in the blanks</h5>
                     <div class="card-body">
-                        <form id="validationform" method="post" action="{{ url('/api/products') }}" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
+                        <form id="validationform" method="POST" action="{{ url('/products/store') }}" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
                         @csrf
+                            <input type="hidden" value="{{ csrf_token() }}" name="_token">
+                            <input type="hidden" value="POST" name="_method"> 
+                     
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Name</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
@@ -43,7 +46,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Price</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" required="" name="product_price" placeholder=" " class="form-control">
+                                    <input type="number" required="" min="0"  name="product_price" placeholder=" " class="form-control">
                                 </div>
                             </div>
 
@@ -52,21 +55,21 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Quantity</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" required="" name="product_quantity" placeholder=" " class="form-control">
+                                    <input type="number" required="" min="0" name="product_quantity" placeholder=" " class="form-control">
                                 </div>
                             </div>   
                                                      
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Weight</label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Weight in (KG)</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" required="" name="product_weight" placeholder="KG" class="form-control">
+                                    <input type="number" required="" min="0" name="product_weight" placeholder="" class="form-control">
                                 </div>
                             </div>                          
 
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Category</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="form-control" id="input-select">
+                                    <select class="form-control" id="product_category" name="product_category">
                                         @foreach ($products_cates as $products_cate)
                                          <option value="{{$products_cate->id}}">{{$products_cate->name}}</option>
                                         @endforeach
@@ -77,14 +80,14 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Discount Rate</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" required="" name="product_discount_rate" placeholder=" " class="form-control">
+                                    <input type="number" required="" min="0" max="100" name="product_discount_rate" placeholder=" " class="form-control">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Tags</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" name="product_tags" placeholder=" " class="form-control">
+                                    <input type="text" required="" name="product_tags" placeholder="Using , to sepeate (eg: Tags 1, Tags 2)" class="form-control">
                                 </div>
                             </div> 
 
