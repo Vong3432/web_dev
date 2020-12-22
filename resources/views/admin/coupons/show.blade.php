@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-header">
-            <h2 class="pageheader-title">Create Coupon</h2>
+            <h2 class="pageheader-title">Edit Coupon Details</h2>
             <!-- <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p> -->
             <!-- <div class="page-breadcrumb">
                 <nav aria-label="breadcrumb">
@@ -30,44 +30,55 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <h5 class="card-header">Fill in the blanks</h5>
+
                     <div class="card-body">
-                        <form id="validationform" data-parsley-validate="" novalidate="" action="{{ route('coupons.store') }}" method="POST">
+                        <form id="validationform" data-parsley-validate="" novalidate="" action="" method="POST">
                         @csrf
+
+                        @method('PUT')
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Code<span style="color: red">*</span></label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Code</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="code" placeholder="" class="form-control" required>
+                                    <input type="text" name="code" value="{{ $coupon->code }}" placeholder="" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Type<span style="color: red">*</span></label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Type</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="type" placeholder="" class="form-control" required>
+                                    <input type="text" name="type" value="{{ $coupon->type }}" placeholder="" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Value</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" name="value" placeholder="" class="form-control">
+                                    <input type="number" name="value" value="{{ $coupon->value }}" placeholder="" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Percent Off</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" name="percent_off" placeholder="" class="form-control">
+                                    <input type="number" name="percent_off" value="{{ $coupon->percent_off }}" placeholder="" class="form-control" readonly>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right"></label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <span style="color: red" class="pull-left">* required</span>
                                 </div>
-                            </div>
+                            </div> --}}
                             
                             <div class="form-group row text-right">
                                 <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
-                                    <button type="submit" class="btn btn-space btn-primary">Submit</button>
-                                    <button class="btn btn-space btn-secondary">Cancel</button>
+                                    {{-- <button type="submit" class="btn btn-space btn-primary">Submit</button> --}}
+                                    {{-- <a href="{{ route('admin.coupons') }}"></a><button class="btn btn-space btn-secondary">Back</button> --}}
+
+                                    {{-- === Opt 1 --}}
+                                    {{-- <a href="{{url('/coupons')}}"><button class="btn btn-space btn-secondary">Back</button></a> --}}
+                                    {{-- === /Opt 1 --}}
+                                    
+                                    {{-- === Opt 2 --}}
+                                    <a href="{{route('admin.coupons')}}"><button class="btn btn-space btn-secondary">Back</button></a>
+                                    {{-- === /Opt 2 --}}
                                 </div>
                             </div>
                         </form>
