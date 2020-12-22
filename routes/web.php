@@ -66,14 +66,16 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function ()
 
     // Products
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products');
-    Route::get('/products/add', 'ProductController@store')->name('admin.products.store');
+    Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-    
-    //Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit'); 
+    Route::post('/products/status/{id}', [ProductController::class, 'status'])->name('admin.products.status');
 
+    Route::get('/products/edit/{id}', [ProductController::class, 'show'])->name('admin.products.edit'); 
+    Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update'); 
     // Products category
-    Route::get('/product_categories', [ProductCategoryController::class, 'index'])->name('admin.product_categories');
+    Route::get('/product_category', [ProductCategoryController::class, 'index'])->name('admin.product_categories');
     Route::get('/product_category/create', [ProductCategoryController::class, 'create'])->name('admin.product_category.create');
+    Route::post('/product_category/store', [ProductCategoryController::class, 'store'])->name('admin.product_category.store');
     Route::get('/product_category/edit/{id}', [ProductCategoryController::class, 'edit'])->name('admin.product_category.edit'); 
 
     // Vouchers (Is commented because controller is not created)
@@ -83,3 +85,4 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group( function ()
     
     
 });
+
