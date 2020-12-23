@@ -80,7 +80,8 @@
                                 @endforeach
                             </td>
                             <td class="action">
-                                {{$order->status}}
+                                {{$order->status}} <br/>
+                                <button class="btn btn-secondary">Refund</button>
                             </td>
                         </tr>
                         @endforeach

@@ -333,7 +333,7 @@ class ProductController extends Controller
             $products = $products->whereIn('products.tags', [$request->tags]);
         }
 
-        $products = $products->where('status', '1')->get();                
+        $products = $products->where('status', '1')->get();                      
 
         $latestProducts = DB::table('products')
             ->select(
@@ -347,10 +347,10 @@ class ProductController extends Controller
                 'products.created_at'
             )
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
-            ->where('status', '0')
+            ->where('status', '1')
             ->orderByDesc('products.created_at')
             ->limit(5)
-            ->get();
+            ->get();        
 
         $productCategories = DB::table('products_categories')->select()->get();
 
