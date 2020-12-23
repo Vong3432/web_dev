@@ -50,6 +50,8 @@ class OrderController extends Controller
             ->with('products')
             ->get();
 
+        return $orders;
+
         return view('admin.orders.listing', ['orders' => $orders]);
     }
 
@@ -263,9 +265,8 @@ class OrderController extends Controller
     }
 
     public function getOrdersByUser(Request $request)
-    {
-        // $user_id = Auth::user()->id;
-        $user_id = 1;
+    {        
+        $user_id = Auth::user()->id;
         $matchedUserRecord = User::where('id', $user_id)->with('orders', 'orders.ordered_products', 'orders.ordered_products.product', 'orders.ordered_products.product.images')->first();        
         // $matchedUserRecord = OrdersProduct::where('order_id', )                
 
