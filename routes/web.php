@@ -65,7 +65,6 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () 
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products');
     Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-    Route::get('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
     Route::post('/products/status/{id}', [ProductController::class, 'status'])->name('admin.products.status');
 
@@ -73,17 +72,19 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () 
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update'); 
     // Products category
     Route::get('/product_category', [ProductCategoryController::class, 'index'])->name('admin.product_categories');
+    Route::post('/product_category/store', [ProductCategoryController::class, 'store'])->name('admin.product_category.store');
+
     Route::get('/product_category/create', [ProductCategoryController::class, 'create'])->name('admin.product_category.create');
     Route::get('/product_category/edit/{id}', [ProductCategoryController::class, 'edit'])->name('admin.product_category.edit');
-    
+    Route::get('/product_category/edit/{id}', [ProductCategoryController::class, 'show'])->name('admin.product_category.edit');
+    Route::post('/product_category/update/{id}', [ProductCategoryController::class, 'update'])->name('admin.product_category.update'); 
+   
     // Coupons
     Route::get('/coupons', [CouponsController::class, 'index'])->name('admin.coupons');
     Route::get('/coupons/create', [CouponsController::class, 'create'])->name('admin.coupons.create');
     // Route::get('/coupons/update', [CouponsController::class, 'update'])->name('admin.coupons.update');
     Route::get('/coupons/edit/{coupon}', [CouponsController::class, 'edit'])->name('admin.coupons.edit');
-    Route::post('/product_category/store', [ProductCategoryController::class, 'store'])->name('admin.product_category.store');
-    Route::get('/product_category/edit/{id}', [ProductCategoryController::class, 'edit'])->name('admin.product_category.edit'); 
-
+    
     // Vouchers (Is commented because controller is not created)
     // Route::get('/vouchers', [VoucherController::class, 'index']);
     // Route::get('/vouchers/create', [VoucherController::class, 'create']);

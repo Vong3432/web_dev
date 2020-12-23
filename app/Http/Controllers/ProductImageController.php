@@ -82,7 +82,7 @@ class ProductImageController extends Controller
     {
         
 
-        if($request->get('status')) {
+        /*if($request->get('status')) {
 
             try {
                 ProductsImages::where('id', $id)
@@ -98,7 +98,9 @@ class ProductImageController extends Controller
                     'message' => 'Update status failed.'
                 ], 422);
             }            
-        }   
+        } */
+        
+        
         
     }
 
@@ -110,7 +112,7 @@ class ProductImageController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -123,23 +125,52 @@ class ProductImageController extends Controller
     public function update(Request $request, $id)
     {
 
-   
+        
+
+        $products_img = DB::table('products_images')
+        ->select(
+            'name'
+        )
+        ->where('product_id', $id)
+        ->get()
+        ->first();
+       
+       
+       
+        
         // Update order status
         if($request->get('name')) {
 
+            $newImg = "";
+   
+            foreach (explode ("|", $products_img->name)as $name){
+                if($name != $request->get('name')){
+                    $newImg = $newImg . "|" . $name ;
+                    
+                }
+            }
+            if($newImg != ""){
+                $newImg = ltrim($newImg, $newImg[0]); 
+            }
+        
             try {
-                Products::where('id', $id)
-                ->update(['status' => $request->get('status')]);
+             
+                $affectedProductsImg = DB::table('products_images')
+                ->where([
+                    ['product_id', '=', $id]
+                ])
+                ->update([
+                    'name' => $newImg
+                ]);
                 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Update status successfully'
+                    'message' => 'Done remove product image successfully'
                 ], 200);
             } catch(Throwable $err) {
-                return "1232";
                 return response()->json([
                     'success' => false,
-                    'message' => 'Update status failed.'
+                    'message' => 'Remove product image failed.'
                 ], 422);
             }            
         }  

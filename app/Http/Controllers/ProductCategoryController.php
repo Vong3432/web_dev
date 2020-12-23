@@ -79,12 +79,14 @@ class ProductCategoryController extends Controller
     {
         $products_cate = DB::table('products_categories')
         ->select(
-               
+                'products_categories.id',
                 'products_categories.name'
         )
         ->where('id', $id)
-        ->get();
-        return $products_cate;
+        ->get()
+        ->first();
+        
+        return view('admin.product_category.edit', [ 'products_cate' => $products_cate]);
     }
 
     /**
@@ -93,9 +95,9 @@ class ProductCategoryController extends Controller
      * @param  ProductsCategory  $productCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductsCategory $productCategory)
+    public function edit(ProductsCategory $products_cates)
     {
-        return view('admin.product_category.edit', compact($productCategory));
+        return view('admin.product_category.edit', compact($products_cates));
     }
 
     /**
@@ -107,10 +109,17 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([                      
-            
-            'category_name'=> 'required'
-        ]);                      
+        
+        $messages = [
+            'category_name.unique' => 'Category name had exist, Use other category name.'
+          ];
+        
+        $products_cate = new ProductsCategory; 
+       
+        $this->validate($request,[
+            'category_name' => 'required|unique:products_categories,name'.$products_cate->name
+    
+        ],$messages);                    
 
         $affectedProductCate = DB::table('products_categories')
             ->where([
@@ -120,7 +129,8 @@ class ProductCategoryController extends Controller
                 'name' => $request->get('category_name')
             ]);       
   
-        return $affectedProductCate;
+        
+            return redirect('product_category')->with('success','Done edit product category'); 
     }
 
     /**

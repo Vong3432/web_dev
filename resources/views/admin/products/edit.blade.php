@@ -85,7 +85,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Tags</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" required="" name="product_tags" value="{{$product->tags}}" class="form-control">
+                                    <input type="text" required="" name="product_tags" value="{{$product->tags}}" placeholder="Using , to sepeate (eg: Tags 1, Tags 2)" class="form-control">
                                 </div>
                             </div> 
 
@@ -99,14 +99,14 @@
                                         <div class="input-group col-sm-6 col-lg-6 pb-2">
                                             <img width="100px" height="100px" src="{{asset('products_images/').'/'.$image }}"> 
                                             <div class="input-group-append">
-                                            <button type="button" class="btn btn-danger" onchange="delImage('{{$product->id}}')"><i class="fas fa-trash"></i></button>
+                                            <button type="button" class="btn btn-danger" onclick="delImage('{{$product->id}}','{{$image}}')"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </div>
                                         @endforeach  
                                     </div>
                                     
                                 
-                                    <input type="file"  name="images[]" placeholder=" " class="form-control" onclick="">
+                                    <input type="file"  name="images[]" placeholder=" " class="form-control"  multiple>
                                 </div>
                             </div> 
 
@@ -157,5 +157,40 @@
             });
         }, false);
     })();
+
+    
+    function delImage(productID,imageName) {
+        
+   
+        $.ajax({
+            url: "../../api/productimgs" + '/' + productID + '?name=' + imageName,
+            type: 'PUT',
+            data: { "_token":"{{ csrf_token() }}","id": productID,"name": imageName},
+            success: function(res) {
+                setTimeout(
+                  function() 
+                  {
+                     location.reload();
+                  }, 0001);  
+            },
+            error: function(err) {                
+
+                var error = err.responseJSON;
+                console.log(error)
+
+                var errAlert = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${error.message}
+                    <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>`;
+
+                $('.messages').html(errAlert);
+            }
+        })
+        
+    }
+
 </script>
 @endsection

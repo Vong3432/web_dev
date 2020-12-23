@@ -29,7 +29,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Category Name</th>
-                            
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,6 +39,9 @@
                             <tr>
                                 <td>{{$count++}}</td>
                                 <td>{{$products_cate->name}}</td>
+                                <td>
+                                    <button onclick="window.location='{{ url('product_category/edit/'.$products_cate->id) }}'" class="mt-2 btn btn-primary"><i class="fas fa-edit"></i></button>
+                                </td>
                              
                             </tr>
                             @endforeach

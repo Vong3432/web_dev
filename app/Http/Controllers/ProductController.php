@@ -225,6 +225,37 @@ class ProductController extends Controller
             ]);
 
 
+            $images = array();
+            if ($files = $request->file('images')) {
+                foreach ($files as $file) {
+                    $name = $file->getClientOriginalName();
+                    $file->move('products_images/', $id . $name);
+                    $images[] = $id . $name;
+                }
+            }
+          
+
+            $products_img = DB::table('products_images')
+            ->select(
+                'name'
+            )
+            ->where('product_id', $id)
+            ->get()
+            ->first();
+            if($images!=null){
+                 $newImg = $products_img->name ."|". implode("|", $images);
+            }else{
+                $newImg = $products_img->name;
+            }
+
+
+            $affectedProductsImg = DB::table('products_images')
+            ->where([
+                ['product_id', '=', $id]
+            ])
+            ->update([
+                'name' => $newImg
+            ]);
 
 
 
