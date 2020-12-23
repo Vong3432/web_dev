@@ -102,7 +102,7 @@
 								<ul class="reviews">
 									<li>
 										@if($lProduct->discount_rate != 0)
-										<span class="text-danger">{{ $lProduct->discount_rate * 100 }}% Off</span>
+										<span class="text-danger">{{ $lProduct->discount_rate }}% Off</span>
 										@endif
 									</li>
 								</ul>
@@ -157,10 +157,10 @@
 						<div class="single-product">
 							<div class="product-img">
 								<a href="{{ route('product.detail', $product->id) }}">
-									<img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
+									<img class="default-img" src="{{asset('products_images/').'/'.$product->images}}" alt="#">
 									<img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
 									@if($product->discount_rate)
-									<span class="price-dec">{{$product->discount_rate * 100}}% Off</span>
+									<span class="price-dec">{{$product->discount_rate}}% Off</span>
 									@endif
 								</a>
 								<div class="button-head">

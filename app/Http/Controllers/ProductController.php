@@ -38,8 +38,7 @@ class ProductController extends Controller
             )
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
             ->join('products_images', 'products_images.product_id', '=', 'products.id')
-            ->get();
-      
+            ->get();            
 
         return view('admin.products.listing',['products' => $products]);        
     }
@@ -95,12 +94,10 @@ class ProductController extends Controller
             'sprice' => $sale_price,
             'quantity' => $request->get('product_quantity'),
             'weight' => $request->get('product_weight'),
-            'status' => '0',
+            'status' => '1',
             'discount_rate' => $request->get('product_discount_rate'),
             'category_id' => $request->get('product_category'),
-            'tags' => $request->get('product_tags'),
-            
-
+            'tags' => $request->get('product_tags'),            
         ]);
 
 
@@ -294,9 +291,11 @@ class ProductController extends Controller
                 'products.status',
                 'products_categories.name as categories',
                 'products.tags',
-                'products.discount_rate'
-            )
-            ->join('products_categories', 'products_categories.id', '=', 'products.category_id');
+                'products.discount_rate',
+                'products_images.name as images'
+            )                        
+            ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id');      
 
         // Filter category
         if ($request->category) {
@@ -352,7 +351,7 @@ class ProductController extends Controller
             ->limit(5)
             ->get();        
 
-        $productCategories = DB::table('products_categories')->select()->get();
+        $productCategories = DB::table('products_categories')->select()->get();        
 
         return view('shop-grid',  [
             'products' => $products,
