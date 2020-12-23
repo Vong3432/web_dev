@@ -187,7 +187,9 @@
                                         @foreach(\Cart::getContent() as $id => $product)
                                         <li>
                                             <a href="{{ route('cart.remove.completely', $id) }}" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                            <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#" /></a>
+                                            <a class="cart-img" href="#">
+                                                <img class="default-img" style="object-fit: cover;" src="{{asset('products_images/').'/'.$product->attributes->images}}" alt="#" />
+                                            </a>
                                             <h4><a href="{{ route('product.detail', $product->id) }}">{{$product->name}}</a></h4>
                                             <p class="quantity">                                                
                                                 <span class="amount">${{$product->price}}</span>

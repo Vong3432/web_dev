@@ -39,9 +39,8 @@ class ProductController extends Controller
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
             ->join('products_images', 'products_images.product_id', '=', 'products.id')
             ->get();
-      
 
-        return view('admin.products.listing',['products' => $products]);        
+        return view('admin.products.listing', ['products' => $products]);
     }
 
     /**
@@ -71,7 +70,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //echo dd($request);
-        
+
         $messages = [
             'product_name.require' => 'Product name is require.',
             'product_desc.require' => 'Product description is require.',
@@ -82,10 +81,10 @@ class ProductController extends Controller
             'product_tags.require' => 'Product tags is require.',
             'product_discount_rate.require' => 'Product discount rate is require.',
 
-          ];
-        
-        $products = new Products; 
-      
+        ];
+
+        $products = new Products;
+
         $sale_price = $request->get('product_price') - ($request->get('product_price') * ($request->get('product_discount_rate')) / 100);
 
         $product = new Products([
@@ -95,12 +94,10 @@ class ProductController extends Controller
             'sprice' => $sale_price,
             'quantity' => $request->get('product_quantity'),
             'weight' => $request->get('product_weight'),
-            'status' => '0',
+            'status' => '1',
             'discount_rate' => $request->get('product_discount_rate'),
             'category_id' => $request->get('product_category'),
             'tags' => $request->get('product_tags'),
-            
-
         ]);
 
 
@@ -113,8 +110,8 @@ class ProductController extends Controller
         if ($files = $request->file('images')) {
             foreach ($files as $file) {
                 $name = $file->getClientOriginalName();
-                $file->move('products_images/', $product->id.$name);
-                $images[] = $product->id.$name;
+                $file->move('products_images/', $product->id . $name);
+                $images[] = $product->id . $name;
             }
         }
 
@@ -128,7 +125,7 @@ class ProductController extends Controller
 
         // Here return a String because it is stage 1,
         // we will make it to return a page at stage 2.
-        return redirect('products')->with('success','Done add product'); 
+        return redirect('products')->with('success', 'Done add product');
     }
 
     /**
@@ -140,36 +137,36 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = DB::table('products')
-        ->select(
-            'products.id',
-            'products.name',
-            'products.desc',
-            'products.price',
-            'products.sprice',
-            'products.quantity',
-            'products.weight',
-            'products.status',
-            'products_categories.name as categories',
-            'products_images.name as images',
-            'products.tags',
-            'products.discount_rate'
-        )
-        ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
-        ->join('products_images', 'products_images.product_id', '=', 'products.id')
-        ->where('products.id', $id)
-        ->first();
+            ->select(
+                'products.id',
+                'products.name',
+                'products.desc',
+                'products.price',
+                'products.sprice',
+                'products.quantity',
+                'products.weight',
+                'products.status',
+                'products_categories.name as categories',
+                'products_images.name as images',
+                'products.tags',
+                'products.discount_rate'
+            )
+            ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id')
+            ->where('products.id', $id)
+            ->first();
 
         $products_cate = DB::table('products_categories')
-        ->select(
-            'products_categories.id',
-            'products_categories.name'
+            ->select(
+                'products_categories.id',
+                'products_categories.name'
 
-        )
-        ->get();
+            )
+            ->get();
 
 
-        return view('admin.products.edit',['product' => $product, 'products_cates' => $products_cate]);        
-    
+        return view('admin.products.edit', ['product' => $product, 'products_cates' => $products_cate]);
+
         //return $product;
     }
 
@@ -193,7 +190,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
+
         $messages = [
             'product_name.require' => 'Product name is require.',
             'product_desc.require' => 'Product description is require.',
@@ -204,12 +201,12 @@ class ProductController extends Controller
             'product_tags.require' => 'Product tags is require.',
             'product_discount_rate.require' => 'Product discount rate is require.',
 
-          ];
-        
-        $products = new Products; 
-      
+        ];
+
+        $products = new Products;
+
         $sale_price = $request->get('product_price') - ($request->get('product_price') * ($request->get('product_discount_rate')) / 100);
-        
+
 
         $affectedProducts = DB::table('products')
             ->where([
@@ -227,11 +224,11 @@ class ProductController extends Controller
                 'discount_rate' => $request->get('product_discount_rate')
             ]);
 
-        
 
 
 
-            return redirect('products/edit/'.$id)->with('success','Done edit product'); 
+
+        return redirect('products/edit/' . $id)->with('success', 'Done edit product');
     }
 
     /**
@@ -255,27 +252,27 @@ class ProductController extends Controller
     public function status(Request $request, $id)
     {
         // Update order status
-        if($request->get('status')) {
+        if ($request->get('status')) {
 
             try {
                 Products::where('id', $id)
-                ->update(['status' => $request->get('status')]);
-                
+                    ->update(['status' => $request->get('status')]);
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Update status successfully'
                 ], 200);
-            } catch(Throwable $err) {
+            } catch (Throwable $err) {
                 return "1232";
                 return response()->json([
                     'success' => false,
                     'message' => 'Update status failed.'
                 ], 422);
-            }            
-        }  
+            }
+        }
     }
 
-    
+
 
     public function getAllProducts(Request $request)
     {
@@ -294,9 +291,11 @@ class ProductController extends Controller
                 'products.status',
                 'products_categories.name as categories',
                 'products.tags',
-                'products.discount_rate'
+                'products.discount_rate',
+                'products_images.name as images'
             )
-            ->join('products_categories', 'products_categories.id', '=', 'products.category_id');
+            ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id');
 
         // Filter category
         if ($request->category) {
@@ -333,7 +332,7 @@ class ProductController extends Controller
             $products = $products->whereIn('products.tags', [$request->tags]);
         }
 
-        $products = $products->where('status', '1')->get();                
+        $products = $products->where('status', '1')->get();
 
         $latestProducts = DB::table('products')
             ->select(
@@ -344,10 +343,12 @@ class ProductController extends Controller
                 'products_categories.name as categories',
                 'products.tags',
                 'products.discount_rate',
-                'products.created_at'
+                'products.created_at',
+                'products_images.name as images'
             )
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
-            ->where('status', '0')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id')
+            ->where('status', '1')
             ->orderByDesc('products.created_at')
             ->limit(5)
             ->get();
@@ -378,11 +379,13 @@ class ProductController extends Controller
                 'products.tags',
                 'products.discount_rate',
                 'products.created_at',
-                'products.category_id'
+                'products.category_id',
+                'products_images.name as images'
             )
             ->where('products.id', $id)
-            ->where('status', '0')
+            ->where('status', '1')
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id')
             ->first();
 
         $similarProducts = DB::table('products')
@@ -398,12 +401,14 @@ class ProductController extends Controller
                 'products_categories.name as categories',
                 'products.tags',
                 'products.discount_rate',
-                'products.created_at'
+                'products.created_at',
+                'products_images.name as images'
             )
             ->where('products.category_id', $product->category_id)
             ->where('products.id', '!=', $product->id)
-            ->where('status', '0')
+            ->where('status', '1')
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id')
             ->limit(5)
             ->get();
 
@@ -418,8 +423,28 @@ class ProductController extends Controller
 
     public function addToCart(Request $request, $id)
     {
-        $product = Products::find($id);        
-        $user = Auth::user();
+        // $product = Products::find($id);        
+        $product = DB::table('products')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.desc',
+                'products.price',
+                'products.sprice',
+                'products.quantity',
+                'products.weight',
+                'products.status',
+                'products_categories.name as categories',
+                'products_images.name as images',
+                'products.tags',
+                'products.discount_rate'
+            )
+            ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id')
+            ->where('products.id', $id)
+            ->first();
+
+        $user = Auth::user();        
 
         if ($product) {
 
@@ -429,17 +454,19 @@ class ProductController extends Controller
                 $price = $product->sprice;
             else
                 $price = $product->price;
-            
+
             // add the product to cart
             \Cart::add(array(
                 'id' => $product->id,
                 'name' => $product->name,
                 'price' => $price,
                 'quantity' => 1,
-                'attributes' => array(),
+                'attributes' => array(
+                    'images' => $product->images
+                ),
                 'associatedModel' => $product
-            ));            
-            
+            ));
+
             return back();
 
             // return response()->json([
@@ -451,14 +478,12 @@ class ProductController extends Controller
     }
 
     public function cart(Request $request)
-    {    
+    {
         // $userId = Auth::user()->id; // or any string represents user identifier
-        
-        $cart = \Cart::getContent();         
-        $total = \Cart::getTotal();  
-        
-        // dd($cart);
-                
+
+        $cart = \Cart::getContent();
+        $total = \Cart::getTotal();        
+
         return view('cart', [
             'cart' => $cart,
             'total' => $total
@@ -471,12 +496,12 @@ class ProductController extends Controller
 
         $item = \Cart::get($id);
 
-        if($item->quantity > 1) {            
+        if ($item->quantity > 1) {
             \Cart::update($id, array(
                 'quantity' => -1
             ));
         } else {
-          \Cart::remove($id);
+            \Cart::remove($id);
         }
 
         return back();

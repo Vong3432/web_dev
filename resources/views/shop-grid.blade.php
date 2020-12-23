@@ -88,7 +88,8 @@
 						<!-- Single Post -->
 						<div class="single-post first">
 							<div class="image">
-								<img src="https://via.placeholder.com/75x75" alt="#">
+								<!-- <img src="https://via.placeholder.com/75x75" alt="#"> -->
+								<img class="default-img" style="object-fit: cover; width: 75px; height: 75px" src="{{asset('products_images/').'/'.$lProduct->images}}" alt="#">
 							</div>
 							<div class="content">
 								<h5><a href="{{ route('product.detail', $lProduct->id) }}">{{ $lProduct->name }}</a></h5>
@@ -102,7 +103,7 @@
 								<ul class="reviews">
 									<li>
 										@if($lProduct->discount_rate != 0)
-										<span class="text-danger">{{ $lProduct->discount_rate * 100 }}% Off</span>
+										<span class="text-danger">{{ $lProduct->discount_rate }}% Off</span>
 										@endif
 									</li>
 								</ul>
@@ -157,37 +158,23 @@
 						<div class="single-product">
 							<div class="product-img">
 								<a href="{{ route('product.detail', $product->id) }}">
-									<img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-									<img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+									<img class="default-img" src="{{asset('products_images/').'/'.$product->images}}" alt="#">
+									<!-- <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#"> -->
 									@if($product->discount_rate)
-									<span class="price-dec">{{$product->discount_rate * 100}}% Off</span>
+									<span class="price-dec">{{$product->discount_rate}}% Off</span>
 									@endif
-								</a>
-								<div class="button-head">
-									<div class="product-action">
-										<!-- <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a> -->
-										<!-- <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-										<a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a> -->
-									</div>
-									<div class="product-action-2">
-										@if(Auth::user())
-										<a title="Add to cart" href="{{ route('cart.add', $product->id) }}">Add to cart</a>
-										@else 
-										<a title="Add to cart" href="{{ route('cart.add', $product->id) }}">Add to cart</a>
-										@endif
-										<!-- <a title="Add to cart" onclick="addToCart('{{$product->id}}')">Add to cart</a> -->
-									</div>
-								</div>
+								</a>								
 							</div>
 							<div class="product-content">
-								<h3><a href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a></h3>
-								<div class="product-price">
+								<h3><a href="{{ route('product.detail', $product->id) }}">{{ $product->name }} ({{ $product->quantity }}) </a></h3>
+								<div class="product-price d-flex align-items-center w-100">
 									@if($product->discount_rate)
 									<span class="old">${{ $product->price }}</span>
 									<span>${{ $product->sale_price }}</span>
 									@else
 									<span>${{ $product->price }}</span>
 									@endif
+									<a href="{{ route('cart.add', $product->id) }}" class="ml-auto "><i class="fa fa-shopping-cart" style="color: #f7981d" aria-hidden="true"></i></a>
 								</div>
 							</div>
 						</div>

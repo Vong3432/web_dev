@@ -211,11 +211,15 @@
                                 <div id="coupons-menu" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Add Coupon</a>
+                                            {{-- <a class="nav-link" href="{{route('admin.coupons.index')}}">All Coupons</a> --}}
+                                            <a class="nav-link" href="{{route('admin.coupons')}}">All Coupons</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">All Coupons</a>
+                                            <a class="nav-link" href="{{route('admin.coupons.create')}}">Add Coupon</a>
                                         </li>
+                                        {{-- <li class="nav-item">
+                                            <a class="nav-link" href="{{route('admin.coupons.edit',)}}">Edit Coupon</a>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </li>

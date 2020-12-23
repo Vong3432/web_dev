@@ -38,12 +38,17 @@
                         <div class="col-12">
                             <input type="hidden" name="id" value="{{ $product->id }}" />
                             <div class="image">
-                                <img src="https://via.placeholder.com/950x460" alt="#">
+                                <!-- <img src="https://via.placeholder.com/950x460" alt="#"> -->
+
+                                <img class="default-img" src="{{asset('products_images/').'/'.$product->images}}" alt="#" />
+                                <!-- ### Make carousel of images ### -->
+
                             </div>
                             <div class="blog-detail">
-                                <h2 class="blog-title">{{ $product->name }}</h2>
+                                <h2 class="blog-title">{{ $product->name }}</h2>                                
                                 <div class="blog-meta">
                                     <span class="author"><a href="#"><i class="fa fa-calendar"></i>Dec 24, 2018</a></span>
+                                    <span class="author ml-4"><a href="#"><i class="fa fa-cube"></i>{{ $product->quantity }} {{ $product->name }} left</a></span>
                                 </div>
                                 <div class="content">
                                     <!-- <p>What a crazy time. I have five children in colleghigh school graduates.jpge or pursing post graduate studies Each of my children attends college far from home, the closest of which is more than 800 miles away. While I miss being with my older children, I know that a college experience can be the source of great growth and experience can be the source of source of great growth and can provide them with even greater in future.</p>
@@ -64,11 +69,8 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                        @if(Auth::user())
-										<a title="Add to cart" style="width:100%; text-align:center" class="mt-4 btn btn-dark text-white" href="{{ route('cart.add', $product->id) }}">Add to cart</a>
-										@else 
-											<a style="width:100%; text-align:center" class="mt-4 btn btn-secondary text-white">Login to add to cart</a>
-										@endif
+                                        
+										<a title="Add to cart" style="width:100%; text-align:center" class="mt-4 btn btn-dark text-white" href="{{ route('cart.add', $product->id) }}">Add to cart</a>										
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +80,7 @@
                                 <h3 class="comment-title">Comments (3)</h3>
                                 <!-- Single Comment -->
                                 <div class="single-comment">
-                                    <img src="https://via.placeholder.com/80x80" alt="#">
+                                    <img class="default-img" style="object-fit: cover; width: 75px; height: 75px" src="{{asset('products_images/').'/'.$lProduct->images}}" alt="#">
                                     <div class="content">
                                         <h4>Alisa harm <span>At 8:59 pm On Feb 28, 2018</span></h4>
                                         <p>Enthusiastically leverage existing premium quality vectors with enterprise-wide innovation collaboration Phosfluorescently leverage others enterprisee Phosfluorescently leverage.</p>

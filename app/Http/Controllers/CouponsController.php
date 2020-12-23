@@ -36,7 +36,7 @@ class CouponsController extends Controller
         $coupons = Coupon::with('product')
             ->get();
 
-        return $coupons;
+        return view('admin.coupons.listing', ['coupons' => $coupons]);
     }
 
     /**
@@ -46,7 +46,7 @@ class CouponsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.coupons.create');
     }
 
     /**
@@ -66,17 +66,24 @@ class CouponsController extends Controller
         ]);
 
         // Initialize a new coupon
-        $coupon = new Coupon([
+        
+        // === Opt 1 ===
+        /* $coupon = new Coupon([
             'code' => $request->get('code'),
             'type' => $request->get('type'),
             'value' => $request->get('value'),
             'percent_off' => $request->get('percent_off'),
-        ]);
-
+        ]); */
+        
         // Save to Coupon table
-        $coupon->save();
+        // $coupon->save();
+        // === /Opt 1 ===
 
-        return "done save";
+        // === Opt 2 ===
+        Coupon::create($request->all());
+        // === /Opt 2 ===
+
+        return redirect()->route('admin.coupons')->with('success', 'Coupon created successful.');
     }
 
     /**
@@ -85,7 +92,7 @@ class CouponsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Coupon $coupon)
     {
         /* 
         Query Builder style 
@@ -105,11 +112,18 @@ class CouponsController extends Controller
         Eloquent style 
         ==========================================
         */
-        $coupon = Coupon::with('product')
-            ->where('id', $id)
-            ->get();
-
-        return $coupon;
+        
+        // === Opt 1 ===
+        /* $coupon = Coupon::with('product')
+        ->where('id', $id)
+        ->get();
+        
+        return $coupon; */
+        // === /Opt 1 ===
+        
+        // === Opt 2 ===
+        return view('admin.coupons.show', compact('coupon'));
+        // === /Opt 2 ===
     }
 
     /**
@@ -118,10 +132,13 @@ class CouponsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    // public function edit($id)
+    public function edit(Coupon $coupon)
     {
         // $coupon = Coupon::find($id);
-        return "edit view";
+        // return view('admin.coupons.edit', $id);
+
+        return view('admin.coupons.edit', compact('coupon'));
     }
 
     /**
@@ -131,7 +148,8 @@ class CouponsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    // public function update(Request $request, $id)
+    public function update(Request $request, Coupon $coupon)
     {
         // Allow user to change coupon of product
         
@@ -162,15 +180,22 @@ class CouponsController extends Controller
         ==============================
         */
         // Update product coupon
-        $affectedCoupon = Coupon::where('id', $id)
+
+        // === Opt 1 ===
+        /* $affectedCoupon = Coupon::where('id', $id)
             ->update([
                 'code' => $request->get('code'), 
                 'type' => $request->get('type'), 
                 'value' => $request->get('value'), 
                 'percent_off' => $request->get('percent_off')
-            ]);
+            ]); */
+        // === /Opt 1 ===
 
-        return $affectedCoupon;
+        // === Opt 2 ===
+        $coupon->update($request->all());
+        // === /Opt 2 ===
+
+        return redirect()->route('admin.coupons')->with('success', 'Coupon updated successfully');
     }
 
     /**
@@ -194,7 +219,8 @@ class CouponsController extends Controller
         ==============================
         */
         Coupon::where('id', $id)->delete();
-        return "Data deleted";
+        
+        return redirect()->route('admin.coupons')->with('Coupon deleted successfully');
 
         /* session()->forget('coupon');
 

@@ -252,6 +252,8 @@ class OrderController extends Controller
             try {
                 Order::where('id', $id)
                 ->update(['status' => $request->get('status')]);
+
+                /* Update product quantity - 1 if is delivering */
     
                 return response()->json([
                     'success' => true,
