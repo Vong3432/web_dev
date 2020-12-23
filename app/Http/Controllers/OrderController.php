@@ -47,10 +47,9 @@ class OrderController extends Controller
         ======================================
         */
         $orders = Order::with('user')
-            ->with('products')
-            ->get();
-
-        return $orders;
+            ->with('ordered_products')
+            ->with('ordered_products.product')
+            ->get();        
 
         return view('admin.orders.listing', ['orders' => $orders]);
     }

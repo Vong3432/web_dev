@@ -52,8 +52,8 @@
                                 </td>
                                 <td>{{$order->user->name}}</td>
                                 <td>
-                                @foreach($order->products as $oProduct)
-                                    {{$oProduct->name}} <br />                        
+                                @foreach($order->ordered_products as $oProduct)
+                                    {{$oProduct->product->name}} x {{ $oProduct->quantity }}  <br />                        
                                 @endforeach
                                 </td>
 
