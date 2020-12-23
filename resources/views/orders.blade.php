@@ -36,13 +36,14 @@
                 <table class="table shopping-summery">
                     <thead>
                         <tr class="main-hading">
-                            <th>Order</th>
-                            <th>Product Image</th>
-                            <th>Product</th>
+                            <th>ORDER</th>
+                            <th>PRODUCT IMAGE</th>
+                            <th>PRODUCT</th>
                             <th class="text-center">UNIT PRICE</th>
                             <th class="text-center">QUANTITY</th>
                             <th class="text-center">TOTAL</th>
-                            <th class="text-center">STATUS</th>
+                            <th class="text-center">STATUS</th>                            
+                            <th>ACTION</th>                            
                         </tr>
                     </thead>
                     <tbody>
@@ -80,9 +81,13 @@
                                 @endforeach
                             </td>
                             <td class="action">
-                                {{$order->status}} <br/>
-                                <button class="btn btn-secondary">Refund</button>
+                                {{$order->status}}
                             </td>
+                            @if($order->status === "DELIVERED")
+                            <td>
+                                <a class="btn text-white btn-secondary">Refund</a>
+                            </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
