@@ -24,12 +24,11 @@ class Products extends Model
         'tags',
         'discount_rate',
     ];
-
-
     
+    protected $casts = ['quantity' => 'integer', 'price' => 'decimal:2', 'sprice' => 'decimal:2'];
 
     public function images(){
-        return $this->hasMany(ProductsImages::class);
+        return $this->hasMany(ProductsImages::class, 'product_id');
     }
 
     

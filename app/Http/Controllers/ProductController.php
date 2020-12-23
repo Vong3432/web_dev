@@ -444,9 +444,17 @@ class ProductController extends Controller
             ->where('products.id', $id)
             ->first();
 
-        $user = Auth::user();        
+        $user = Auth::user();                                  
 
-        if ($product) {
+        if ($product->quantity > 0 ) {
+
+            if(\Cart::isEmpty() === false) {
+
+                if($currProductInCart = \Cart::get($product->id)) {                          
+                    if($product->quantity === $currProductInCart->quantity)
+                        return redirect('cart')->with('flashMessage', $product->name . "'s stocks current is " . $product->quantity . " and you have " . $currProductInCart->quantity . "");            
+                }                                 
+            }
 
             $price = 0;
 
@@ -467,14 +475,14 @@ class ProductController extends Controller
                 'associatedModel' => $product
             ));
 
-            return back();
+            return back();            
 
             // return response()->json([
             //     'success' => true,
             //     'message' => 'Added to cart successfully',
             //     'cart' => session('cart')
             // ], 200);
-        }
+        } 
     }
 
     public function cart(Request $request)

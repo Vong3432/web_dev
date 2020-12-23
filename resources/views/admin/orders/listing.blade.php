@@ -111,6 +111,7 @@
             type: 'PUT',
             data: {},
             success: function(res) {
+                console.log(res);
                 var successAlert = `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${res.message}

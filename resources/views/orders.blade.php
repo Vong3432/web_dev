@@ -9,7 +9,6 @@
 
 @section('content')
 
-
 <!-- Breadcrumbs -->
 <div class="breadcrumbs">
     <div class="container">
@@ -31,7 +30,8 @@
 <div class="shopping-cart section">
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12">                              
+                
                 <!-- Shopping Summery -->
                 <table class="table shopping-summery">
                     <thead>
@@ -52,32 +52,32 @@
                         <tr>
                             <td>{{ $order->stripe_order_id }}</td>
                             <td class="image" data-title="No">
-                                @foreach($order->products as $oProduct)
-                                <img class="mb-2" src="https://via.placeholder.com/100x100" alt="#">
+                                @foreach($order->ordered_products as $oProduct)
+                                <img class="default-img" style="object-fit: cover; width: 75px; height: 75px" src="{{asset('products_images/').'/'.$oProduct->product->images->first()->name }}" alt="#">
                                 @endforeach
                             </td>
                             <td class="product-des" data-title="Description">
-                                @foreach($order->products as $oProduct)
+                                @foreach($order->ordered_products as $oProduct)
                                 <div class="mb-2">
-                                    <p class="product-name"><a href="{{ route('product.detail', $oProduct->id) }}">{{ $oProduct->name }}</a></p>
+                                    <p class="product-name"><a href="{{ route('product.detail', $oProduct->product->id) }}">{{ $oProduct->product->name }}</a></p>
                                     <!-- <p class="product-des">{{ $oProduct->desc }}</p> -->
                                 </div>
                                 @endforeach
 
                             </td>
                             <td class="price" data-title="Price">
-                                @foreach($order->products as $oProduct)
-                                <span class="py-2">${{ $oProduct->price }}</span> <br />
+                                @foreach($order->ordered_products as $oProduct)                                
+                                <span class="py-2">${{ $oProduct->product->price }}</span> <br />
                                 @endforeach
                             </td>
                             <td class="qty" data-title="Qty">
-                                @foreach($order->products as $oProduct)
+                                @foreach($order->ordered_products as $oProduct)
                                 <span class="py-2">{{ $oProduct->quantity }}</span> <br />
                                 @endforeach
                             </td>
                             <td class="total-amount" data-title="Total">
-                                @foreach($order->products as $oProduct)
-                                <span class="py-2">${{ $oProduct->quantity * $oProduct->price }}</span> <br />
+                                @foreach($order->ordered_products as $oProduct)                                
+                                <span class="py-2">${{ $oProduct->quantity * $oProduct->product->price }}</span> <br />
                                 @endforeach
                             </td>
                             <td class="action">
@@ -85,7 +85,7 @@
                             </td>
                             @if($order->status === "DELIVERED")
                             <td>
-                                <a class="btn text-white btn-secondary">Refund</a>
+                                <a style="cursor: pointer;" onclick="requestRefund('{{ $order }}')" class="btn text-white btn-secondary">Refund</a>
                             </td>
                             @endif
                         </tr>
@@ -122,5 +122,20 @@
 </section>
 <!-- End Shop Newsletter -->
 
+@section('js')
+<script>
+    function requestRefund(order) {
+        
+        let parsedOrder = JSON.parse(order);   
+
+        const orderID = parsedOrder.id;
+        const orderedProducts = parsedOrder.products;
+
+        
+        console.log(parsedOrder, orderedProducts);
+
+    }
+</script>
+@endsection
 
 @endsection

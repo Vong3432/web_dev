@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Events\OrderReceived;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrdersProduct;
+use App\Models\Products;
 use App\Models\User;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Exception;
@@ -69,75 +71,85 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // Valdiate requests
-        $request->validate([            
-            'line1' => 'required',
-            'city' => 'required',            
-            'postal_code' => 'required',
-            'state' => 'required'
-        ]);        
-
-        $user = Auth::user();
-        
-        $user_id = $user->id;
-        
-        $items = \Cart::getContent();  
-        $content = $items->toJson();          
-
-        $cartTotal = \Cart::getTotal();        
-
-        $stripeOrder = Stripe::charges()->create([
-            'amount' => $cartTotal,
-            'currency' => 'MYR',
-            'source' => $request->stripeToken,
-            'description' => 'Order',
-            'receipt_email' => $user->email,
-            'shipping' => [
-                'name' => $user->name,
-                'address' => [
-                    'line1' => $request->line1,
-                    'city' => $request->city,
-                    'postal_code' => $request->postal_code,
-                    'country' => 'MY',
-                    'state' => $request->state
-                ]                
-            ],
-            'metadata' => [                
-                'quantity' => $items->count()
-            ]
-        ]);        
-
-        // Initialize a new order
-        $order = new Order([    
-            'stripe_order_id' => $stripeOrder["id"],
-            'user_id' => $user_id
-        ]);
-
-        // Save to order table
-        $order->save();        
-
-        foreach ($items as $id => $product) {
-            // Initialize new order_product
-            $orderProduct = new OrdersProduct([
-                'product_id' => $product->id,
-                'order_id' => $order->id,
+        try {
+            // Valdiate requests
+            $request->validate([
+                'line1' => 'required',
+                'city' => 'required',
+                'postal_code' => 'required',
+                'state' => 'required'
             ]);
 
-            // Save to order_products table
-            $orderProduct->save();
+            $user = Auth::user();
+
+            $user_id = $user->id;
+
+            $items = \Cart::getContent();            
+
+            $cartTotal = \Cart::getTotal();
+
+            $stripeOrder = Stripe::charges()->create([
+                'amount' => $cartTotal,
+                'currency' => 'MYR',
+                'source' => $request->stripeToken,
+                'description' => 'Order',
+                'receipt_email' => $user->email,
+                'shipping' => [
+                    'name' => $user->name,
+                    'address' => [
+                        'line1' => $request->line1,
+                        'city' => $request->city,
+                        'postal_code' => $request->postal_code,
+                        'country' => 'MY',
+                        'state' => $request->state
+                    ]
+                ],
+                'metadata' => [
+                    'quantity' => $items->count()
+                ]
+            ]);
+
+            // Initialize a new order
+            $order = new Order([
+                'stripe_order_id' => $stripeOrder["id"],
+                'user_id' => $user_id
+            ]);
+
+            // Save to order table
+            $order->save();
+
+            foreach ($items as $id => $product) {
+
+                // Initialize new order_product
+                $orderProduct = new OrdersProduct([
+                    'product_id' => $product->id,
+                    'order_id' => $order->id,
+                    'quantity' => $product->quantity
+                ]);
+
+                // Save to order_products table
+                $orderProduct->save();
+
+                // Update product quantity
+                Products::where('id', $product->id)->decrement('quantity', $product->quantity);                
+
+            }
+
+            // Post message
+            event(new OrderReceived($order));
+
+            // Clear cart
+            \Cart::clear();
+
+            // Return
+            return view('success-checkout', [
+                'order_id' => $order->id
+            ]);
+
+        } catch (Exception $err) {
+            dd($err);
         }
-
-        // Post message
-        event(new OrderReceived($order));   
-        
-        // Clear cart
-        \Cart::clear();
-
-        // Return
-        return view('success-checkout', [
-            'order_id' => $order->id
-        ]);
-    }    
+    }
 
     /**
      * Display the specified resource.
@@ -207,65 +219,33 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Allow users to change product of a order
-
-        // $request->validate([
-        //     'old_product_id' => 'required',
-        //     'product_id' => 'required',
-        //     'status' => 'required'
-        // ]);
-
-        /*
-        Query Builder Style
-        ==============================
-        */
-        // $affectedOrderProducts = DB::table('orders_products')
-        //     ->where([
-        //         ['order_id', '=', $id],
-        //         ['product_id', '=', $request->get('old_product_id')],
-        //     ])
-        //     ->update([
-        //         'product_id' => $request->get('product_id')
-        //     ]);       
-
-        // $affectedOrder = DB::table('orders')
-        //         ->where("id", $id)
-        //         ->update([
-        //             "status" => $request->get('status')
-        //         ]);
-
-
-        /*
-        Eloquent Style
-        ==============================
-        */
         // Update order product
-        if($request->get('old_product_id') && $request->get('product_id')) {
+        if ($request->get('old_product_id') && $request->get('product_id')) {
             OrdersProduct::where('order_id', $id)
-            ->where('product_id', $request->get('old_product_id'))
-            ->update(['product_id' => $request->get('product_id')]);
-        }        
+                ->where('product_id', $request->get('old_product_id'))
+                ->update(['product_id' => $request->get('product_id')]);
+        }
 
         // Update order status
-        if($request->get('status')) {
+        if ($request->get('status')) {
 
             try {
                 Order::where('id', $id)
-                ->update(['status' => $request->get('status')]);
+                    ->update(['status' => $request->get('status')]);
 
                 /* Update product quantity - 1 if is delivering */
-    
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Update status successfully'
                 ], 200);
-            } catch(Throwable $err) {
+            } catch (Throwable $err) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Update status failed.'
                 ], 422);
-            }            
-        }                
+            }
+        }
     }
 
     /**
@@ -284,8 +264,10 @@ class OrderController extends Controller
 
     public function getOrdersByUser(Request $request)
     {
-        $user_id = Auth::user()->id;        
-        $matchedUserRecord = User::where('id', $user_id)->with('orders', 'orders.products')->first();           
+        // $user_id = Auth::user()->id;
+        $user_id = 1;
+        $matchedUserRecord = User::where('id', $user_id)->with('orders', 'orders.ordered_products', 'orders.ordered_products.product', 'orders.ordered_products.product.images')->first();        
+        // $matchedUserRecord = OrdersProduct::where('order_id', )                
 
         return view('orders', ['orders' => $matchedUserRecord->orders]);
     }

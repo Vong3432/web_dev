@@ -70,7 +70,11 @@
                                             </ul>
                                         </div>
                                         
-										<a title="Add to cart" style="width:100%; text-align:center" class="mt-4 btn btn-dark text-white" href="{{ route('cart.add', $product->id) }}">Add to cart</a>										
+                                        @if($product->quantity > 0)
+                                            <a title="Add to cart" style="width:100%; text-align:center" class="mt-4 btn btn-dark text-white" href="{{ route('cart.add', $product->id) }}">Add to cart</a>										
+                                        @else
+                                            <div title="Out of stock" style="width:100%; text-align:center; background: #e0a800" disabled class="mt-4 btn text-white">Out of stock</div>										
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -79,8 +83,8 @@
                             <div class="comments">
                                 <h3 class="comment-title">Comments (3)</h3>
                                 <!-- Single Comment -->
-                                <div class="single-comment">
-                                    <img class="default-img" style="object-fit: cover; width: 75px; height: 75px" src="{{asset('products_images/').'/'.$lProduct->images}}" alt="#">
+                                <div class="single-comment">                                
+                                    <img src="https://via.placeholder.com/80x80" alt="#">
                                     <div class="content">
                                         <h4>Alisa harm <span>At 8:59 pm On Feb 28, 2018</span></h4>
                                         <p>Enthusiastically leverage existing premium quality vectors with enterprise-wide innovation collaboration Phosfluorescently leverage others enterprisee Phosfluorescently leverage.</p>
@@ -166,7 +170,7 @@
                         <!-- Single Product -->
                         <div class="single-post">
                             <div class="image">
-                                <img src="https://via.placeholder.com/100x100" alt="#">
+                                <img class="default-img" style="object-fit: cover; width: 75px; height: 75px" src="{{asset('products_images/').'/'.$sProduct->images}}" alt="#">
                             </div>
                             <div class="content">
                                 <h5><a href="{{ route('product.detail', $sProduct->id) }}">{{ $sProduct->name }}</a></h5>
@@ -180,7 +184,7 @@
                                 <ul class="comment">
                                     <p class="comment">
                                         @if($sProduct->discount_rate != 0)
-                                        <span class="text-danger">{{ $sProduct->discount_rate * 100 }}% Off</span>
+                                        <span class="text-danger">{{ $sProduct->discount_rate }}% Off</span>
                                         @endif
                                     </p>
                                 </ul>
