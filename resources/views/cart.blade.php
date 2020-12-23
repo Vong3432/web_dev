@@ -56,7 +56,7 @@
 								<img class="default-img" style="object-fit: cover;" src="{{asset('products_images/').'/'.$product->attributes->images}}" alt="#" />
 							</td>
 							<td class="product-des" data-title="Description">
-								<p class="product-name"><a href="#">{{ $product->name }}</a></p>
+								<p class="product-name"><a href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a></p>
 								<p class="product-des">{{ $product->description }}</p>
 							</td>
 							<td class="price" data-title="Price"><span>{{ $product->price }}</span></td>

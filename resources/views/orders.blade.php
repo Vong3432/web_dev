@@ -59,7 +59,7 @@
                             <td class="product-des" data-title="Description">
                                 @foreach($order->products as $oProduct)
                                 <div class="mb-2">
-                                    <p class="product-name"><a href="#">{{ $oProduct->name }}</a></p>
+                                    <p class="product-name"><a href="{{ route('product.detail', $oProduct->id) }}">{{ $oProduct->name }}</a></p>
                                     <!-- <p class="product-des">{{ $oProduct->desc }}</p> -->
                                 </div>
                                 @endforeach

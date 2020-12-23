@@ -80,7 +80,7 @@
                                 <h3 class="comment-title">Comments (3)</h3>
                                 <!-- Single Comment -->
                                 <div class="single-comment">
-                                    <img src="https://via.placeholder.com/80x80" alt="#">
+                                    <img class="default-img" style="object-fit: cover; width: 75px; height: 75px" src="{{asset('products_images/').'/'.$lProduct->images}}" alt="#">
                                     <div class="content">
                                         <h4>Alisa harm <span>At 8:59 pm On Feb 28, 2018</span></h4>
                                         <p>Enthusiastically leverage existing premium quality vectors with enterprise-wide innovation collaboration Phosfluorescently leverage others enterprisee Phosfluorescently leverage.</p>
