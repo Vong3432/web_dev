@@ -180,7 +180,7 @@
 								</div>
 							</div>
 							<div class="product-content">
-								<h3><a href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a></h3>
+								<h3><a href="{{ route('product.detail', $product->id) }}">{{ $product->name }} ({{ $product->quantity }}) </a></h3>
 								<div class="product-price">
 									@if($product->discount_rate)
 									<span class="old">${{ $product->price }}</span>

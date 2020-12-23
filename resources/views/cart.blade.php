@@ -52,7 +52,9 @@
 					<tbody>
 						@foreach($cart as $id => $product)
 						<tr>
-							<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
+							<td class="image" data-title="No">
+								<img class="default-img" style="object-fit: cover;" src="{{asset('products_images/').'/'.$product->attributes->images}}" alt="#" />
+							</td>
 							<td class="product-des" data-title="Description">
 								<p class="product-name"><a href="#">{{ $product->name }}</a></p>
 								<p class="product-des">{{ $product->description }}</p>

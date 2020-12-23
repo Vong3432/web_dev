@@ -38,12 +38,17 @@
                         <div class="col-12">
                             <input type="hidden" name="id" value="{{ $product->id }}" />
                             <div class="image">
-                                <img src="https://via.placeholder.com/950x460" alt="#">
+                                <!-- <img src="https://via.placeholder.com/950x460" alt="#"> -->
+
+                                <img class="default-img" src="{{asset('products_images/').'/'.$product->images}}" alt="#" />
+                                <!-- ### Make carousel of images ### -->
+                                
                             </div>
                             <div class="blog-detail">
-                                <h2 class="blog-title">{{ $product->name }}</h2>
+                                <h2 class="blog-title">{{ $product->name }}</h2>                                
                                 <div class="blog-meta">
                                     <span class="author"><a href="#"><i class="fa fa-calendar"></i>Dec 24, 2018</a></span>
+                                    <span class="author ml-4"><a href="#"><i class="fa fa-cube"></i>{{ $product->quantity }} {{ $product->name }} left</a></span>
                                 </div>
                                 <div class="content">
                                     <!-- <p>What a crazy time. I have five children in colleghigh school graduates.jpge or pursing post graduate studies Each of my children attends college far from home, the closest of which is more than 800 miles away. While I miss being with my older children, I know that a college experience can be the source of great growth and experience can be the source of source of great growth and can provide them with even greater in future.</p>
