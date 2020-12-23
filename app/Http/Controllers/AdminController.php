@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\User;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
-
+use Illuminate\Http\Client\Request;
 
 class AdminController extends Controller
 {
@@ -24,5 +24,10 @@ class AdminController extends Controller
             'totalOrders' => $totalOrders,
             'totalRevenue' => $totalRevenue
         ]);
+    }
+
+    public function refundRequests(Request $request, $id)
+    {
+        dd($id);
     }
 }

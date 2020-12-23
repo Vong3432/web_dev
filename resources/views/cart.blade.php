@@ -35,6 +35,11 @@
 				<a href="{{ route('cart.clear') }}">
 					Clear cart
 				</a>
+				@if(Session::has('flashMessage'))
+				<div class="alert alert-warning">
+					{{ Session::get('flashMessage') }}
+				</div>
+				@endif
 			</div>
 			<div class="col-12">				
 				<!-- Shopping Summery -->

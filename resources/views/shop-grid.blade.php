@@ -158,7 +158,7 @@
 						<div class="single-product">
 							<div class="product-img">
 								<a href="{{ route('product.detail', $product->id) }}">
-									<img class="default-img" src="{{asset('products_images/').'/'.$product->images}}" alt="#">
+									<img class="default-img" style="height: 300px; object-fit: contain" src="{{asset('products_images/').'/'.$product->images}}" alt="#">
 									<!-- <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#"> -->
 									@if($product->discount_rate)
 									<span class="price-dec">{{$product->discount_rate}}% Off</span>
@@ -174,7 +174,12 @@
 									@else
 									<span>${{ $product->price }}</span>
 									@endif
-									<a href="{{ route('cart.add', $product->id) }}" class="ml-auto "><i class="fa fa-shopping-cart" style="color: #f7981d" aria-hidden="true"></i></a>
+
+									@if($product->quantity > 0)
+										<a href="{{ route('cart.add', $product->id) }}" class="ml-auto "><i class="fa fa-shopping-cart" style="color: #f7981d" aria-hidden="true"></i></a>
+									@else 
+										<small class="ml-auto text-danger">Out of stock</small>
+									@endif
 								</div>
 							</div>
 						</div>

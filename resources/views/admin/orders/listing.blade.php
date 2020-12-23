@@ -52,8 +52,8 @@
                                 </td>
                                 <td>{{$order->user->name}}</td>
                                 <td>
-                                @foreach($order->products as $oProduct)
-                                    {{$oProduct->name}} <br />                        
+                                @foreach($order->ordered_products as $oProduct)
+                                    {{$oProduct->product->name}} x {{ $oProduct->quantity }}  <br />                        
                                 @endforeach
                                 </td>
 
@@ -111,6 +111,7 @@
             type: 'PUT',
             data: {},
             success: function(res) {
+                console.log(res);
                 var successAlert = `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${res.message}
