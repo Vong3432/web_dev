@@ -380,7 +380,7 @@ class ProductController extends Controller
                 'products.category_id'
             )
             ->where('products.id', $id)
-            ->where('status', '0')
+            ->where('status', '1')
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
             ->first();
 
@@ -401,7 +401,7 @@ class ProductController extends Controller
             )
             ->where('products.category_id', $product->category_id)
             ->where('products.id', '!=', $product->id)
-            ->where('status', '0')
+            ->where('status', '1')
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
             ->limit(5)
             ->get();
