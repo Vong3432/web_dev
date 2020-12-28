@@ -331,15 +331,16 @@ class OrderController extends Controller
             {
                 $stripeOrderID = $request->get('stripe_order_id');                
                 
-                $refund = Stripe::refunds()->create($stripeOrderID);
+                // $refund = Stripe::refunds()->create($stripeOrderID);
 
                 $tradeRequest = TradeRequest::where('id', $tradeRequestID)->first();
                 
                 $refundedOrderID = $tradeRequest->order_id;
-                $refundedProducts = OrdersProduct::where('order_id', $refundedOrderID)->get();
+                $refundedProducts = OrdersProduct::where('order_id', $refundedOrderID)->get();  
+                                
 
-                foreach($refundedProducts as $product) {
-                    Products::where('id', $product->id)->increment('quantity', $product->quantity);   
+                foreach($refundedProducts as $row) {                    
+                    Products::where('id', $row->product_id)->increment('quantity', $row->quantity);   
                 }
 
                 $message = 'Refund is in process';
