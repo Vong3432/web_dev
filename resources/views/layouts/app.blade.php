@@ -126,7 +126,7 @@
                     <div class="col-lg-2 col-md-2 col-12">
                         <!-- Logo -->
                         <div class="logo">
-                            <a href="{{ url('/') }}"><img src="images/logo.png" alt="logo" /></a>
+                            <a href="{{ url('/') }}"><h3>SNACK666</h3></a>
                         </div>
                         <!--/ End Logo -->
                         <!-- Search Form -->
@@ -171,10 +171,13 @@
                     <div class="col-lg-2 col-md-3 col-12">
                         <div class="right-bar">
                             <!-- Search Form -->
+                            <div class="single-bar shopping mr-4">
+                                <a href="{{ route('order.refunds.self') }}" class="single-icon"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+                            </div>
                             <div class="sinlge-bar">
                                 <a href="{{ route('orders.self') }}" class="single-icon"><i class="fa fa-cube" aria-hidden="true"></i></a>
                             </div>                            
-                            <div class="sinlge-bar shopping">
+                            <div class="sinlge-bar shopping">                                
                                 <a href="#" class="single-icon"><i class="ti-bag"></i>
                                     <span class="total-count">{{ \Cart::getContent()->count() }}</span></a>
                                 <!-- Shopping Item -->
@@ -372,16 +375,16 @@
                         <!-- Single Widget -->
                         <div class="single-footer about">
                             <div class="logo">
-                                <a href="{{ url('/') }}"><img src="images/logo2.png" alt="#"></a>
+                                <a href="{{ url('/') }}"><h3 class="text-white">SNACK666</h3></a>
                             </div>
                             <p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
                             <p class="call">Got Question? Call us 24/7<span><a href="tel:123456789">+0123 456 789</a></span></p>
                         </div>
                         <!-- End Single Widget -->
                     </div>
-                    <div class="col-lg-2 col-md-6 col-12">
+                    <!-- <div class="col-lg-2 col-md-6 col-12">
                         <!-- Single Widget -->
-                        <div class="single-footer links">
+                        <!-- <div class="single-footer links">
                             <h4>Information</h4>
                             <ul>
                                 <li><a href="#">About Us</a></li>
@@ -390,19 +393,18 @@
                                 <li><a href="#">Contact Us</a></li>
                                 <li><a href="#">Help</a></li>
                             </ul>
-                        </div>
-                        <!-- End Single Widget -->
-                    </div>
+                        </div> -->
+                        <!-- End Single Widget 
+                    </div> -->
                     <div class="col-lg-2 col-md-6 col-12">
                         <!-- Single Widget -->
                         <div class="single-footer links">
                             <h4>Customer Service</h4>
-                            <ul>
-                                <li><a href="#">Payment Methods</a></li>
-                                <li><a href="#">Money-back</a></li>
-                                <li><a href="#">Returns</a></li>
-                                <li><a href="#">Shipping</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
+                            <ul>                                                                
+                                @if(Auth::user())
+                                <li><a href="">Returns</a></li>
+                                <li><a href="{{ route('orders.self') }}">Orders</a></li>                            
+                                @endif
                             </ul>
                         </div>
                         <!-- End Single Widget -->
@@ -413,11 +415,9 @@
                             <h4>Get In Tuch</h4>
                             <!-- Single Widget -->
                             <div class="contact">
-                                <ul>
-                                    <li>NO. 342 - London Oxford Street.</li>
-                                    <li>012 United Kingdom.</li>
-                                    <li>info@eshop.com</li>
-                                    <li>+032 3456 7890</li>
+                                <ul>                                    
+                                    <li>snack666@gmail.com</li>
+                                    <li>+0123456789</li>
                                 </ul>
                             </div>
                             <!-- End Single Widget -->
@@ -440,12 +440,12 @@
                     <div class="row">
                         <div class="col-lg-6 col-12">
                             <div class="left">
-                                <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a> - All Rights Reserved.</p>
+                                <!-- <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a> - All Rights Reserved.</p> -->
                             </div>
                         </div>
                         <div class="col-lg-6 col-12">
                             <div class="right">
-                                <img src="images/payments.png" alt="#">
+                                <!-- <img src="images/payments.png" alt="#"> -->
                             </div>
                         </div>
                     </div>

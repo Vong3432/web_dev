@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrdersProduct;
 use App\Models\Products;
+use App\Models\TradeRequest;
 use App\Models\User;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Exception;
@@ -271,4 +272,43 @@ class OrderController extends Controller
 
         return view('orders', ['orders' => $matchedUserRecord->orders]);
     }
+
+    public function refund(Request $request) 
+    {
+        $order_id = $request->id;        
+
+        return view('refund', ['order_id' => $order_id]);
+    }
+
+    public function sendRefund(Request $request) 
+    {
+        $order_id = $request->order_id;                  
+
+        $checkExistingOrderId = TradeRequest::where('order_id', $order_id)->first();
+
+        if($checkExistingOrderId) {
+            return redirect('my-orders')->with('flashMessage', "You have already sent a refund request for this order.");             
+        }   
+        
+        $tradeRequest = new TradeRequest([
+            'order_id' => $order_id,
+            'description' => $request->description,
+            'user_id' => Auth::user()->id,
+            'status' => "PENDING"
+        ]);
+
+        $tradeRequest->save();                    
+        return redirect('my-orders')->with('flashMessage', "Your refund request have been sent. Please check it at request page.");            
+    }
+
+    public function viewRefundRequests()
+    {
+        $user = Auth::user();     
+        $tradeRequests = TradeRequest::where('user_id', $user->id)
+                        ->with('order', 'order.ordered_products', 'order.ordered_products.product', 'order.ordered_products.product.images')
+                        ->get();               
+
+        return view('refund-request', ['trade_requests' => $tradeRequests]);
+    }
+
 }

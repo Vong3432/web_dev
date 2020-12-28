@@ -105,5 +105,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
     Route::get('/my-orders', [OrderController::class, 'getOrdersByUser'])->name('orders.self');
+    Route::get('/refund/{id}', [OrderController::class, 'refund'])->name('order.refund');
+    Route::post('/send-refund', [OrderController::class, 'sendRefund'])->name('order.refund.send');
+    
 });
+
+Route::get('/my-refund', [OrderController::class, 'viewRefundRequests'])->name('order.refunds.self');
 

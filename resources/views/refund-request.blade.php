@@ -17,7 +17,7 @@
                 <div class="bread-inner">
                     <ul class="bread-list">
                         <li><a href="{{ url('/') }}">Home<i class="ti-arrow-right"></i></a></li>
-                        <li class="active"><a href="{{ url('/orders') }}">My Orders</a></li>
+                        <li class="active"><a href="{{ url('/my-refund') }}">My Refund Requests</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,8 +34,7 @@
             <div class="col-12 mb-4">				
 				@if(Session::has('flashMessage'))
 				<div class="alert alert-warning">
-                    {{ Session::get('flashMessage') }} 
-                    <a style="text-decoration: underline !important;" href="{{ route('order.refunds.self') }}">View requests</a>
+					{{ Session::get('flashMessage') }}
 				</div>
 				@endif
             </div>
@@ -52,22 +51,21 @@
                             <th class="text-center">UNIT PRICE</th>
                             <th class="text-center">QUANTITY</th>
                             <th class="text-center">TOTAL</th>
-                            <th class="text-center">STATUS</th>                            
-                            <th>ACTION</th>                            
+                            <th class="text-center">STATUS</th>                                                                       
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach($orders as $order)
+                        @foreach($trade_requests as $request)
                         <tr>
-                            <td>{{ $order->stripe_order_id }}</td>
+                            <td>{{ $request->order->stripe_order_id }}</td>
                             <td class="image" data-title="No">
-                                @foreach($order->ordered_products as $oProduct)
+                                @foreach($request->order->ordered_products as $oProduct)
                                 <img class="default-img" style="object-fit: cover; width: 75px; height: 75px" src="{{asset('products_images/').'/'.$oProduct->product->images->first()->name }}" alt="#">
                                 @endforeach
                             </td>
                             <td class="product-des" data-title="Description">
-                                @foreach($order->ordered_products as $oProduct)
+                                @foreach($request->order->ordered_products as $oProduct)
                                 <div class="mb-2">
                                     <p class="product-name"><a href="{{ route('product.detail', $oProduct->product->id) }}">{{ $oProduct->product->name }}</a></p>
                                     <!-- <p class="product-des">{{ $oProduct->desc }}</p> -->
@@ -76,28 +74,23 @@
 
                             </td>
                             <td class="price" data-title="Price">
-                                @foreach($order->ordered_products as $oProduct)                                
+                                @foreach($request->order->ordered_products as $oProduct)                                
                                 <span class="py-2">${{ $oProduct->product->price }}</span> <br />
                                 @endforeach
                             </td>
                             <td class="qty" data-title="Qty">
-                                @foreach($order->ordered_products as $oProduct)
+                                @foreach($request->order->ordered_products as $oProduct)
                                 <span class="py-2">{{ $oProduct->quantity }}</span> <br />
                                 @endforeach
                             </td>
                             <td class="total-amount" data-title="Total">
-                                @foreach($order->ordered_products as $oProduct)                                
+                                @foreach($request->order->ordered_products as $oProduct)                                
                                 <span class="py-2">${{ $oProduct->quantity * $oProduct->product->price }}</span> <br />
                                 @endforeach
                             </td>
                             <td class="action">
-                                {{$order->status}}
-                            </td>
-                            @if($order->status === "DELIVERED")
-                            <td>
-                                <a style="cursor: pointer;" href="{{ url('/refund/' . $order->id) }}" class="btn text-white btn-secondary">Refund</a>
-                            </td>
-                            @endif
+                                {{$request->status}}
+                            </td>                            
                         </tr>
                         @endforeach
                     </tbody>
