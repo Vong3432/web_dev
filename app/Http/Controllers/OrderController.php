@@ -331,7 +331,7 @@ class OrderController extends Controller
             {
                 $stripeOrderID = $request->get('stripe_order_id');                
                 
-                // $refund = Stripe::refunds()->create($stripeOrderID);
+                $refund = Stripe::refunds()->create($stripeOrderID);
 
                 $tradeRequest = TradeRequest::where('id', $tradeRequestID)->first();
                 
