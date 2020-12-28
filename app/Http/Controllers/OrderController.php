@@ -311,4 +311,48 @@ class OrderController extends Controller
         return view('refund-request', ['trade_requests' => $tradeRequests]);
     }
 
+    public function viewAllUserRefunds()
+    {
+        $tradeRequests = TradeRequest::with('order', 'order.ordered_products', 'order.ordered_products.product', 'order.ordered_products.product.images')
+                        ->get();                  
+
+        return view('admin.orders.trade_request_listing', ['trade_requests' => $tradeRequests]);
+    }
+
+    public function updateRefundStatus(Request $request)
+    {
+        // dd($request->get('status'));
+
+        try {
+            $tradeRequestID = $request->id;            
+            $message = "Update status successfully";            
+
+            if($request->get('status') === "REFUNDED")
+            {
+                $stripeOrderID = $request->get('stripe_order_id');                
+                
+                $refund = Stripe::refunds()->create($stripeOrderID);
+
+                $tradeRequest = TradeRequest::where('id', $tradeRequestID)->first();
+                
+                $refundedOrderID = $tradeRequest->order_id;
+                $refundedProducts = OrdersProduct::where('order_id', $refundedOrderID)->get();
+
+                foreach($refundedProducts as $product) {
+                    Products::where('id', $product->id)->increment('quantity', $product->quantity);   
+                }
+
+                $message = 'Refund is in process';
+            }        
+    
+            TradeRequest::where('id', $tradeRequestID)->update(['status' => $request->get('status')]);   
+
+            return response()->json(['message' => $message], 200);
+        } catch(Throwable $err) {
+            return response()->json(['message' => 'Something went wrong'], 500);
+        }
+             
+
+    }
+
 }

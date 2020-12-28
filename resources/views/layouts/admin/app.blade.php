@@ -247,6 +247,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('admin.orders')}}">All Orders</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{route('admin.order.refunds')}}">Refund requests</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>

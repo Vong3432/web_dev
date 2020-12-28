@@ -62,7 +62,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right">Product Weight in (KG)</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" required="" min="0" name="product_weight" placeholder="" class="form-control">
+                                    <input type="text" required="" name="product_weight" placeholder="" class="form-control">
                                 </div>
                             </div>                          
 

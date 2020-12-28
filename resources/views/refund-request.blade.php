@@ -75,7 +75,11 @@
                             </td>
                             <td class="price" data-title="Price">
                                 @foreach($request->order->ordered_products as $oProduct)                                
-                                <span class="py-2">${{ $oProduct->product->price }}</span> <br />
+                                    @if($oProduct->product->sprice)                           
+                                        <span class="py-2">${{ $oProduct->product->sprice }}</span> <br />
+                                    @else
+                                        <span class="py-2">${{ $oProduct->product->price }}</span> <br />
+                                    @endif  
                                 @endforeach
                             </td>
                             <td class="qty" data-title="Qty">
@@ -85,7 +89,11 @@
                             </td>
                             <td class="total-amount" data-title="Total">
                                 @foreach($request->order->ordered_products as $oProduct)                                
-                                <span class="py-2">${{ $oProduct->quantity * $oProduct->product->price }}</span> <br />
+                                    @if($oProduct->product->sprice)                           
+                                        <span class="py-2">${{ $oProduct->product->sprice * $oProduct->quantity }}</span> <br />
+                                    @else
+                                        <span class="py-2">${{ $oProduct->product->price * $oProduct->quantity}}</span> <br />
+                                    @endif 
                                 @endforeach
                             </td>
                             <td class="action">

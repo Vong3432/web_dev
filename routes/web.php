@@ -54,12 +54,17 @@ Route::get('remove-item-from-cart-completely/{id}', [ProductController::class, '
 Route::get('remove-items-from-cart', [ProductController::class, 'clearCart'])->name('cart.clear');
 Route::get('cart', [ProductController::class, 'cart']);
 
+
+Route::put('/update-order-refunds/{id}', [OrderController::class, 'updateRefundStatus']);
+
 // // For admin
 Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
     // Order
-    Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders');
+    Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders');    
+    Route::get('/order-refunds', [OrderController::class, 'viewAllUserRefunds'])->name('admin.order.refunds');
+    
 
     // Products
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products');
