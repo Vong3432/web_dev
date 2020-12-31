@@ -47,10 +47,10 @@ class OrderController extends Controller
         Eloquent Style
         ======================================
         */
-        $orders = Order::with('user')
+        $orders = Order::with('user')            
             ->with('ordered_products')
-            ->with('ordered_products.product')
-            ->get();        
+            ->with('ordered_products.product')            
+            ->get();                            
 
         return view('admin.orders.listing', ['orders' => $orders]);
     }

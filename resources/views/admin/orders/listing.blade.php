@@ -28,6 +28,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Address</th>
+                                <th>Receipt</th>
+                                <th>Payment status</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                                 <th>Status</th>
@@ -37,13 +40,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($orders as $order)
+                            @foreach ($orders as $order)                                                        
                             <tr>
                                 <td>{{$order->id}}</td>
+                                <td>{{ Stripe::charges()->find($order->stripe_order_id)['shipping']['address']['line1'] . ' ' . Stripe::charges()->find($order->stripe_order_id)['shipping']['address']['line2'] . ', ' . Stripe::charges()->find($order->stripe_order_id)['shipping']['address']['postal_code'] . ' ' . Stripe::charges()->find($order->stripe_order_id)['shipping']['address']['city'] . ', ' . Stripe::charges()->find($order->stripe_order_id)['shipping']['address']['state']}}</td>
+                                <td><a href="{{ Stripe::charges()->find($order->stripe_order_id)['receipt_url'] }}">View receipt</a></td>
+                                <td><strong>{{ Stripe::charges()->find($order->stripe_order_id)['status'] }}</strong></td>
                                 <td>{{date('Y/m/d H:i:s', strtotime($order->created_at))}}</td>
                                 <td>{{date('Y/m/d H:i:s', strtotime($order->updated_at))}}</td>
                                 <td>
-                                    <select class="form-control" name="status" id="{{$order->id}}-orderStatusSelect">
+                                    <select class="form-control" {{ $order->status == "DELIVERED" ? 'disabled' : '' }} name="status" id="{{$order->id}}-orderStatusSelect">
                                         <option value="PENDING" {{$order->status == "PENDING" ? 'selected' : ''}}>Pending</option>
                                         <option value="DELIVERING" {{$order->status == "DELIVERING" ? 'selected' : ''}}>Delivering</option>
                                         <option value="DELIVERED" {{$order->status == "DELIVERED" ? 'selected' : ''}}>Delivered</option>
