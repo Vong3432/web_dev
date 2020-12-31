@@ -13,7 +13,7 @@
         @endif
 
         <form method="POST" action="{{ route('login') }}">
-            @csrf
+            @csrf            
 
             <div>
                 <x-jet-label for="email" value="{{ __('Email') }}" />
@@ -33,6 +33,10 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 ml-auto mr-4" href="{{ url('register') }}">
+                    {{ __('New user') }}
+                </a>
+                
                 @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         {{ __('Forgot your password?') }}

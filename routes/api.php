@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Orders
 Route::resource('orders', OrderController::class);
 Route::get('test-my-order', [OrderController::class, 'getOrdersByUser']);
+Route::post('test-my-email', [OrderController::class, 'testEmail']);
 
 // Product Cate
 Route::resource('productscategory', ProductCategoryController::class);
