@@ -46,6 +46,8 @@
                     <thead>
                         <tr class="main-hading">
                             <th>ORDER ID</th>
+                            <th>DESCRIPTION</th>
+                            <th>CREATED AT</th>
                             <th>PRODUCT IMAGE</th>
                             <th>PRODUCT</th>
                             <th class="text-center">UNIT PRICE</th>
@@ -59,6 +61,8 @@
                         @foreach($trade_requests as $request)
                         <tr>
                             <td>{{ $request->order->stripe_order_id }}</td>
+                            <td>{{ $request->description }}</td>
+                            <td>{{date('Y/m/d H:i:s', strtotime($request->created_at))}}</td>
                             <td class="image" data-title="No">
                                 @foreach($request->order->ordered_products as $oProduct)
                                 <img class="default-img" style="object-fit: cover; width: 75px; height: 75px" src="{{asset('products_images/').'/'.$oProduct->product->images->first()->name }}" alt="#">
