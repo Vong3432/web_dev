@@ -2,15 +2,13 @@
 
 use Illuminate\Support\Str;
 
-<<<<<<< HEAD
-=======
 $url = getenv("CLEARDB_DATABASE_URL") ? parse_url(getenv("CLEARDB_DATABASE_URL")) : env('DATABASE_URL');
 $host = $url["host"] ?? env('DB_HOST', '127.0.0.1');
 $username = $url["user"] ?? env('DB_USERNAME', 'forge');
 $password = $url["pass"] ?? env('DB_PASSWORD', '');
 $database = getenv("CLEARDB_DATABASE_URL") ? substr($url["path"], 1) : env('DB_DATABASE', 'forge');
 
->>>>>>> e4d81873407f1d7036da60beb5958a394954c2f8
+
 return [
 
     /*
@@ -54,22 +52,21 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => $host,
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'database' => $database,
+            'username' => $username,
+            'password' => $password,
             'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
             'prefix_indexes' => true,
+            'prefix' => '',
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+                        PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                    ]) : [],
         ],
 
         'pgsql' => [

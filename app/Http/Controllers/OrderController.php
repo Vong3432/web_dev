@@ -244,7 +244,7 @@ class OrderController extends Controller
                 // Notify user with Gmail
                 $details = [
                     'title' => 'Order updated',
-                    'body' => 'Order ID: ' . $record->stripe_order_id . ' is updated. Please check it in website now :)'
+                    'body' => 'Order ID: ' . $record->stripe_order_id . ' is ' . $request->get('status') . '. Please check it in website now :)'
                 ];
 
                 Mail::to($email)->send(new Gmail($details));
@@ -352,33 +352,33 @@ class OrderController extends Controller
             $tradeRequestID = $request->id;            
             $message = "Update status successfully";                                
 
+            $tradeRequest = TradeRequest::where('id', $tradeRequestID)->with('order', 'order.user')->first();                                
+                
+            $refundedOrderID = $tradeRequest->order_id;
+            $refundedProducts = OrdersProduct::where('order_id', $refundedOrderID)->get();                  
+
             if($request->get('status') === "REFUNDED")
             {
                 $stripeOrderID = $request->get('stripe_order_id');                                                    
                 
-                Stripe::refunds()->create($stripeOrderID);                                 
-
-                $tradeRequest = TradeRequest::where('id', $tradeRequestID)->with('order', 'order.user')->first();                                
-                
-                $refundedOrderID = $tradeRequest->order_id;
-                $refundedProducts = OrdersProduct::where('order_id', $refundedOrderID)->get();                  
+                Stripe::refunds()->create($stripeOrderID);                                             
                                 
                 foreach($refundedProducts as $row) {                    
                     Products::where('id', $row->product_id)->increment('quantity', $row->quantity);   
-                }
-
-                // Notify user with Gmail
-                $details = [
-                    'title' => 'Refund status update - ' . $tradeRequest->order->stripe_order_id,
-                    'body' => 'Your refund request for order ID: ' . $tradeRequest->order->stripe_order_id . ' is approved.'
-                ];
-
-                $email = $tradeRequest->order->user->email;
-
-                Mail::to($email)->send(new Gmail($details));
+                }                
 
                 $message = 'Refund is in process';
             }        
+
+            // Notify user with Gmail
+            $details = [
+                'title' => 'Refund status update - ' . $request->get('status') ,
+                'body' => 'Your refund request for order ID: ' . $tradeRequest->order->stripe_order_id
+            ];
+
+            $email = $tradeRequest->order->user->email;
+
+            Mail::to($email)->send(new Gmail($details));
     
             TradeRequest::where('id', $tradeRequestID)->update(['status' => $request->get('status')]);   
 
