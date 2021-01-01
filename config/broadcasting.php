@@ -40,6 +40,7 @@ return [
                 'useTLS' => true,
             ],
         ],
+        
 
         'redis' => [
             'driver' => 'redis',

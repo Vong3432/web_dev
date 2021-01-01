@@ -2,6 +2,15 @@
 
 use Illuminate\Support\Str;
 
+<<<<<<< HEAD
+=======
+$url = getenv("CLEARDB_DATABASE_URL") ? parse_url(getenv("CLEARDB_DATABASE_URL")) : env('DATABASE_URL');
+$host = $url["host"] ?? env('DB_HOST', '127.0.0.1');
+$username = $url["user"] ?? env('DB_USERNAME', 'forge');
+$password = $url["pass"] ?? env('DB_PASSWORD', '');
+$database = getenv("CLEARDB_DATABASE_URL") ? substr($url["path"], 1) : env('DB_DATABASE', 'forge');
+
+>>>>>>> e4d81873407f1d7036da60beb5958a394954c2f8
 return [
 
     /*
