@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\OrderReceived;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Gmail;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrdersProduct;
@@ -92,6 +93,18 @@ class OrderController extends Controller
 
             $cartTotal = \Cart::getTotal();
 
+            $discount = 0;            
+
+            if($request->get('coupon_code'))
+            {
+                $code = $request->get('coupon_code');
+                $coupon = Coupon::where('code', $code)->first();
+                $discount = $coupon ? $coupon->value : 0;
+
+                $cartTotal = $cartTotal - $discount;                
+            }       
+                        
+
             $stripeOrder = Stripe::charges()->create([
                 'amount' => $cartTotal,
                 'currency' => 'MYR',
@@ -116,7 +129,8 @@ class OrderController extends Controller
             // Initialize a new order
             $order = new Order([
                 'stripe_order_id' => $stripeOrder["id"],
-                'user_id' => $user_id
+                'user_id' => $user_id,
+                'discount' => $discount
             ]);
 
             // Save to order table

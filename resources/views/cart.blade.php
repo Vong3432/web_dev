@@ -95,31 +95,29 @@
 			<div class="col-12">
 				<!-- Total Amount -->
 				<div class="total-amount">
-					<div class="row">
+					<div class="row">						
 						<div class="col-lg-8 col-md-5 col-12">
 							<div class="left">
-								<div class="coupon">
-									<form action="#" target="_blank">
-										<input name="Coupon" placeholder="Enter Your Coupon">
-										<button class="btn">Apply</button>
-									</form>
-
-								</div>
-								<div class="checkbox">
-									<label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Shipping (+10$)</label>
-								</div>
+								@if(!Request::get('coupon_code') || $discount == 0)
+								<div class="coupon">									
+									<form>
+										<input name="coupon_code" id="couponCode" placeholder="Enter Your Coupon">
+										<button id="submitCouponBtn" class="btn">Apply</button>									
+									</form>										
+								</div>								
+								@endif
 							</div>
-						</div>
+						</div>						
 						<div class="col-lg-4 col-md-7 col-12">
 							<div class="right">
 								<ul>
-									<li>Cart Subtotal<span>${{ $total }}</span></li>
+									<li>Cart Subtotal<span>${{ $total + $discount }}</span></li>
 									<li>Shipping<span>Free</span></li>
-									<li>You Save<span>$0.00</span></li>
+									<li>You Save<span>${{ $discount }}</span></li>
 									<li class="last">You Pay<span>${{ $total }}</span></li>
 								</ul>
 								<div class="button5">
-									<a href="{{ url('checkout') }}" class="btn">Checkout</a>
+									<a href="{{ Request::get('coupon_code') && $discount != 0 ? url('checkout') . '?coupon_code=' . Request::get('coupon_code') : url('checkout') }}" class="btn">Checkout</a>
 									<a href="{{ route('products') }}" class="btn">Continue shopping</a>
 								</div>
 							</div>
@@ -200,6 +198,5 @@
 	</div>
 </section>
 <!-- End Shop Newsletter -->
-
 
 @endsection

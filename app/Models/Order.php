@@ -20,7 +20,7 @@ class Order extends Model
     ]);
     */
     protected $fillable = [
-        'user_id', 'stripe_order_id'
+        'user_id', 'stripe_order_id', 'discount'
     ];    
 
     public function user()

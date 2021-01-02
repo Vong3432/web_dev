@@ -100,9 +100,7 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () 
 
 // For user
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/checkout', function () {
-        return view('checkout');
-    });
+    Route::get('/checkout', [ProductController::class, 'checkout']);
 
     Route::post('orders', [OrderController::class, 'store'])->name('order.add');
     Route::get('success-checkout', function() {

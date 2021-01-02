@@ -52,6 +52,7 @@
                             <th class="text-center">UNIT PRICE</th>
                             <th class="text-center">QUANTITY</th>
                             <th class="text-center">TOTAL</th>
+                            <th class="text-center">DISCOUNT</th>
                             <th class="text-center">STATUS</th>                            
                             <th>ACTION</th>                            
                         </tr>
@@ -97,6 +98,9 @@
                                         <span class="py-2">${{ $oProduct->product->price * $oProduct->quantity}}</span> <br />
                                     @endif                                                                 
                                 @endforeach
+                            </td>
+                            <td>
+                                ${{$order->discount}}
                             </td>
                             <td class="action">
                                 {{$order->status}}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
 use App\Models\Products;
 use App\Models\ProductsCategory;
 use App\Models\ProductsImages;
@@ -516,16 +517,41 @@ class ProductController extends Controller
         } 
     }
 
+    public function checkout(Request $request)
+    {        
+        $total = \Cart::getTotal();  
+        $discount = 0;
+
+        if($request->get('coupon_code'))
+        {
+            $discount = $this->validCoupon($request->get('coupon_code'));                            
+            $total = $total - $discount;
+        }                    
+
+        return view('checkout', [
+            'total' => $total,
+            'discount' => $discount
+        ]);
+    }
+
     public function cart(Request $request)
     {
         // $userId = Auth::user()->id; // or any string represents user identifier
 
         $cart = \Cart::getContent();
-        $total = \Cart::getTotal();        
+        $total = \Cart::getTotal();  
+        $discount = 0;
+
+        if($request->get('coupon_code'))
+        {
+            $discount = $this->validCoupon($request->get('coupon_code'));                            
+            $total = $total - $discount;
+        }                    
 
         return view('cart', [
             'cart' => $cart,
-            'total' => $total
+            'total' => $total,
+            'discount' => $discount
         ]);
     }
 
@@ -560,5 +586,12 @@ class ProductController extends Controller
         // \Cart::session($userId)->clear();
 
         return back()->with('success', 'Cart is cleared.');
+    }
+
+    public function validCoupon(String $code) 
+    {        
+        $coupon = Coupon::where('code', $code)->first();
+
+        return $coupon ? $coupon->value : 0;
     }
 }

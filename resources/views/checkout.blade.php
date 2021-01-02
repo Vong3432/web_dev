@@ -77,6 +77,9 @@
 						<h2>Make Your Checkout Here</h2>
 						<!-- <p>Please register in order to checkout more quickly</p> -->
 						<!-- Form -->
+
+						<input type="hidden" name="coupon_code" value={{Request::get('coupon_code')}}>
+						
 						<div class="row mt-2">
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
@@ -113,8 +116,8 @@
 							<div class="content">
 								<ul>
 									<li>Sub Total<span>${{\Cart::getTotal()}}</span></li>
-									<li>(+) Shipping<span>FREE</span></li>
-									<li class="last">Total<span>${{\Cart::getTotal()}}</span></li>
+									<li>Discount<span>${{$discount}}</span></li>
+									<li class="last">Total<span>${{$total}}</span></li>
 								</ul>
 							</div>
 						</div>
