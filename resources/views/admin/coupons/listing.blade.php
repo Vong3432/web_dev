@@ -80,7 +80,7 @@
                                         <button class="btn btn-danger mt-2" onclick="updateStatus('{{$coupon->id}}')">Delete</button> --}}
                                         
                                         {{-- <button class="btn btn-primary mt-2" onclick="updateStatus('{{$coupon->id}}')">Edit</button> --}}
-                                        <a class="btn btn-info btn-sm" href="{{ route('coupons.show',$coupon->id) }}">Show</a>
+                                        <a class="btn btn-info btn-sm" href="{{ route('admin.coupons.show',$coupon->id) }}">Show</a>
                                         {{-- <a class="btn btn-primary btn-sm" href="{{ route('coupons.edit',$coupon->id) }}">Edit</a> --}}
                                         <a class="btn btn-primary btn-sm" href="{{ route('admin.coupons.edit',$coupon->id) }}">Edit</a>
                                         

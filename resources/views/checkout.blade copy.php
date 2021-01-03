@@ -112,13 +112,79 @@
 					<div class="order-details">
 						<!-- Order Widget -->
 						<div class="single-widget">
+							@if (session('error'))
+								<div class="alert alert-danger">{{ session('error') }}</div>
+							@endif
+						
 							<h2>CART TOTALS</h2>
 							<div class="content">
 								<ul>
 									<li>Sub Total<span>${{\Cart::getTotal()}}</span></li>
-									<li>Discount<span>{{$discount}}%</span></li>
-									<li class="last">Total<span>${{$total}}</span></li>
+									
+									<li>
+										{{-- <form action="{{ route('posts.show',$post->id ) }}" method="GET"> --}}
+										{{-- <form action="{{ url('products/checkout/'.$product->id) }}" method="GET"> --}}
+										<form action="{{ url('/checkout') }}" method="GET">
+											<input type="text" name="voucher" />
+											<span>
+												<input type="submit" value="Recalculate" class="btn btn-sm btn-primary" />
+											</span>
+										</form>
+									</li>
+
+									{{-- <li>Discount<span>${{$discount}}</span></li> --}}
+									@if ($voucher)
+										<li>Discount (-{{ $voucher->data->get('discount_percent') }} %):</b></td>
+											<span>${{ 100-$total_price }}</span>
+										</li>
+									@endif
+									<li class="last">Total Price:<span>${{$total_price}}</span></li>
 								</ul>
+
+								{{--  --}}
+								{{--  --}}
+								{{--  --}}
+								{{-- <table class="table">
+									<tbody>
+										<tr>
+											<td><b>Chosen Post:</b></td>
+											<td>{{ $post->title }}</td>
+										</tr>
+										<tr>
+											<td><b>Description:</b></td>
+											<td>{{ $post->description }}</td>
+										</tr>
+										<tr>
+											<td><b>Price:</b></td>
+											<td>RM100</td>
+										</tr>
+										<tr>
+											<td><b>Discount Voucher:</b></td>
+											<td> --}}
+												{{-- <form action="{{'checkout',[$post->id]}}" method="GET"> --}}
+												{{-- <form action="{{ route('posts.show',$post->id ) }}" method="GET">
+													<input type="text" name="voucher" />
+													<input type="submit" value="Recalculate" class="btn btn-sm btn-primary" />
+												</form>
+											</td>
+										</tr>
+		
+										@if ($voucher)
+											<tr>
+												<td><b>Discount (-{{ $voucher->data->get('discount_percent') }} %):</b></td>
+												<td><b>RM{{ 100-$total_price }}</b></td>
+											</tr>
+										@endif
+		
+										<tr>
+											<td><b>Total Price:</b></td>
+											<td><b>RM{{ $total_price }}</b></td>
+										</tr>
+									</tbody>
+								</table> --}}
+								{{--  --}}
+								{{--  --}}
+								{{--  --}}
 							</div>
 						</div>
 						<!--/ End Order Widget -->

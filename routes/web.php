@@ -5,6 +5,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
@@ -75,6 +76,7 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () 
 
     Route::get('/products/edit/{id}', [ProductController::class, 'show'])->name('admin.products.edit'); 
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update'); 
+    Route::get('/products/addVoucher/{id}', [ProductController::class, 'addVoucher'])->name('admin.products.addVoucher'); 
     // Products category
     Route::get('/product_category', [ProductCategoryController::class, 'index'])->name('admin.product_categories');
     Route::post('/product_category/store', [ProductCategoryController::class, 'store'])->name('admin.product_category.store');
@@ -88,12 +90,14 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () 
     Route::get('/coupons', [CouponsController::class, 'index'])->name('admin.coupons');
     Route::get('/coupons/create', [CouponsController::class, 'create'])->name('admin.coupons.create');
     // Route::get('/coupons/update', [CouponsController::class, 'update'])->name('admin.coupons.update');
+    Route::get('/coupons/show/{coupon}', [CouponsController::class, 'show'])->name('admin.coupons.show');
     Route::get('/coupons/edit/{coupon}', [CouponsController::class, 'edit'])->name('admin.coupons.edit');
     
-    // Vouchers (Is commented because controller is not created)
-    // Route::get('/vouchers', [VoucherController::class, 'index']);
-    // Route::get('/vouchers/create', [VoucherController::class, 'create']);
-    // Route::get('/vouchers/edit/{id}', [VoucherController::class, 'edit']); 
+    // Vouchers
+    Route::get('/vouchers', [VoucherController::class, 'index'])->name('admin.vouchers');
+    Route::get('/vouchers/create', [VoucherController::class, 'create'])->name('admin.vouchers.create');
+    Route::get('/vouchers/show/{voucher}', [VoucherController::class, 'show'])->name('admin.vouchers.show');
+    Route::get('/vouchers/edit/{voucher}', [VoucherController::class, 'edit'])->name('admin.vouchers.edit');
 
 
 });

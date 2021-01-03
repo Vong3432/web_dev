@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Products;
 use App\Models\ProductsCategory;
 use App\Models\ProductsImages;
+// use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -517,7 +519,56 @@ class ProductController extends Controller
         } 
     }
 
+    // public function checkout($id, Request $request)
     public function checkout(Request $request)
+    {        
+        // $post = Post::find($id);
+        // $product = Products::findOrFail($id);
+        
+        // $total_price = 100;
+        $total = \Cart::getTotal();  
+        $discount = 0;
+
+        $voucher = false;
+
+        if(isset($request->voucher))
+        // if($request->get('coupon_code'))
+        {
+            $voucher = Auth::user();
+            try{
+                $voucher = auth()->user()->redeemCode($request->voucher);
+                // $voucher = Auth::user();
+                // ->redeemCode($request->voucher);
+                $discount = $voucher->data->get('discount_percent');
+                $total = round($total * (1-$discount/100), 2);
+            } catch (\Exception $ex) {
+                session()->flash('error', $ex->getMessage());
+            }
+        }
+        
+        // return view('admin.products.checkout', compact('total_price', 'voucher')); 
+        return view('checkout', compact('total', 'discount', 'voucher')); 
+    }
+    /* $discount = 10;
+    
+    $voucher = auth()->user()->redeemCode($request->voucher);
+    $discount = $voucher->data->get('discount_percent');
+    $total = round($total * (1-$discount/100), 2); */
+    /* $total = \Cart::getTotal();  
+    $discount = 0;
+
+    if($request->get('coupon_code'))
+    {
+        $discount = $this->validCoupon($request->get('coupon_code'));                            
+        $total = $total - $discount;
+    }                    
+
+    return view('checkout', [
+        'total' => $total,
+        'discount' => $discount
+    ]); */
+    
+    public function checkout2(Request $request)
     {        
         $total = \Cart::getTotal();  
         $discount = 0;
@@ -593,5 +644,24 @@ class ProductController extends Controller
         $coupon = Coupon::where('code', $code)->first();
 
         return $coupon ? $coupon->value : 0;
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addVoucher($id)
+    // public function show1(Post $post)
+    {
+        $product = Products::findOrFail($id);
+        // $post = Post::find($id);
+
+        $voucher = $product->createVoucher(['discount_percent' => '10']);
+
+        return view('admin.products.addVoucher', compact('voucher','product'));
     }
 }

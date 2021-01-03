@@ -63,6 +63,7 @@
 
                                 <td>
                                     <button onclick="window.location='{{ url('products/edit/'.$product->id) }}'" class="mt-2 btn btn-primary"><i class="fas fa-edit"></i></button>
+                                    <button onclick="window.location='{{ url('products/addVoucher/'.$product->id) }}'" class="mt-2 btn btn-primary">Add Voucher</button>
                                 </td>
                             </tr>
                             @endforeach

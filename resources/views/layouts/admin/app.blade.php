@@ -196,10 +196,10 @@
                                 <div id="vouchers-menu" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Add Voucher</a>
+                                            <a class="nav-link" href="{{route('admin.vouchers')}}">All Voucher</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">All Vouchers</a>
+                                            <a class="nav-link" href="{{route('admin.products')}}">Add Vouchers</a>
                                         </li>
                                     </ul>
                                 </div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\NotificationController;
 
 /*
@@ -43,6 +44,9 @@ Route::resource('productimgs', ProductImageController::class);
 
 // Coupon
 Route::resource('coupons', CouponsController::class);
+
+// Voucher
+Route::resource('vouchers', VoucherController::class);
 
 // Test Notifications (Pusher)
 Route::get('/notifications', [NotificationController::class, 'index']);

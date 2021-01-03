@@ -84,25 +84,25 @@
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
 									<label>City<span>*</span></label>
-									<input type="text" name="city" placeholder="" required="required">
+									<input type="text" name="city" placeholder="" abcabcabc>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
 									<label>State<span>*</span></label>
-									<input type="text" name="state" placeholder="" required="required">
+									<input type="text" name="state" placeholder="" abcabcabc>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
 									<label>Address Line 1<span>*</span></label>
-									<input type="text" name="line1" placeholder="" required="required">
+									<input type="text" name="line1" placeholder="" abcabcabc>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
 									<label>Postal Code<span>*</span></label>
-									<input type="text" name="postal_code" placeholder="" required="required">
+									<input type="text" name="postal_code" placeholder="" abcabcabc>
 								</div>
 							</div>
 						</div>
@@ -112,13 +112,79 @@
 					<div class="order-details">
 						<!-- Order Widget -->
 						<div class="single-widget">
+							@if (session('error'))
+								<div class="alert alert-danger">{{ session('error') }}</div>
+							@endif
+						
 							<h2>CART TOTALS</h2>
 							<div class="content">
 								<ul>
 									<li>Sub Total<span>${{\Cart::getTotal()}}</span></li>
-									<li>Discount<span>{{$discount}}%</span></li>
-									<li class="last">Total<span>${{$total}}</span></li>
+									
+									<li>
+										{{-- <form action="{{ route('posts.show',$post->id ) }}" method="GET"> --}}
+										{{-- <form action="{{ url('products/checkout/'.$product->id) }}" method="GET"> --}}
+										<form action="{{ url('/checkout') }}" method="GET">
+											<input type="text" name="voucher" />
+											<span>
+												<input type="submit" value="Recalculate" class="btn btn-sm btn-primary" />
+											</span>
+										</form>
+									</li>
+
+									{{-- <li>Discount<span>${{$discount}}</span></li> --}}
+									@if ($voucher)
+										<li>Discount (-{{ $voucher->data->get('discount_percent') }} %):</b></td>
+											<span>${{ 100-$total_price }}</span>
+										</li>
+									@endif
+									<li class="last">Total Price:<span>${{$total_price}}</span></li>
 								</ul>
+
+								{{--  --}}
+								{{--  --}}
+								{{--  --}}
+								{{-- <table class="table">
+									<tbody>
+										<tr>
+											<td><b>Chosen Post:</b></td>
+											<td>{{ $post->title }}</td>
+										</tr>
+										<tr>
+											<td><b>Description:</b></td>
+											<td>{{ $post->description }}</td>
+										</tr>
+										<tr>
+											<td><b>Price:</b></td>
+											<td>RM100</td>
+										</tr>
+										<tr>
+											<td><b>Discount Voucher:</b></td>
+											<td> --}}
+												{{-- <form action="{{'checkout',[$post->id]}}" method="GET"> --}}
+												{{-- <form action="{{ route('posts.show',$post->id ) }}" method="GET">
+													<input type="text" name="voucher" />
+													<input type="submit" value="Recalculate" class="btn btn-sm btn-primary" />
+												</form>
+											</td>
+										</tr>
+		
+										@if ($voucher)
+											<tr>
+												<td><b>Discount (-{{ $voucher->data->get('discount_percent') }} %):</b></td>
+												<td><b>RM{{ 100-$total_price }}</b></td>
+											</tr>
+										@endif
+		
+										<tr>
+											<td><b>Total Price:</b></td>
+											<td><b>RM{{ $total_price }}</b></td>
+										</tr>
+									</tbody>
+								</table> --}}
+								{{--  --}}
+								{{--  --}}
+								{{--  --}}
 							</div>
 						</div>
 						<!--/ End Order Widget -->

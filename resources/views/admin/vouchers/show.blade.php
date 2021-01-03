@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-header">
-            <h2 class="pageheader-title">Create Coupon</h2>
+            <h2 class="pageheader-title">Show Voucher Details</h2>
             <!-- <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p> -->
             <!-- <div class="page-breadcrumb">
                 <nav aria-label="breadcrumb">
@@ -30,44 +30,59 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <h5 class="card-header">Fill in the blanks</h5>
+
                     <div class="card-body">
-                        <form id="validationform" data-parsley-validate="" novalidate="" action="{{ route('coupons.store') }}" method="POST">
+                        {{-- <form id="validationform" data-parsley-validate="" novalidate="" action="" method="POST"> --}}
+                        <form id="validationform">
                         @csrf
-                            {{-- <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Code<span style="color: red">*</span></label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="code" placeholder="" class="form-control" required>
-                                </div>
-                            </div> --}}
+
+                        {{-- @method('PUT') --}}
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product<span style="color: red">*</span></label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Code</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="model_id" placeholder="" class="form-control" required>
+                                    <input type="text" name="code" value="{{ $voucher->code }}" placeholder="" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Discount Percent<span style="color: red">*</span></label>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Product</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" name="discount_percent" placeholder="" class="form-control">
+                                    <input type="text" name="model_id" value="{{ $voucher->model_id }}" placeholder="" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Data</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="text" name="data" value="{{ $voucher->data }}" placeholder="" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Expires At</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="number" name="expires_at" value="{{ $voucher->expires_at }}" placeholder="" class="form-control" readonly>
                                 </div>
                             </div>
                             {{-- <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Percent Off</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" name="percent_off" placeholder="" class="form-control">
-                                </div>
-                            </div> --}}
-                            <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-right"></label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <span style="color: red" class="pull-left">* required</span>
                                 </div>
-                            </div>
+                            </div> --}}
                             
                             <div class="form-group row text-right">
                                 <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
-                                    <button type="submit" class="btn btn-space btn-primary">Submit</button>
-                                    <button class="btn btn-space btn-secondary">Cancel</button>
+                                    {{-- <button type="submit" class="btn btn-space btn-primary">Submit</button> --}}
+                                    {{-- <a href="{{ route('admin.vouchers') }}"></a><button class="btn btn-space btn-secondary">Back</button> --}}
+
+                                    {{-- === Opt 1 --}}
+                                    {{-- <a href="{{url('/vouchers')}}"><button class="btn btn-space btn-secondary">Back</button></a> --}}
+                                    {{-- === /Opt 1 --}}
+                                    
+                                    {{-- === Opt 2 --}}
+                                    {{-- <a href="{{route('admin.vouchers')}}"><button class="btn btn-space btn-secondary">Back</button></a> --}}
+                                    {{-- <a href="{{route('admin.vouchers')}}"><button class="btn btn-space btn-secondary">Back</button></a> --}}
+                                    {{-- <button class="btn btn-space btn-secondary"><a href="{{ route('admin.vouchers') }}">Back</a></button> --}}
+                                    <a href="{{ route('admin.vouchers') }}" class="btn btn-space btn-secondary">Back</a>
+                                    {{-- === /Opt 2 --}}
                                 </div>
                             </div>
                         </form>

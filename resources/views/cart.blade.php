@@ -98,14 +98,39 @@
 					<div class="row">						
 						<div class="col-lg-8 col-md-5 col-12">
 							<div class="left">
-								@if(!Request::get('coupon_code') || $discount == 0)
+								@if (session('error'))
+									<div class="alert alert-danger">{{ session('error') }}</div>
+								@endif
+								
+								{{-- <form action="{{ url('/checkout') }}" method="GET">
+									<input type="text" name="voucher" />
+									<span>
+										<input type="submit" value="Recalculate" class="btn btn-sm btn-primary" />
+									</span>
+								</form> --}}
+								<form action="{{ url('/checkout') }}" method="GET">
+									<input type="text" name="voucher" />
+									<span>
+										<input type="submit" value="Recalculate" class="btn btn-sm btn-primary" />
+									</span>
+								</form>
+								
+								{{-- @if(!Request::get('coupon_code') || $discount == 0)
 								<div class="coupon">									
 									<form>
 										<input name="coupon_code" id="couponCode" placeholder="Enter Your Coupon">
 										<button id="submitCouponBtn" class="btn">Apply</button>									
 									</form>										
 								</div>								
-								@endif
+								@endif --}}
+								{{-- @if(!Request::get('coupon_code') || $discount == 0)
+								<div class="coupon">									
+									<form>
+										<input name="coupon_code" id="couponCode" placeholder="Enter Your Coupon">
+										<button id="submitCouponBtn" class="btn">Apply</button>									
+									</form>										
+								</div>								
+								@endif --}}
 							</div>
 						</div>						
 						<div class="col-lg-4 col-md-7 col-12">
