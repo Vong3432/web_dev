@@ -2,11 +2,17 @@
 ## Project Info 
 **1. Name**
 
-name
+Project Title - Snack666
 
 **2. Description**
 
-desc
+Snack666 is a ecommerce-website that sell snacks from different countries.
+
+**3. Group Member**
+- Vong Nyuk Soon
+- Fu Yi Shi
+- Hun Zu Rong
+- Tan Kian Seng
 
 ## Languages and Tools
 **1. Laravel 8.x**
