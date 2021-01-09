@@ -38,14 +38,14 @@
 						<h3 class="title">Categories</h3>
 						<ul class="categor-list">
 							@foreach($productcategories as $pCategories)
-							<li><a href="{{ route('products', ['category' => $pCategories->id ]) }}">{{ $pCategories->name }}</a></li>
+							<li><a href="{{ request()->fullUrlWithQuery(['category' => $pCategories->id ]) }}">{{ $pCategories->name }}</a></li>
 							@endforeach
 						</ul>
 					</div>
 					<!--/ End Single Widget -->
 					<!-- Shop By Price -->
 					<div class="single-widget range">
-						<form action="{{ route('products') }}" method="GET">
+						<form id="price-form">
 							@csrf
 							<h3 class="title">Shop by Price</h3>
 							<!-- <div class="price-filter">
@@ -345,6 +345,31 @@
 
 @section('js')
 <script>
+
+	$('#price-form').submit(function(e) {
+
+		e.preventDefault();
+
+		const prices = [];
+		let url = "{{Request::fullUrl()}}";
+
+		$('input[name="price[]"]').each(function () {
+			if(this.checked)
+				prices.push($(this).val());
+		})			
+		
+		if(url.includes('?'))
+			url = url + "&price=" + encodeURIComponent(JSON.stringify(prices));		
+		else 
+			url = "?price=" + encodeURIComponent(JSON.stringify(prices));
+		
+		console.log(url);
+
+		window.location.href = url;
+		
+	})
+
+	
 	function addToCart(id) {
 		$.ajax({
             url: "api/add-to-cart/" + id,

@@ -1,11 +1,4 @@
 /* =====================================
-Template Name: Eshop
-Author Name: Naimur Rahman
-Author URI: http://www.wpthemesgrid.com/
-Description: Eshop - eCommerce HTML5 Template.
-Version:1.0
-========================================*/
-/*======================================
 [ CSS Table of contents ]
 01. Preloader CSS
 02. Header CSS
@@ -35,6 +28,44 @@ Version:1.0
 20. 404 Error CSS
 21. Footer CSS
 ========================================*/
+
+.searchbox-wrapper{
+	position: relative;
+	width: 100% !important;
+	float: none !important;
+}
+
+.search-form.searchbox-wrapper {
+	width: initial !important;
+}
+
+.searchbox {
+	width: 100% !important;
+}
+
+.search-result {
+	margin-top: 10px;
+	z-index: 98;
+	background-color: #fff;	
+	box-shadow: 0 10px 15px rgba(0,0,0,.1), 0 4px 6px rgba(0,0,0,.05);
+	position: absolute;
+	width: 100%;
+}
+
+.search-item {
+	display: flex;
+	align-items: center;
+	padding: 1em;
+}
+
+.search-item img {
+	width: 30px;
+	height: 30px;
+	object-fit: cover;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
 .color-plate {
 	position: fixed;
 	display: block;

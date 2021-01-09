@@ -34,6 +34,20 @@ Create an .env file in your project root folder, can refer to .env.example, and 
 composer install
 ```
 
+and go to vendor/beyondcode/config/config.php replace
+
+from
+
+```
+'user_model' => \App\User::class,
+```
+
+to
+
+```
+'user_model' => \App\Models\User::class,
+```
+
 and
 
 **Make sure you have create a database in Laragon/XAMPP before running next command**
@@ -94,6 +108,22 @@ git pull
 php artisan migrate:fresh --seed
 ```
 
+## Stripe Credit Card (For demo)
+
+NUMBER
+```
+4242 4242 4242 4242
+```
+
+CVC
+```
+Any 3 Digits
+```
+
+Date
+```
+Any future date
+```
 
 ## MySQL-workbench access credentials
 

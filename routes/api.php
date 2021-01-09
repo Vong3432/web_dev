@@ -39,6 +39,9 @@ Route::resource('productscategory', ProductCategoryController::class);
 // Product 
 Route::resource('products', ProductController::class);
 
+// Search product
+Route::get('search-products', [ProductController::class, 'realTimeSearchProduct']);
+
 // Product Image
 Route::resource('productimgs', ProductImageController::class);
 

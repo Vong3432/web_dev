@@ -306,13 +306,8 @@ class ProductController extends Controller
         }
     }
 
-
-
-    public function getAllProducts(Request $request)
+    public function realTimeSearchProduct(Request $request) 
     {
-
-        $priceFilters = array();
-
         $products = DB::table('products')
             ->select(
                 'products.id',
@@ -329,20 +324,55 @@ class ProductController extends Controller
                 'products_images.name as images'
             )
             ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
+            ->join('products_images', 'products_images.product_id', '=', 'products.id')
+            ->where('products.name', 'like', $request->k . '%')
+            ->get();
+
+        return response()->json(['results' => $products]);
+                
+    }
+
+    public function getAllProducts(Request $request)
+    {
+
+        $priceFilters = array();        
+
+        $products = DB::table('products')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.desc',
+                'products.price',
+                'products.sprice as sale_price',
+                'products.quantity',
+                'products.weight',
+                'products.status',
+                'products_categories.name as categories',
+                'products_categories.id as products.category_id',
+                'products.tags',
+                'products.discount_rate',                
+                'products_images.name as images'
+            )
+            ->join('products_categories', 'products_categories.id', '=', 'products.category_id')
             ->join('products_images', 'products_images.product_id', '=', 'products.id');
 
-        // Filter category
-        if ($request->category) {
-            $products = $products->where('products.category_id', $request->category);
+        // Filter product name
+        if($request->search) {
+            $products = $products->where('products.name', 'like', $request->search . '%');
         }
 
+        // Filter category
+        if ($request->category) {            
+            $products = $products->where('products.category_id', $request->category);            
+        }                
+
         // Filter price 
-        if ($request->price) {
+        if ($request->price) {            
 
             $lowestPrice = 0;
             $highestPrice = 0;
 
-            foreach ($request->price as $price) {
+            foreach (json_decode($request->price) as $price) {
                 // Save checked price range to array
                 array_push($priceFilters, $price);
 
@@ -356,9 +386,21 @@ class ProductController extends Controller
 
                 if ($highestPrice === 0) $highestPrice = $currentHighest;
                 else $currentHighest > $highestPrice ? $highestPrice = $currentHighest : null;
-            }
+            }            
 
-            $products = $products->whereBetween('products.price', [$lowestPrice, $highestPrice])->orWhereBetween('products.sprice', [$lowestPrice, $highestPrice]);
+            $products = $products->whereBetween('products.price', [$lowestPrice, $highestPrice])->orWhereBetween('products.sprice', [$lowestPrice, $highestPrice]);                        
+
+            // Filter category
+            if ($request->category) {            
+                $products = $products->where('products.category_id', $request->category);            
+            } 
+
+            // Filter product name
+            if($request->search) {
+
+                dd($request->search);
+                $products = $products->where('products.name', 'like', $request->search . '%');
+            }
         }
 
         // Filter tags 

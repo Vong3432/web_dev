@@ -50,9 +50,9 @@
                             <th>CREATED AT</th>
                             <th>PRODUCT IMAGE</th>
                             <th>PRODUCT</th>
-                            <th class="text-center">UNIT PRICE</th>
+                            <th class="text-center">RECEIPT</th>
                             <th class="text-center">QUANTITY</th>
-                            <th class="text-center">TOTAL</th>
+                            <!-- <th class="text-center">TOTAL</th> -->
                             <th class="text-center">STATUS</th>                                                                       
                         </tr>
                     </thead>
@@ -78,20 +78,21 @@
 
                             </td>
                             <td class="price" data-title="Price">
-                                @foreach($request->order->ordered_products as $oProduct)                                
+                                <a href="{{ Stripe::charges()->find($request->order->stripe_order_id)['receipt_url'] }}">View receipt</a>                                
+                                <!-- @foreach($request->order->ordered_products as $oProduct)                                
                                     @if($oProduct->product->sprice)                           
                                         <span class="py-2">${{ $oProduct->product->sprice }}</span> <br />
                                     @else
                                         <span class="py-2">${{ $oProduct->product->price }}</span> <br />
                                     @endif  
-                                @endforeach
+                                @endforeach -->
                             </td>
                             <td class="qty" data-title="Qty">
                                 @foreach($request->order->ordered_products as $oProduct)
                                 <span class="py-2">{{ $oProduct->quantity }}</span> <br />
                                 @endforeach
                             </td>
-                            <td class="total-amount" data-title="Total">
+                            <!-- <td class="total-amount" data-title="Total">
                                 @foreach($request->order->ordered_products as $oProduct)                                
                                     @if($oProduct->product->sprice)                           
                                         <span class="py-2">${{ $oProduct->product->sprice * $oProduct->quantity }}</span> <br />
@@ -99,7 +100,7 @@
                                         <span class="py-2">${{ $oProduct->product->price * $oProduct->quantity}}</span> <br />
                                     @endif 
                                 @endforeach
-                            </td>
+                            </td> -->
                             <td class="action">
                                 {{$request->status}}
                             </td>                            
