@@ -14,6 +14,15 @@ Snack666 is a ecommerce-website that sell snacks from different countries.
 - Hun Zu Rong
 - Tan Kian Seng
 
+**4. Project Features**
+- Credit Card Payment
+- Email Verification
+- Email Notifications
+- Voucher System
+- Admin System
+- Track Order Status
+- Refund 
+
 ## Languages and Tools
 **1. Laravel 8.x**
 https://laravel.com/docs/8.x
