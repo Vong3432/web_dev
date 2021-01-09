@@ -396,9 +396,7 @@ class ProductController extends Controller
             } 
 
             // Filter product name
-            if($request->search) {
-
-                dd($request->search);
+            if($request->search) {                
                 $products = $products->where('products.name', 'like', $request->search . '%');
             }
         }
